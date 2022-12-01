@@ -14,13 +14,15 @@ import { CreateWhatsappDto } from './dto/create-whatsapp.dto';
 import { UpdateWhatsappDto } from './dto/update-whatsapp.dto';
 import axios from 'axios';
 import { MessageGateway } from 'src/message/message.gateway';
+import { SocketGateway } from 'src/socket/socket.gateway';
 // const axios = require('axios').default;
 
 @Controller('whatsapp')
 export class WhatsappController {
   constructor(
     private readonly whatsappService: WhatsappService,
-    private readonly messageGateway: MessageGateway,
+    // private readonly messageGateway: MessageGateway,
+    private readonly socketGateway: SocketGateway,
   ) {}
 
   // public api
@@ -63,7 +65,7 @@ export class WhatsappController {
             { headers: { 'Content-Type': 'application/json' } },
           );
           // emit message
-          this.messageGateway.server.emit('message', {
+          this.socketGateway.server.emit('message', {
             name: 'sikder',
             text: msg_body,
           });

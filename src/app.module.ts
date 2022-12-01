@@ -21,6 +21,7 @@ import { AbilityModule } from './ability/ability.module';
 import { ProfileModule } from './app/profile/profile.module';
 import { MessageModule } from './message/message.module';
 import { WhatsappModule } from './app/whatsapp/whatsapp.module';
+import { SocketModule } from './socket/socket.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { WhatsappModule } from './app/whatsapp/whatsapp.module';
     ProfileModule,
     MessageModule,
     WhatsappModule,
+    SocketModule,
   ],
   controllers: [AppController],
   providers: [
