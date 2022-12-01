@@ -19,6 +19,7 @@ import { UrlGeneratorModule } from 'nestjs-url-generator';
 import { UserModule } from './app/user/user.module';
 import { AbilityModule } from './ability/ability.module';
 import { ProfileModule } from './app/profile/profile.module';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { ProfileModule } from './app/profile/profile.module';
     NoteModule,
     UserModule,
     ProfileModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [
