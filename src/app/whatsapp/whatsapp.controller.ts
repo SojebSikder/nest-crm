@@ -36,7 +36,7 @@ export class WhatsappController {
         'EAAMBZBUByhEEBAEyL9h4jLGjSIsuIZAGkZB8zZBVbdhXQl2idGg8utUsbjZCBi0BZCk6a3QhcCsEB1apB5wlig56tH2nWU95qPlQ4RpRlIuVHg634hk20YYZCce9JqNmnZBKCh4VF1VyTgjrk3NRvvtRnfbFvzfEWne6pnIf9fk6IZCTns2YIUwcQZAAdMYYajzB0dDRXLnFMvqwZDZD';
 
       // Check the Incoming webhook message
-      console.log(JSON.stringify(req.body, null, 2));
+      // console.log(JSON.stringify(req.body, null, 2));
 
       // info on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
       if (req.body.object) {

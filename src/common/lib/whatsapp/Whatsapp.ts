@@ -1,4 +1,5 @@
 import { Fetch } from '../Fetch';
+import { GetPhoneNumberIdOption } from './options';
 
 // Whatsapp cloud api version
 const api_Version = 'v15.0';
@@ -7,8 +8,14 @@ const api_Version = 'v15.0';
  * Whatsapp cloud api wrapper
  */
 export class WhatsappApi {
+  /**
+   * Whatsapp cloud api version
+   */
   private static _api_version = ``;
   private static _phone_number_id = ``;
+  /**
+   * Access token
+   */
   private static _token = ``;
 
   /**
@@ -55,11 +62,13 @@ export class WhatsappApi {
       to: to,
       text: { body: message },
     };
-
+    const header = {
+      headers: { 'Content-Type': 'application/json' },
+    };
     return await Fetch.post(
       `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages?access_token=${this._token}`,
       data,
-      { headers: { 'Content-Type': 'application/json' } },
+      header,
     );
   }
 
@@ -88,11 +97,32 @@ export class WhatsappApi {
         },
       },
     };
-
+    const header = {
+      headers: { 'Content-Type': 'application/json' },
+    };
     return await Fetch.post(
       `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages?access_token=${this._token}`,
       data,
-      { headers: { 'Content-Type': 'application/json' } },
+      header,
     );
+  }
+
+  /**
+   * Get phone number using Whatsapp business account id
+   * @param accountId Whatsapp business account id
+   * @returns
+   */
+  static async getPhoneNumberId(accountId): Promise<GetPhoneNumberIdOption[]> {
+    const header = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this._token}}`,
+      },
+    };
+    const response = await Fetch.get(
+      `https://graph.facebook.com/${this._api_version}/${accountId}/phone_numbers`,
+      header,
+    );
+    return response.data.data;
   }
 }
