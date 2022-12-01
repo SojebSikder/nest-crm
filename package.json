@@ -38,6 +38,7 @@
     "@nestjs/websockets": "^9.2.1",
     "@prisma/client": "^4.7.0",
     "@types/nodemailer": "^6.4.6",
+    "axios": "^1.2.0",
     "bcrypt": "^5.1.0",
     "dayjs": "^1.11.6",
     "ejs": "^3.1.8",
