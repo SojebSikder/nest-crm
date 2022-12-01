@@ -32,7 +32,6 @@ export class WhatsappController {
   async webhookPost(@Request() req, @Response() res) {
     try {
       // Parse the request body from the POST
-      const apiVersion = 'v15.0';
       const token =
         'EAAMBZBUByhEEBAEyL9h4jLGjSIsuIZAGkZB8zZBVbdhXQl2idGg8utUsbjZCBi0BZCk6a3QhcCsEB1apB5wlig56tH2nWU95qPlQ4RpRlIuVHg634hk20YYZCce9JqNmnZBKCh4VF1VyTgjrk3NRvvtRnfbFvzfEWne6pnIf9fk6IZCTns2YIUwcQZAAdMYYajzB0dDRXLnFMvqwZDZD';
 
@@ -56,7 +55,6 @@ export class WhatsappController {
 
           // set whatsapp credentials
           WhatsappApi.config({
-            apiVersion: apiVersion,
             phoneNumberId: phone_number_id,
             token: token,
           });

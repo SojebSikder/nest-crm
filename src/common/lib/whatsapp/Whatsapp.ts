@@ -1,16 +1,30 @@
 import { Fetch } from '../Fetch';
 
+// Whatsapp cloud api version
+const api_Version = 'v15.0';
+
+/**
+ * Whatsapp cloud api wrapper
+ */
 export class WhatsappApi {
   private static _api_version = ``;
   private static _phone_number_id = ``;
   private static _token = ``;
 
   /**
-   * Set whatsapp credentials
+   * Set whatsapp api credentials
    * @param param0
    * @returns
    */
-  static config({ apiVersion, phoneNumberId, token }) {
+  static config({
+    apiVersion = api_Version,
+    phoneNumberId,
+    token,
+  }: {
+    apiVersion?: string;
+    phoneNumberId: string;
+    token: string;
+  }) {
     this._api_version = apiVersion;
     this._phone_number_id = phoneNumberId;
     this._token = token;
