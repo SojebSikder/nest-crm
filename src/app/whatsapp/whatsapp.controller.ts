@@ -16,6 +16,7 @@ import axios from 'axios';
 import { MessageGateway } from 'src/message/message.gateway';
 import { SocketGateway } from 'src/socket/socket.gateway';
 import { Fetch } from 'src/common/lib/Fetch';
+import { WhatsappApi } from 'src/common/lib/whatsapp/Whatsapp';
 // const axios = require('axios').default;
 
 @Controller('whatsapp')
@@ -53,18 +54,14 @@ export class WhatsappController {
           const msg_body =
             req.body.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
 
-          // send message to user
-          const data = {
-            messaging_product: 'whatsapp',
-            to: from,
-            text: { body: 'Ack: ' + msg_body },
-          };
-
-          await Fetch.post(
-            `https://graph.facebook.com/${apiVersion}/${phone_number_id}/messages?access_token=${token}`,
-            data,
-            { headers: { 'Content-Type': 'application/json' } },
-          );
+          // set whatsapp credentials
+          WhatsappApi.config({
+            apiVersion: apiVersion,
+            phoneNumberId: phone_number_id,
+            token: token,
+          });
+          // send message back to user
+          await WhatsappApi.sendText({ to: from, message: 'Ack: ' + msg_body });
           // emit message
           this.socketGateway.server.emit('message', {
             name: 'sikder',
