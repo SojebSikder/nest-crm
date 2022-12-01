@@ -12,12 +12,8 @@ import {
 import { WhatsappService } from './whatsapp.service';
 import { CreateWhatsappDto } from './dto/create-whatsapp.dto';
 import { UpdateWhatsappDto } from './dto/update-whatsapp.dto';
-import axios from 'axios';
-import { MessageGateway } from 'src/message/message.gateway';
 import { SocketGateway } from 'src/socket/socket.gateway';
-import { Fetch } from 'src/common/lib/Fetch';
 import { WhatsappApi } from 'src/common/lib/whatsapp/Whatsapp';
-// const axios = require('axios').default;
 
 @Controller('whatsapp')
 export class WhatsappController {
