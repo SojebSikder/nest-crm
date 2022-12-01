@@ -15,6 +15,7 @@ import { UpdateWhatsappDto } from './dto/update-whatsapp.dto';
 import axios from 'axios';
 import { MessageGateway } from 'src/message/message.gateway';
 import { SocketGateway } from 'src/socket/socket.gateway';
+import { Fetch } from 'src/common/lib/Fetch';
 // const axios = require('axios').default;
 
 @Controller('whatsapp')
@@ -59,7 +60,7 @@ export class WhatsappController {
             text: { body: 'Ack: ' + msg_body },
           };
 
-          await axios.post(
+          await Fetch.post(
             `https://graph.facebook.com/${apiVersion}/${phone_number_id}/messages?access_token=${token}`,
             data,
             { headers: { 'Content-Type': 'application/json' } },
