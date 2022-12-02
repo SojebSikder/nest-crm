@@ -62,13 +62,13 @@ export class WhatsappApi {
       to: to,
       text: { body: message },
     };
-    const header = {
+    const _header = {
       headers: { 'Content-Type': 'application/json' },
     };
     return await Fetch.post(
       `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages?access_token=${this._token}`,
       data,
-      header,
+      _header,
     );
   }
 
@@ -97,13 +97,13 @@ export class WhatsappApi {
         },
       },
     };
-    const header = {
+    const _header = {
       headers: { 'Content-Type': 'application/json' },
     };
     return await Fetch.post(
       `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages?access_token=${this._token}`,
       data,
-      header,
+      _header,
     );
   }
 
@@ -118,7 +118,7 @@ export class WhatsappApi {
       status: 'read',
       message_id: message_id,
     };
-    const header = {
+    const _header = {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this._token}`,
@@ -127,7 +127,7 @@ export class WhatsappApi {
     return await Fetch.post(
       `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages`,
       data,
-      header,
+      _header,
     );
   }
 
@@ -140,8 +140,8 @@ export class WhatsappApi {
    */
   static async sendSingleProduct({
     to,
-    body = null,
-    footer = null,
+    bodyText = null,
+    footerText = null,
     catalog_id,
     product_retailer_id,
   }: {
@@ -152,11 +152,11 @@ export class WhatsappApi {
     /**
      * body text
      */
-    body?: string;
+    bodyText?: string;
     /**
      * Footer text
      */
-    footer?: string;
+    footerText?: string;
     /**
      * catalog id
      */
@@ -174,10 +174,10 @@ export class WhatsappApi {
       interactive: {
         type: 'product',
         body: {
-          text: body,
+          text: bodyText,
         },
         footer: {
-          text: footer,
+          text: footerText,
         },
         action: {
           catalog_id: catalog_id,
@@ -185,15 +185,111 @@ export class WhatsappApi {
         },
       },
     };
-    const header = {
+    const _header = {
       headers: { 'Content-Type': 'application/json' },
     };
     return await Fetch.post(
       `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages?access_token=${this._token}`,
       data,
-      header,
+      _header,
     );
   }
+
+  // /**
+  //  * Send single product message
+  //  * @param {Object} arg
+  //  * @param {string} arg.to Recipient phone number
+  //  * @param {string} arg.body body text
+  //  * @returns
+  //  */
+  // static async sendMultipleProduct({
+  //   to,
+  //   headerText = null,
+  //   bodyText = null,
+  //   footerText = null,
+  //   catalog_id,
+  //   product_retailer_id,
+  // }: {
+  //   /**
+  //    * Recipient phone number
+  //    */
+  //   to: string;
+  //   /**
+  //    * header text
+  //    */
+  //   headerText?: string;
+  //   /**
+  //    * body text
+  //    */
+  //   bodyText?: string;
+  //   /**
+  //    * Footer text
+  //    */
+  //   footerText?: string;
+  //   /**
+  //    * catalog id
+  //    */
+  //   catalog_id: string;
+  //   /**
+  //    * product retailer id
+  //    */
+  //   product_retailer_id: string;
+  // }) {
+  //   const data = {
+  //     messaging_product: 'whatsapp',
+  //     recipient_type: 'individual',
+  //     to: to,
+  //     type: 'interactive',
+  //     interactive: {
+  //       type: 'product_list',
+  //       header: {
+  //         type: 'text',
+  //         text: headerText,
+  //       },
+  //       body: {
+  //         text: bodyText,
+  //       },
+  //       footer: {
+  //         text: footerText,
+  //       },
+  //       action: {
+  //         catalog_id: catalog_id,
+  //         sections: [
+  //           {
+  //             title: '<SECTION1_TITLE>',
+  //             product_items: [
+  //               {
+  //                 product_retailer_id: '<YOUR_PRODUCT1_SKU_IN_CATALOG>',
+  //               },
+  //               {
+  //                 product_retailer_id: '<YOUR_SECOND_PRODUCT1_SKU_IN_CATALOG>',
+  //               },
+  //             ],
+  //           },
+  //           {
+  //             title: '<SECTION2_TITLE>',
+  //             product_items: [
+  //               {
+  //                 product_retailer_id: '<YOUR_PRODUCT2_SKU_IN_CATALOG>',
+  //               },
+  //               {
+  //                 product_retailer_id: '<YOUR_SECOND_PRODUCT2_SKU_IN_CATALOG>',
+  //               },
+  //             ],
+  //           },
+  //         ],
+  //       },
+  //     },
+  //   };
+  //   const _header = {
+  //     headers: { 'Content-Type': 'application/json' },
+  //   };
+  //   return await Fetch.post(
+  //     `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages?access_token=${this._token}`,
+  //     data,
+  //     _header,
+  //   );
+  // }
 
   /**
    * Get phone number using Whatsapp business account id
@@ -203,7 +299,7 @@ export class WhatsappApi {
   static async getPhoneNumberId(
     accountId: string,
   ): Promise<GetPhoneNumberIdOption[]> {
-    const header = {
+    const _header = {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this._token}}`,
@@ -211,7 +307,7 @@ export class WhatsappApi {
     };
     const response = await Fetch.get(
       `https://graph.facebook.com/${this._api_version}/${accountId}/phone_numbers`,
-      header,
+      _header,
     );
     return response.data.data;
   }
