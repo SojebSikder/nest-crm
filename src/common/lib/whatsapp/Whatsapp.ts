@@ -132,6 +132,70 @@ export class WhatsappApi {
   }
 
   /**
+   * Send single product message
+   * @param {Object} arg
+   * @param {string} arg.to Recipient phone number
+   * @param {string} arg.body body text
+   * @returns
+   */
+  static async sendSingleProduct({
+    to,
+    body = null,
+    footer = null,
+    catalog_id,
+    product_retailer_id,
+  }: {
+    /**
+     * Recipient phone number
+     */
+    to: string;
+    /**
+     * body text
+     */
+    body?: string;
+    /**
+     * Footer text
+     */
+    footer?: string;
+    /**
+     * catalog id
+     */
+    catalog_id: string;
+    /**
+     * product retailer id
+     */
+    product_retailer_id: string;
+  }) {
+    const data = {
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: to,
+      type: 'interactive',
+      interactive: {
+        type: 'product',
+        body: {
+          text: body,
+        },
+        footer: {
+          text: footer,
+        },
+        action: {
+          catalog_id: catalog_id,
+          product_retailer_id: product_retailer_id,
+        },
+      },
+    };
+    const header = {
+      headers: { 'Content-Type': 'application/json' },
+    };
+    return await Fetch.post(
+      `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages?access_token=${this._token}`,
+      data,
+      header,
+    );
+  }
+
+  /**
    * Get phone number using Whatsapp business account id
    * @param accountId Whatsapp business account id
    * @returns
