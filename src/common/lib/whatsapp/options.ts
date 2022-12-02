@@ -1,12 +1,23 @@
-// export enum GetPhoneNumberIdOption {
-//   verified_name = 'verified_name',
-//   display_phone_number = 'display_phone_number',
-//   id = 'id',
-//   quality_rating = 'quality_rating',
-// }
 export type GetPhoneNumberIdOption = {
-  verified_name;
-  display_phone_number;
-  id;
-  quality_rating;
+  verified_name: string;
+  display_phone_number: string;
+  id: string;
+  quality_rating: string;
+};
+
+// ------------product-----------
+
+/**
+ * Product item option
+ */
+export type ProductItem = {
+  product_retailer_id: string;
+};
+
+/**
+ * product section option
+ */
+export type Section = {
+  title: string;
+  product_items: ProductItem[];
 };

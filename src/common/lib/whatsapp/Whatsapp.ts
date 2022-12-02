@@ -1,5 +1,5 @@
 import { Fetch } from '../Fetch';
-import { GetPhoneNumberIdOption } from './options';
+import { GetPhoneNumberIdOption, Section } from './options';
 
 // Whatsapp cloud api version
 const api_Version = 'v15.0';
@@ -186,110 +186,91 @@ export class WhatsappApi {
       },
     };
     const _header = {
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this._token}`,
+      },
     };
     return await Fetch.post(
-      `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages?access_token=${this._token}`,
+      `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages`,
       data,
       _header,
     );
   }
 
-  // /**
-  //  * Send single product message
-  //  * @param {Object} arg
-  //  * @param {string} arg.to Recipient phone number
-  //  * @param {string} arg.body body text
-  //  * @returns
-  //  */
-  // static async sendMultipleProduct({
-  //   to,
-  //   headerText = null,
-  //   bodyText = null,
-  //   footerText = null,
-  //   catalog_id,
-  //   product_retailer_id,
-  // }: {
-  //   /**
-  //    * Recipient phone number
-  //    */
-  //   to: string;
-  //   /**
-  //    * header text
-  //    */
-  //   headerText?: string;
-  //   /**
-  //    * body text
-  //    */
-  //   bodyText?: string;
-  //   /**
-  //    * Footer text
-  //    */
-  //   footerText?: string;
-  //   /**
-  //    * catalog id
-  //    */
-  //   catalog_id: string;
-  //   /**
-  //    * product retailer id
-  //    */
-  //   product_retailer_id: string;
-  // }) {
-  //   const data = {
-  //     messaging_product: 'whatsapp',
-  //     recipient_type: 'individual',
-  //     to: to,
-  //     type: 'interactive',
-  //     interactive: {
-  //       type: 'product_list',
-  //       header: {
-  //         type: 'text',
-  //         text: headerText,
-  //       },
-  //       body: {
-  //         text: bodyText,
-  //       },
-  //       footer: {
-  //         text: footerText,
-  //       },
-  //       action: {
-  //         catalog_id: catalog_id,
-  //         sections: [
-  //           {
-  //             title: '<SECTION1_TITLE>',
-  //             product_items: [
-  //               {
-  //                 product_retailer_id: '<YOUR_PRODUCT1_SKU_IN_CATALOG>',
-  //               },
-  //               {
-  //                 product_retailer_id: '<YOUR_SECOND_PRODUCT1_SKU_IN_CATALOG>',
-  //               },
-  //             ],
-  //           },
-  //           {
-  //             title: '<SECTION2_TITLE>',
-  //             product_items: [
-  //               {
-  //                 product_retailer_id: '<YOUR_PRODUCT2_SKU_IN_CATALOG>',
-  //               },
-  //               {
-  //                 product_retailer_id: '<YOUR_SECOND_PRODUCT2_SKU_IN_CATALOG>',
-  //               },
-  //             ],
-  //           },
-  //         ],
-  //       },
-  //     },
-  //   };
-  //   const _header = {
-  //     headers: { 'Content-Type': 'application/json' },
-  //   };
-  //   return await Fetch.post(
-  //     `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages?access_token=${this._token}`,
-  //     data,
-  //     _header,
-  //   );
-  // }
+  /**
+   * Send multiple product message
+   */
+  static async sendMultipleProduct({
+    to,
+    headerText = null,
+    bodyText = null,
+    footerText = null,
+    catalog_id,
+    sections,
+  }: {
+    /**
+     * Recipient phone number
+     */
+    to: string;
+    /**
+     * header text
+     */
+    headerText?: string;
+    /**
+     * body text
+     */
+    bodyText?: string;
+    /**
+     * Footer text
+     */
+    footerText?: string;
+    /**
+     * catalog id
+     */
+    catalog_id: string;
+    /**
+     * Product section
+     */
+    sections: Section[];
+  }) {
+    const _sections = sections;
+
+    const data = {
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: to,
+      type: 'interactive',
+      interactive: {
+        type: 'product_list',
+        header: {
+          type: 'text',
+          text: headerText,
+        },
+        body: {
+          text: bodyText,
+        },
+        footer: {
+          text: footerText,
+        },
+        action: {
+          catalog_id: catalog_id,
+          sections: _sections,
+        },
+      },
+    };
+    const _header = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this._token}`,
+      },
+    };
+    return await Fetch.post(
+      `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages`,
+      data,
+      _header,
+    );
+  }
 
   /**
    * Get phone number using Whatsapp business account id
