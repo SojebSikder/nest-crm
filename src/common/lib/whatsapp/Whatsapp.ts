@@ -108,6 +108,30 @@ export class WhatsappApi {
   }
 
   /**
+   * Mark message as read
+   * @param message_id
+   * @returns
+   */
+  static async markMessageAsRead(message_id: string) {
+    const data = {
+      messaging_product: 'whatsapp',
+      status: 'read',
+      message_id: message_id,
+    };
+    const header = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this._token}`,
+      },
+    };
+    return await Fetch.post(
+      `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages`,
+      data,
+      header,
+    );
+  }
+
+  /**
    * Get phone number using Whatsapp business account id
    * @param accountId Whatsapp business account id
    * @returns
