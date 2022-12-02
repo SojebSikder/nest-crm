@@ -11,7 +11,7 @@ export class WhatsappApi {
   /**
    * Whatsapp cloud api version
    */
-  private static _api_version = ``;
+  private static _api_version: string = api_Version;
   private static _phone_number_id = ``;
   /**
    * Access token
@@ -112,7 +112,9 @@ export class WhatsappApi {
    * @param accountId Whatsapp business account id
    * @returns
    */
-  static async getPhoneNumberId(accountId): Promise<GetPhoneNumberIdOption[]> {
+  static async getPhoneNumberId(
+    accountId: string,
+  ): Promise<GetPhoneNumberIdOption[]> {
     const header = {
       headers: {
         'Content-Type': 'application/json',
