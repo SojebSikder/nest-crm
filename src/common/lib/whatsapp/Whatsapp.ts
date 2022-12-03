@@ -150,7 +150,7 @@ export class WhatsappApi {
    */
   static async sendSingleProduct({
     to,
-    bodyText = null,
+    bodyText,
     footerText = null,
     catalog_id,
     product_retailer_id,
@@ -162,7 +162,7 @@ export class WhatsappApi {
     /**
      * body text
      */
-    bodyText?: string;
+    bodyText: string;
     /**
      * Footer text
      */
@@ -187,15 +187,19 @@ export class WhatsappApi {
         body: {
           text: bodyText,
         },
-        footer: {
-          text: footerText,
-        },
         action: {
           catalog_id: catalog_id,
           product_retailer_id: product_retailer_id,
         },
       },
     };
+    if (footerText) {
+      Object.assign(data.interactive, {
+        footer: {
+          text: footerText,
+        },
+      });
+    }
     const _header = {
       headers: {
         'Content-Type': 'application/json',
@@ -214,8 +218,8 @@ export class WhatsappApi {
    */
   static async sendMultipleProduct({
     to,
-    headerText = null,
-    bodyText = null,
+    headerText,
+    bodyText,
     footerText = null,
     catalog_id,
     sections,
@@ -227,11 +231,11 @@ export class WhatsappApi {
     /**
      * header text
      */
-    headerText?: string;
+    headerText: string;
     /**
      * body text
      */
-    bodyText?: string;
+    bodyText: string;
     /**
      * Footer text
      */
@@ -262,15 +266,21 @@ export class WhatsappApi {
         body: {
           text: bodyText,
         },
-        footer: {
-          text: footerText,
-        },
         action: {
           catalog_id: catalog_id,
           sections: _sections,
         },
       },
     };
+
+    if (footerText) {
+      Object.assign(data.interactive, {
+        footer: {
+          text: footerText,
+        },
+      });
+    }
+
     const _header = {
       headers: {
         'Content-Type': 'application/json',
@@ -358,8 +368,8 @@ export class WhatsappApi {
    */
   static async sendListMessage({
     to,
-    headerText = null,
-    bodyText = null,
+    headerText,
+    bodyText,
     footerText = null,
     buttonText,
     sections,
@@ -371,11 +381,11 @@ export class WhatsappApi {
     /**
      * header text. Maximum of 1024 characters.
      */
-    headerText?: string;
+    headerText: string;
     /**
      * body text. Maximum of 1024 characters.
      */
-    bodyText?: string;
+    bodyText: string;
     /**
      * Footer text
      */
@@ -402,15 +412,20 @@ export class WhatsappApi {
         body: {
           text: bodyText,
         },
-        footer: {
-          text: footerText,
-        },
         action: {
           button: buttonText,
           sections: sections,
         },
       },
     };
+    if (footerText) {
+      Object.assign(data.interactive, {
+        footer: {
+          text: footerText,
+        },
+      });
+    }
+
     const _header = {
       headers: {
         'Content-Type': 'application/json',
