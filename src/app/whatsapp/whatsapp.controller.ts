@@ -86,8 +86,8 @@ export class WhatsappController {
           {
             type: 'reply',
             reply: {
-              id: '',
-              title: '',
+              id: 'one-id',
+              title: 'hello world',
             },
           },
         ],
@@ -132,7 +132,10 @@ export class WhatsappController {
             token: token,
           });
           // send message back to user
-          await WhatsappApi.sendText({ to: from, message: 'Ack: ' + msg_body });
+          await WhatsappApi.sendText({
+            to: from,
+            message: 'Ack: ' + msg_body,
+          });
           // emit message
           this.socketGateway.server.emit('message', {
             name: 'sikder',
