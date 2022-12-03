@@ -76,19 +76,40 @@ export class WhatsappController {
 
     // send interactive
     try {
-      const send = await WhatsappApi.sendButtonMessage({
+      // const send = await WhatsappApi.sendButtonMessage({
+      //   to: '8801833962595',
+      //   headerText: 'header',
+      //   bodyText:
+      //     'Handpicked, locally sourced fruits that are cold-pressed for maximum flavour. Natural ingredients. No Added Preservatives.',
+      //   footerText: 'Same Day Delivery in Bengalur',
+      //   buttons: [
+      //     {
+      //       type: 'reply',
+      //       reply: {
+      //         id: 'one-id',
+      //         title: 'hello world',
+      //       },
+      //     },
+      //   ],
+      // });
+
+      const send = await WhatsappApi.sendListMessage({
         to: '8801833962595',
         headerText: 'header',
         bodyText:
           'Handpicked, locally sourced fruits that are cold-pressed for maximum flavour. Natural ingredients. No Added Preservatives.',
         footerText: 'Same Day Delivery in Bengalur',
-        buttons: [
+        buttonText: 'Click to send',
+        sections: [
           {
-            type: 'reply',
-            reply: {
-              id: 'one-id',
-              title: 'hello world',
-            },
+            title: 'section 1',
+            rows: [
+              {
+                id: 'one',
+                title: 'title one',
+                description: 'this is description',
+              },
+            ],
           },
         ],
       });
