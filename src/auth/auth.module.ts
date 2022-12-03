@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { UserRepository } from 'src/common/repository/user/user.repository';
 import { AuthService } from './auth.service';
+import { FacebookStrategy } from './strategies/facebook.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 
@@ -14,7 +14,7 @@ import { LocalStrategy } from './strategies/local.strategy';
       signOptions: { expiresIn: process.env.JWT_EXPIRY },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, UserRepository],
+  providers: [AuthService, LocalStrategy, JwtStrategy, FacebookStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}
