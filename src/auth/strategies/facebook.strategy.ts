@@ -11,9 +11,9 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
       clientSecret: appConfig().auth.facebook.app_secret,
       callbackURL: appConfig().auth.facebook.callback,
       // scope: 'email',
-      profileFields: ['emails', 'name'],
-      // scope: ['user_friends', 'manage_pages', 'business_management'],
       // profileFields: ['emails', 'name'],
+      scope: ['email', 'business_management', 'whatsapp_business_management'],
+      profileFields: ['emails', 'name'],
     });
   }
 

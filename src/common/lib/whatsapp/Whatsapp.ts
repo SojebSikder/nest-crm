@@ -292,4 +292,35 @@ export class WhatsappApi {
     );
     return response.data.data;
   }
+
+  /**
+   * Get Whatsapp business account ids
+   * @returns
+   */
+  static async getWabaIds() {
+    const wabaId = await this.getWabaData();
+    return wabaId.granular_scopes.find((data) => {
+      if (data.scope == 'whatsapp_business_management') {
+        return data.target_ids;
+      }
+    });
+  }
+
+  /**
+   * Get all Whatsapp business account data
+   * @returns
+   */
+  static async getWabaData() {
+    const _header = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this._token}}`,
+      },
+    };
+    const response = await Fetch.get(
+      `https://graph.facebook.com/${this._api_version}/debug_token?input_token=${this._token}`,
+      _header,
+    );
+    return response.data.data;
+  }
 }
