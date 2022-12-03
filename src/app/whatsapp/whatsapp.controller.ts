@@ -23,6 +23,16 @@ export class WhatsappController {
     private readonly socketGateway: SocketGateway,
   ) {}
 
+  @Get('test')
+  async test() {
+    WhatsappApi.config({
+      token:
+        'EAAMBZBUByhEEBABgb6glvi4Cx7uQZAm5LOORszLWL1o0FAjVF5P9FY0c1OYxwY1DVIQjNxHFuNHt1aS7trBZA0SMub9MmdWmZBUXZAVMDYcItPoyOEtuH0SatJk4WHwW7H8LSy6aMdV5UTcvmnSRzZBMbd7LDvzlkzZCOSrBQc2d72ZCPz3K0ZB1Vd5St4MLiMrS4FiaJP4FfMgZDZD',
+    });
+    const data = await WhatsappApi.getPhoneNumberId('105708749047752');
+    console.log(data);
+    return 'done';
+  }
   // public api
   @Post('webhook')
   async webhookPost(@Request() req, @Response() res) {

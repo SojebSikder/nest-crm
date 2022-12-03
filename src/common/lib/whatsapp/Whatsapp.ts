@@ -29,12 +29,22 @@ export class WhatsappApi {
     token,
   }: {
     apiVersion?: string;
-    phoneNumberId: string;
+    phoneNumberId?: string;
     token: string;
   }) {
     this._api_version = apiVersion;
     this._phone_number_id = phoneNumberId;
     this._token = token;
+    return this;
+  }
+
+  /**
+   * Set phone number id credentials
+   * @param param0
+   * @returns
+   */
+  static setPhoneNumberId(phoneNumberId) {
+    this._phone_number_id = phoneNumberId;
     return this;
   }
 
