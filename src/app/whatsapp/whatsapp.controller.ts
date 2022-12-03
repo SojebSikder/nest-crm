@@ -76,12 +76,21 @@ export class WhatsappController {
 
     // send interactive
     try {
-      const send = await WhatsappApi.sendInteractive({
+      const send = await WhatsappApi.sendButtonMessage({
         to: '8801833962595',
         headerText: 'header',
         bodyText:
           'Handpicked, locally sourced fruits that are cold-pressed for maximum flavour. Natural ingredients. No Added Preservatives.',
         footerText: 'Same Day Delivery in Bengalur',
+        buttons: [
+          {
+            type: 'reply',
+            reply: {
+              id: '',
+              title: '',
+            },
+          },
+        ],
       });
 
       console.log(send);

@@ -1,5 +1,5 @@
 import { Fetch } from '../Fetch';
-import { GetPhoneNumberIdOption, Section } from './options';
+import { ActionButton, GetPhoneNumberIdOption, Section } from './options';
 
 // Whatsapp cloud api version
 const api_Version = 'v15.0';
@@ -168,7 +168,8 @@ export class WhatsappApi {
      */
     footerText?: string;
     /**
-     * catalog id
+     * Unique identifier of the Facebook catalog linked to your WhatsApp Business Account.
+     * This ID can be retrieved via Commerce Manager.
      */
     catalog_id: string;
     /**
@@ -236,7 +237,8 @@ export class WhatsappApi {
      */
     footerText?: string;
     /**
-     * catalog id
+     * Unique identifier of the Facebook catalog linked to your WhatsApp Business Account.
+     * This ID can be retrieved via Commerce Manager.
      */
     catalog_id: string;
     /**
@@ -286,11 +288,12 @@ export class WhatsappApi {
    * Send interactive message
    * @returns
    */
-  static async sendInteractive({
+  static async sendButtonMessage({
     to,
     headerText = null,
     bodyText = null,
     footerText = null,
+    buttons,
   }: {
     /**
      * Recipient phone number
@@ -308,6 +311,12 @@ export class WhatsappApi {
      * Footer text
      */
     footerText?: string;
+    /**
+     * Button content. It cannot be an empty string and must be unique within the message.
+     * Emojis are supported, markdown is not.
+     * Maximum length: 20 characters.
+     */
+    buttons: ActionButton[];
   }) {
     const data = {
       messaging_product: 'whatsapp',
@@ -326,15 +335,7 @@ export class WhatsappApi {
           text: footerText,
         },
         action: {
-          buttons: [
-            {
-              type: 'reply',
-              reply: {
-                id: 'unique-postback-id',
-                title: 'First Buttons Title',
-              },
-            },
-          ],
+          buttons: buttons,
         },
       },
     };
@@ -344,15 +345,12 @@ export class WhatsappApi {
         Authorization: `Bearer ${this._token}`,
       },
     };
-    try {
-      return await Fetch.post(
-        `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages`,
-        data,
-        _header,
-      );
-    } catch (error) {
-      throw error;
-    }
+
+    return await Fetch.post(
+      `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages`,
+      data,
+      _header,
+    );
   }
 
   /**
