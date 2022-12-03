@@ -153,3 +153,18 @@ model Note {
   tenant_id Int?
   tenant    User? @relation(fields: [tenant_id], references: [id])
 }
+
+// just for example
+// model Whatsapp {
+//   id         Int       @id @default(autoincrement())
+//   created_at DateTime  @default(now())
+//   updated_at DateTime  @default(now())
+//   deleted_at DateTime?
+//   status     Int?      @default(1)
+
+//   title String?
+//   body  String? @db.Text
+
+//   tenant_id Int?
+//   tenant    User? @relation(fields: [tenant_id], references: [id])
+// }

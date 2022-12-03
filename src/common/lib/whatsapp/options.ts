@@ -21,3 +21,10 @@ export type Section = {
   title: string;
   product_items: ProductItem[];
 };
+
+export type HeaderType = {
+  text: string;
+  image: string;
+  video: string;
+  document: string;
+};

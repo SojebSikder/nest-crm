@@ -283,6 +283,79 @@ export class WhatsappApi {
   }
 
   /**
+   * Send interactive message
+   * @returns
+   */
+  static async sendInteractive({
+    to,
+    headerText = null,
+    bodyText = null,
+    footerText = null,
+  }: {
+    /**
+     * Recipient phone number
+     */
+    to: string;
+    /**
+     * header text. Maximum of 1024 characters.
+     */
+    headerText?: string;
+    /**
+     * body text. Maximum of 1024 characters.
+     */
+    bodyText?: string;
+    /**
+     * Footer text
+     */
+    footerText?: string;
+  }) {
+    const data = {
+      messaging_product: 'whatsapp',
+      to: to,
+      type: 'interactive',
+      interactive: {
+        type: 'button',
+        header: {
+          type: 'text',
+          text: headerText,
+        },
+        body: {
+          text: bodyText,
+        },
+        footer: {
+          text: footerText,
+        },
+        action: {
+          buttons: [
+            {
+              type: 'reply',
+              reply: {
+                id: 'unique-postback-id',
+                title: 'First Buttons Title',
+              },
+            },
+          ],
+        },
+      },
+    };
+    const _header = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this._token}`,
+      },
+    };
+    try {
+      return await Fetch.post(
+        `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages`,
+        data,
+        _header,
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
    * Get phone number using Whatsapp business account id
    * @param accountId Whatsapp business account id
    * @returns
