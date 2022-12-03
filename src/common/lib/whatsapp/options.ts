@@ -18,12 +18,30 @@ export type ProductItem = {
   product_retailer_id: string;
 };
 
+export type SectionRow = {
+  id: string;
+  title: string;
+  description: string;
+};
+
 /**
  * Array of section objects. There is a minimum of 1 and maximum of 10. See section object.
  */
 export type Section = {
+  /**
+   * at least one section object (maximum of 10) with a maximum of 24 characters for the title for section
+   */
   title: string;
-  product_items: ProductItem[];
+
+  /**
+   * product_item for product type message, required if message type is product
+   */
+  product_items?: ProductItem[];
+
+  /**
+   * rows for list type message, required if message type is list
+   */
+  rows?: SectionRow[];
 };
 
 export type HeaderType = {

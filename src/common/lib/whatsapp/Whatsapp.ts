@@ -285,7 +285,7 @@ export class WhatsappApi {
   }
 
   /**
-   * Send interactive message
+   * Send interactive button message
    * @returns
    */
   static async sendButtonMessage({
@@ -336,6 +336,78 @@ export class WhatsappApi {
         },
         action: {
           buttons: buttons,
+        },
+      },
+    };
+    const _header = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this._token}`,
+      },
+    };
+
+    return await Fetch.post(
+      `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages`,
+      data,
+      _header,
+    );
+  }
+  /**
+   * Send interactive list message
+   * @returns
+   */
+  static async sendListMessage({
+    to,
+    headerText = null,
+    bodyText = null,
+    footerText = null,
+    buttonText,
+    sections,
+  }: {
+    /**
+     * Recipient phone number
+     */
+    to: string;
+    /**
+     * header text. Maximum of 1024 characters.
+     */
+    headerText?: string;
+    /**
+     * body text. Maximum of 1024 characters.
+     */
+    bodyText?: string;
+    /**
+     * Footer text
+     */
+    footerText?: string;
+    /**
+     * a button field with your button’s content, maximum of 20 characters
+     */
+    buttonText: string;
+    /**
+     * at least one section object (maximum of 10) with a maximum of 24 characters for the title for section
+     */
+    sections: Section[];
+  }) {
+    const data = {
+      messaging_product: 'whatsapp',
+      to: to,
+      type: 'interactive',
+      interactive: {
+        type: 'list',
+        header: {
+          type: 'text',
+          text: headerText,
+        },
+        body: {
+          text: bodyText,
+        },
+        footer: {
+          text: footerText,
+        },
+        action: {
+          button: buttonText,
+          sections: sections,
         },
       },
     };
