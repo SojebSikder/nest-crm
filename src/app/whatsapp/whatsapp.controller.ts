@@ -26,6 +26,7 @@ export class WhatsappController {
   async test() {
     WhatsappApi.config({
       phoneNumberId: '100482352913879',
+      accountId: '105439585742847',
       token:
         'EAAJ1v9SV0J0BAEAKZAIQ1VRMESNAh6HUYJHHEeDnsKiJVaCZBS4GTdweYWvFvvY1QjbPNHFJZA4LPxoHVaVB803X00MZAUY4aO785EDiZBnebsUFIH9guX2TbX1oChJpSCS7WH2qHxZA5VuiQBdcgFlEl5CpUjYseW0svnMICDPhR01u4asz1jnYDw5Cuckb7Y2sHKQnb7fwZDZD',
     });
@@ -117,14 +118,16 @@ export class WhatsappController {
       // get business profile details
       // const send = await WhatsappApi.getBusinessProfileDeatils();
       // update business profile details
-      const send = await WhatsappApi.updateBusinessProfileDeatils({
-        about: 'Healthcity is good company',
-        // address: 'dhaka bangladesh',
-        // description: 'Get you health treatment',
-        // email: 'healthcitybd.com.bd@gmail.com',
-        // websites: ['http://healthcitybd.com/', 'http://healthcitybd.com/app'],
-        // vertical: 'HEALTH',
-      });
+      // const send = await WhatsappApi.updateBusinessProfileDeatils({
+      //   about: 'Healthcity is good company',
+      //   // address: 'dhaka bangladesh',
+      //   // description: 'Get you health treatment',
+      //   // email: 'healthcitybd.com.bd@gmail.com',
+      //   // websites: ['http://healthcitybd.com/', 'http://healthcitybd.com/app'],
+      //   // vertical: 'HEALTH',
+      // });
+
+      const send = await WhatsappApi.getMessageTemplates();
 
       console.log(send);
       return 'done';

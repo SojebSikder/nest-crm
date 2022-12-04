@@ -5,6 +5,14 @@ export type GetPhoneNumberIdOption = {
   quality_rating: string;
 };
 
+export type MessageTemplate = {
+  name: string;
+  category: string;
+  language: string;
+  status: string;
+  id: string;
+};
+
 // business profile
 export type BusinessProfile = {
   messaging_product?: string;

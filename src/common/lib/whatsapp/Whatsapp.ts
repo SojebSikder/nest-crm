@@ -3,6 +3,7 @@ import {
   ActionButton,
   BusinessProfile,
   GetPhoneNumberIdOption,
+  MessageTemplate,
   Section,
 } from './options';
 
@@ -17,7 +18,11 @@ export class WhatsappApi {
    * Whatsapp cloud api version
    */
   private static _api_version: string = api_Version;
-  private static _phone_number_id = ``;
+  private static _phone_number_id = '';
+  /**
+   * Whatsapp business account id
+   */
+  private static _account_id = '';
   /**
    * Access token
    */
@@ -31,15 +36,30 @@ export class WhatsappApi {
   static config({
     apiVersion = api_Version,
     phoneNumberId,
+    accountId,
     token,
   }: {
+    /**
+     * Whatsapp Api version.
+     */
     apiVersion?: string;
+    /**
+     * Whatsapp phone number id
+     */
     phoneNumberId?: string;
+    /**
+     * Whatsapp business account id
+     */
+    accountId?: string;
+    /**
+     * Access token
+     */
     token: string;
   }) {
     this._api_version = apiVersion;
     this._phone_number_id = phoneNumberId;
     this._token = token;
+    this._account_id = accountId;
     return this;
   }
 
@@ -443,6 +463,24 @@ export class WhatsappApi {
       data,
       _header,
     );
+  }
+
+  /**
+   * Get whatsapp message templates
+   * @returns
+   */
+  static async getMessageTemplates(): Promise<MessageTemplate[]> {
+    const _header = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this._token}}`,
+      },
+    };
+    const response = await Fetch.get(
+      `https://graph.facebook.com/${this._api_version}/${this._account_id}/message_templates?fields=name,category,content,language,name_or_content,status`,
+      _header,
+    );
+    return response.data.data;
   }
 
   /**
