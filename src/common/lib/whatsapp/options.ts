@@ -7,14 +7,14 @@ export type GetPhoneNumberIdOption = {
 
 // business profile
 export type BusinessProfile = {
-  messaging_product: string;
-  address: string;
-  description: string;
-  vertical: string;
-  about: string;
-  email: string;
-  websites: string[];
-  profile_picture_url: string;
+  messaging_product?: string;
+  address?: string;
+  description?: string;
+  vertical?: string;
+  about?: string;
+  email?: string;
+  websites?: string[];
+  profile_picture_url?: string;
 };
 
 // ------------product-----------

@@ -115,7 +115,15 @@ export class WhatsappController {
       // });
 
       // get business profile details
-      const send = await WhatsappApi.getBusinessProfileDeatils();
+      // const send = await WhatsappApi.getBusinessProfileDeatils();
+      const send = await WhatsappApi.updateBusinessProfileDeatils({
+        about: 'Hey there! I am using WhatsApp cloud api.',
+        address: 'dhaka bangladesh',
+        description: 'Get you health treatment',
+        email: 'healthcitybd.com.bd@gmail.com',
+        websites: ['http://healthcitybd.com/', 'http://healthcitybd.com/app'],
+        vertical: 'HEALTH',
+      });
 
       console.log(send);
       return 'done';

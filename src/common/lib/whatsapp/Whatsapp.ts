@@ -464,6 +464,38 @@ export class WhatsappApi {
   }
 
   /**
+   * Update whatsapp business profile details
+   * @returns
+   */
+  static async updateBusinessProfileDeatils(
+    profileDetails: BusinessProfile,
+  ): Promise<boolean> {
+    const _header = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this._token}}`,
+      },
+    };
+    const data = {
+      about: profileDetails.about,
+      address: profileDetails.address,
+      description: profileDetails.description,
+      email: profileDetails.email,
+      profile_picture_url: profileDetails.profile_picture_url,
+      websites: profileDetails.websites,
+      vertical: profileDetails.vertical,
+      messaging_product: 'whatsapp',
+    };
+
+    const response = await Fetch.post(
+      `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/whatsapp_business_profile`,
+      data,
+      _header,
+    );
+    return response.data.success;
+  }
+
+  /**
    * Get phone number using Whatsapp business account id
    * @param accountId Whatsapp business account id
    * @returns
