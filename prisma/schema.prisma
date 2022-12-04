@@ -45,11 +45,12 @@ model User {
   tenant    User?  @relation(name: "tanant", fields: [tenant_id], references: [id])
   tenants   User[] @relation("tanant")
 
-  Roles     Role[]
-  RoleUsers RoleUser[]
-  Notes     Note[]
-  Ucode     Ucode[]
-  Workspace Workspace[]
+  Roles         Role[]
+  RoleUsers     RoleUser[]
+  Notes         Note[]
+  Ucode         Ucode[]
+  Workspace     Workspace[]
+  WorkspaceUser WorkspaceUser[]
 
   @@map("users")
 }
@@ -157,6 +158,7 @@ model Note {
   @@map("notes")
 }
 
+// ------------------ workspace ---------------
 // workspace
 model Workspace {
   id         Int       @id @default(autoincrement())
@@ -169,28 +171,48 @@ model Workspace {
   name     String?
   timezone String?
 
-  tenant_id Int?
-  tenant    User? @relation(fields: [tenant_id], references: [id])
+  tenant_id     Int?
+  tenant        User?           @relation(fields: [tenant_id], references: [id])
+  WorkspaceUser WorkspaceUser[]
 
   @@map("workspaces")
 }
 
+// workspace and user relationship
 // store workspace team member
-// model WorkspaceUser {
+model WorkspaceUser {
+  // id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  workspace_id Int
+  workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  user_id Int
+  user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@id([workspace_id, user_id])
+  @@map("workspace_users")
+}
+
+// workspace
+// create workspace team
+// model WorkspaceTeam {
 //   id         Int       @id @default(autoincrement())
 //   created_at DateTime  @default(now())
 //   updated_at DateTime  @default(now())
 //   deleted_at DateTime?
 //   status     Int?      @default(1)
 
-//   workspace_id Int?
-//   workspace    Workspace? @relation("workspace_user", fields: [workspace_id], references: [id])
+//   name String?
+//   description  String? @db.Text
 
-//   user_id Int?
-//   user    User? @relation("workspace_user", fields: [user_id], references: [id])
+//   workspace_id Int
+//   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
 //   tenant_id Int?
-//   tenant    User? @relation("tenat_user", fields: [tenant_id], references: [id])
+//   tenant    User? @relation(fields: [tenant_id], references: [id])
 
-//   @@map("workspaces")
+//   @@map("notes")
 // }
+// ------------------ end workspace ---------------
