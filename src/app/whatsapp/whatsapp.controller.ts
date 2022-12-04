@@ -150,6 +150,13 @@ export class WhatsappController {
         components: [
           WhatsappApi.component().template.bodyText(''),
           WhatsappApi.component().template.footerText('footer-text'),
+          WhatsappApi.component().template.buttons([
+            {
+              type: 'PHONE_NUMBER',
+              phone_number: '8801833962595',
+              text: 'phone-button-text',
+            },
+          ]),
         ],
         name: 'hello_world_template_2',
         language: 'en_US',

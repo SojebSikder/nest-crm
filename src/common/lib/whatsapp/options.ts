@@ -30,11 +30,28 @@ export class WhatsappTemplateComponent {
       text: message,
     };
   }
+  static buttons(components: TemplateButtonOption[]): MessageTemplateComponent {
+    return {
+      type: 'BUTTONS',
+      buttons: components,
+    };
+  }
 }
+
+export type TemplateButtonType =
+  | 'PHONE_NUMBER'
+  | (string & Record<string, unknown>);
+
+export type TemplateButtonOption = {
+  type: TemplateButtonType;
+  text: string;
+  phone_number: string;
+};
 
 export type MessageTemplateComponent = {
   type: TemplateComponentType;
-  text: string;
+  text?: string;
+  buttons?: TemplateButtonOption[];
 };
 export type TemplateComponentType =
   | 'HEADER'
