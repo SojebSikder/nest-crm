@@ -13,7 +13,7 @@ export type BusinessProfile = {
   vertical: string;
   about: string;
   email: string;
-  websites: [];
+  websites: string[];
   profile_picture_url: string;
 };
 
