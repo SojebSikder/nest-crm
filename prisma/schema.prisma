@@ -49,6 +49,7 @@ model User {
   RoleUsers RoleUser[]
   Notes     Note[]
   Ucode     Ucode[]
+  Workspace Workspace[]
 
   @@map("users")
 }
@@ -155,3 +156,41 @@ model Note {
 
   @@map("notes")
 }
+
+// workspace
+model Workspace {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  status     Int?      @default(1)
+
+  // workspace name
+  name     String?
+  timezone String?
+
+  tenant_id Int?
+  tenant    User? @relation(fields: [tenant_id], references: [id])
+
+  @@map("workspaces")
+}
+
+// store workspace team member
+// model WorkspaceUser {
+//   id         Int       @id @default(autoincrement())
+//   created_at DateTime  @default(now())
+//   updated_at DateTime  @default(now())
+//   deleted_at DateTime?
+//   status     Int?      @default(1)
+
+//   workspace_id Int?
+//   workspace    Workspace? @relation("workspace_user", fields: [workspace_id], references: [id])
+
+//   user_id Int?
+//   user    User? @relation("workspace_user", fields: [user_id], references: [id])
+
+//   tenant_id Int?
+//   tenant    User? @relation("tenat_user", fields: [tenant_id], references: [id])
+
+//   @@map("workspaces")
+// }
