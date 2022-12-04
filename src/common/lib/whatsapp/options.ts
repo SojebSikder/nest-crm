@@ -18,9 +18,25 @@ export class MessageTemplate {
  * Template component
  */
 export class WhatsappTemplateComponent {
+  /**
+   * e.g. body-text {{1}} {{2}} {{3}}
+   * @param message
+   * @returns
+   */
   static bodyText(message: string): MessageTemplateComponent {
     return {
       type: 'BODY',
+      text: message,
+    };
+  }
+  /**
+   * e.g. header-text {{1}}
+   * @param message
+   * @returns
+   */
+  static headerText(message: string): MessageTemplateComponent {
+    return {
+      type: 'HEADER',
       text: message,
     };
   }
@@ -28,6 +44,19 @@ export class WhatsappTemplateComponent {
     return {
       type: 'FOOTER',
       text: message,
+    };
+  }
+  static url({
+    text,
+    url,
+  }: {
+    text: string;
+    url: string;
+  }): MessageTemplateComponent {
+    return {
+      type: 'URL',
+      text: text,
+      url: url,
     };
   }
   static buttons(components: TemplateButtonOption[]): MessageTemplateComponent {
@@ -52,6 +81,10 @@ export type MessageTemplateComponent = {
   type: TemplateComponentType;
   text?: string;
   buttons?: TemplateButtonOption[];
+  /**
+   * e.g. https://www.website.com/{{1}}
+   */
+  url?: string;
 };
 export type TemplateComponentType =
   | 'HEADER'
