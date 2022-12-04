@@ -93,26 +93,29 @@ export class WhatsappController {
       //   ],
       // });
 
-      const send = await WhatsappApi.sendListMessage({
-        to: '8801833962595',
-        headerText: 'header',
-        bodyText:
-          'Handpicked, locally sourced fruits that are cold-pressed for maximum flavour. Natural ingredients. No Added Preservatives.',
-        footerText: 'Same Day Delivery in Bengalur',
-        buttonText: 'Click to send',
-        sections: [
-          {
-            title: 'section 1',
-            rows: [
-              {
-                id: 'one',
-                title: 'title one',
-                description: 'this is description',
-              },
-            ],
-          },
-        ],
-      });
+      // const send = await WhatsappApi.sendListMessage({
+      //   to: '8801833962595',
+      //   headerText: 'header',
+      //   bodyText:
+      //     'Handpicked, locally sourced fruits that are cold-pressed for maximum flavour. Natural ingredients. No Added Preservatives.',
+      //   footerText: 'Same Day Delivery in Bengalur',
+      //   buttonText: 'Click to send',
+      //   sections: [
+      //     {
+      //       title: 'section 1',
+      //       rows: [
+      //         {
+      //           id: 'one',
+      //           title: 'title one',
+      //           description: 'this is description',
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // });
+
+      // get business profile details
+      const send = await WhatsappApi.getBusinessProfileDeatils();
 
       console.log(send);
       return 'done';

@@ -5,6 +5,18 @@ export type GetPhoneNumberIdOption = {
   quality_rating: string;
 };
 
+// business profile
+export type BusinessProfile = {
+  messaging_product: string;
+  address: string;
+  description: string;
+  vertical: string;
+  about: string;
+  email: string;
+  websites: [];
+  profile_picture_url: string;
+};
+
 // ------------product-----------
 
 /**

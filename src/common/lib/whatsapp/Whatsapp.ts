@@ -1,5 +1,10 @@
 import { Fetch } from '../Fetch';
-import { ActionButton, GetPhoneNumberIdOption, Section } from './options';
+import {
+  ActionButton,
+  BusinessProfile,
+  GetPhoneNumberIdOption,
+  Section,
+} from './options';
 
 // Whatsapp cloud api version
 const api_Version = 'v15.0';
@@ -438,6 +443,24 @@ export class WhatsappApi {
       data,
       _header,
     );
+  }
+
+  /**
+   * Get whatsapp business profile details
+   * @returns
+   */
+  static async getBusinessProfileDeatils(): Promise<BusinessProfile> {
+    const _header = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this._token}}`,
+      },
+    };
+    const response = await Fetch.get(
+      `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/whatsapp_business_profile?fields=about,address,description,email,profile_picture_url,websites,vertical`,
+      _header,
+    );
+    return response.data.data[0];
   }
 
   /**
