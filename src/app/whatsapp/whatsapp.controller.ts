@@ -146,7 +146,7 @@ export class WhatsappController {
       // );
       // create message template
       const send = await WhatsappApi.createMessageTemplate({
-        category: 'MARKETING',
+        category: 'ts',
         components: [
           WhatsappApi.component().template.headerText('body'),
           WhatsappApi.component().template.bodyText('body'),

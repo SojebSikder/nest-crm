@@ -6,9 +6,13 @@ export type GetPhoneNumberIdOption = {
 };
 
 // ----------------message template-----------
+export type TemplateCategory =
+  | 'MARKETING'
+  | 'ts'
+  | (string & Record<string, unknown>);
 export class MessageTemplate {
   name: string;
-  category: string;
+  category: TemplateCategory;
   language: string;
   status?: string;
   id?: string;
