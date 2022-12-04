@@ -19,7 +19,7 @@ model Profile {
   fname  String?
   lname  String?
   bio    String?
-  user   User    @relation(fields: [userId], references: [id])
+  User   User    @relation(fields: [userId], references: [id])
   userId Int     @unique
 
   @@map("profiles")
@@ -42,8 +42,8 @@ model User {
   Profile  Profile?
 
   tenant_id Int?
-  tenant    User?  @relation(name: "tanant", fields: [tenant_id], references: [id])
-  tenants   User[] @relation("tanant")
+  Tenant    User?  @relation(name: "tanant", fields: [tenant_id], references: [id])
+  Tenants   User[] @relation("tanant")
 
   Roles         Role[]
   RoleUsers     RoleUser[]
@@ -51,6 +51,7 @@ model User {
   Ucode         Ucode[]
   Workspace     Workspace[]
   WorkspaceUser WorkspaceUser[]
+  WorkspaceTeam WorkspaceTeam[]
 
   @@map("users")
 }
@@ -64,7 +65,7 @@ model Ucode {
   status     Int?     @default(1)
 
   user_id    Int?
-  user       User?     @relation(fields: [user_id], references: [id])
+  User       User?     @relation(fields: [user_id], references: [id])
   token      String?   @db.Text
   email      String?
   expired_at DateTime?
@@ -82,7 +83,7 @@ model Role {
 
   title           String?
   tenant_id       Int?
-  tenant          User?            @relation(fields: [tenant_id], references: [id])
+  Tenant          User?            @relation(fields: [tenant_id], references: [id])
   PermissionRoles PermissionRole[]
   RoleUsers       RoleUser[]
   permissions     Permission[]
@@ -116,10 +117,10 @@ model PermissionRole {
   updated_at DateTime @default(now())
 
   permission_id Int
-  permission    Permission? @relation(fields: [permission_id], references: [id], onDelete: Cascade)
+  Permission    Permission? @relation(fields: [permission_id], references: [id], onDelete: Cascade)
 
   role_id Int
-  role    Role? @relation(fields: [role_id], references: [id], onDelete: Cascade)
+  Role    Role? @relation(fields: [role_id], references: [id], onDelete: Cascade)
 
   @@id([permission_id, role_id])
   @@map("permission_roles")
@@ -132,10 +133,10 @@ model RoleUser {
   updated_at DateTime @default(now())
 
   role_id Int
-  role    Role? @relation(fields: [role_id], references: [id], onDelete: Cascade)
+  Role    Role? @relation(fields: [role_id], references: [id], onDelete: Cascade)
 
   user_id Int
-  user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  User    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@id([role_id, user_id])
   @@map("role_users")
@@ -153,7 +154,7 @@ model Note {
   body  String? @db.Text
 
   tenant_id Int?
-  tenant    User? @relation(fields: [tenant_id], references: [id])
+  Tenant    User? @relation(fields: [tenant_id], references: [id])
 
   @@map("notes")
 }
@@ -172,8 +173,9 @@ model Workspace {
   timezone String?
 
   tenant_id     Int?
-  tenant        User?           @relation(fields: [tenant_id], references: [id])
+  Tenant        User?           @relation(fields: [tenant_id], references: [id])
   WorkspaceUser WorkspaceUser[]
+  WorkspaceTeam WorkspaceTeam[]
 
   @@map("workspaces")
 }
@@ -186,10 +188,10 @@ model WorkspaceUser {
   updated_at DateTime @default(now())
 
   workspace_id Int
-  workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   user_id Int
-  user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  User    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@id([workspace_id, user_id])
   @@map("workspace_users")
@@ -197,22 +199,40 @@ model WorkspaceUser {
 
 // workspace
 // create workspace team
-// model WorkspaceTeam {
-//   id         Int       @id @default(autoincrement())
-//   created_at DateTime  @default(now())
-//   updated_at DateTime  @default(now())
-//   deleted_at DateTime?
-//   status     Int?      @default(1)
+model WorkspaceTeam {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  status     Int?      @default(1)
 
-//   name String?
-//   description  String? @db.Text
+  name        String?
+  description String? @db.Text
 
-//   workspace_id Int
-//   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace_id Int
+  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
-//   tenant_id Int?
-//   tenant    User? @relation(fields: [tenant_id], references: [id])
+  tenant_id Int?
+  Tenant    User? @relation(fields: [tenant_id], references: [id])
 
-//   @@map("notes")
+  @@map("workspace_teams")
+}
+
+// workspace_team and user relationship
+// store user to workspace_team
+// model WorkspaceTeamUser {
+//   // id         Int      @id @default(autoincrement())
+//   created_at DateTime @default(now())
+//   updated_at DateTime @default(now())
+
+//   workspace_team_id Int
+//   WorkspaceTeam    WorkspaceTeam? @relation(fields: [workspace_team_id], references: [id], onDelete: Cascade)
+
+//   user_id Int
+//   user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+//   @@id([workspace_team_id, user_id])
+//   @@map("workspace_team_users")
 // }
+
 // ------------------ end workspace ---------------
