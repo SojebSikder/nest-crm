@@ -29,6 +29,14 @@ export class WhatsappTemplateComponent {
       text: message,
     };
   }
+
+  // static header(message: string): MessageTemplateComponent {
+  //   return {
+  //     type: 'HEADER',
+  //     format: 'TEXT',
+  //     text: message,
+  //   };
+  // }
   /**
    * e.g. header-text {{1}}
    * @param message
@@ -37,6 +45,7 @@ export class WhatsappTemplateComponent {
   static headerText(message: string): MessageTemplateComponent {
     return {
       type: 'HEADER',
+      format: 'TEXT',
       text: message,
     };
   }
@@ -79,10 +88,17 @@ export type TemplateButtonOption = {
 
 export type MessageTemplateComponent = {
   type: TemplateComponentType;
+  /**
+   * Header format
+   */
+  format?: string;
   text?: string;
+  /**
+   * Buttons component
+   */
   buttons?: TemplateButtonOption[];
   /**
-   * e.g. https://www.website.com/{{1}}
+   * url component. e.g. https://www.website.com/{{1}}
    */
   url?: string;
 };

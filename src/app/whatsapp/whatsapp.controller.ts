@@ -148,6 +148,7 @@ export class WhatsappController {
       const send = await WhatsappApi.createMessageTemplate({
         category: 'MARKETING',
         components: [
+          WhatsappApi.component().template.headerText('body'),
           WhatsappApi.component().template.bodyText('body'),
           WhatsappApi.component().template.footerText('footer-text'),
         ],
