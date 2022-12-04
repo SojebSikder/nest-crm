@@ -5,13 +5,23 @@ export type GetPhoneNumberIdOption = {
   quality_rating: string;
 };
 
-export type MessageTemplate = {
+// ----------------message template-----------
+export class MessageTemplate {
   name: string;
   category: string;
   language: string;
-  status: string;
-  id: string;
+  status?: string;
+  id?: string;
+}
+
+export type MessageTemplateComponent = {
+  type: string;
+  text: string;
 };
+export class CreateMessageTemplate extends MessageTemplate {
+  components?: MessageTemplateComponent[];
+}
+// --------------end message template-------------
 
 // business profile
 export type BusinessProfile = {

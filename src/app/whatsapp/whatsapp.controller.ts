@@ -126,11 +126,26 @@ export class WhatsappController {
       //   // vertical: 'HEALTH',
       // });
 
-      const send = await WhatsappApi.getMessageTemplates();
+      // get message templates
+      // const send = await WhatsappApi.getMessageTemplates();
+      // create message templates
+      const send = await WhatsappApi.createMessageTemplate({
+        category: 'MARKETING',
+        components: [
+          {
+            type: 'BODY',
+            text: 'message-text',
+          },
+        ],
+        name: 'hello_world_template',
+        language: 'en_US',
+      });
 
       console.log(send);
       return 'done';
     } catch (error) {
+      console.log(error.response.data);
+
       throw error;
     }
   }

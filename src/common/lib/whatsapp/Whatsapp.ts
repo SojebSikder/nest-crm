@@ -2,6 +2,7 @@ import { Fetch } from '../Fetch';
 import {
   ActionButton,
   BusinessProfile,
+  CreateMessageTemplate,
   GetPhoneNumberIdOption,
   MessageTemplate,
   Section,
@@ -481,6 +482,32 @@ export class WhatsappApi {
       _header,
     );
     return response.data.data;
+  }
+
+  /**
+   * Create whatsapp message template
+   * @returns
+   */
+  static async createMessageTemplate(templateData: CreateMessageTemplate) {
+    const data: CreateMessageTemplate = {
+      name: templateData.name,
+      category: templateData.category,
+      language: templateData.language,
+      components: templateData.components,
+    };
+    const _header = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this._token}}`,
+      },
+    };
+    const response = await Fetch.post(
+      `https://graph.facebook.com/${this._api_version}/${this._account_id}/message_templates`,
+      data,
+      _header,
+    );
+
+    return response.data.id;
   }
 
   /**
