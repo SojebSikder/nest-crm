@@ -25,10 +25,9 @@ export class WhatsappController {
   @Get('test')
   async test() {
     WhatsappApi.config({
-      phoneNumberId: '100482352913879',
-      accountId: '105439585742847',
-      token:
-        'EAAJ1v9SV0J0BAEAKZAIQ1VRMESNAh6HUYJHHEeDnsKiJVaCZBS4GTdweYWvFvvY1QjbPNHFJZA4LPxoHVaVB803X00MZAUY4aO785EDiZBnebsUFIH9guX2TbX1oChJpSCS7WH2qHxZA5VuiQBdcgFlEl5CpUjYseW0svnMICDPhR01u4asz1jnYDw5Cuckb7Y2sHKQnb7fwZDZD',
+      phoneNumberId: process.env.PHONE_NUMBER_ID,
+      accountId: process.env.ACCOUNT_ID,
+      token: process.env.TOKEN,
     });
     // const data = await WhatsappApi.getPhoneNumberId('105439585742847');
     // send single products
