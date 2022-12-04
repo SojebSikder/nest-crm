@@ -534,13 +534,10 @@ export class WhatsappApi {
   }
 
   /**
-   * Get phone number using Whatsapp business account id
-   * @param accountId Whatsapp business account id
+   * Get all phone number using Whatsapp business account id
    * @returns
    */
-  static async getPhoneNumberId(
-    accountId: string,
-  ): Promise<GetPhoneNumberIdOption[]> {
+  static async getPhoneNumberIds(): Promise<GetPhoneNumberIdOption[]> {
     const _header = {
       headers: {
         'Content-Type': 'application/json',
@@ -548,7 +545,7 @@ export class WhatsappApi {
       },
     };
     const response = await Fetch.get(
-      `https://graph.facebook.com/${this._api_version}/${accountId}/phone_numbers`,
+      `https://graph.facebook.com/${this._api_version}/${this._account_id}/phone_numbers`,
       _header,
     );
     return response.data.data;

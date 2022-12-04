@@ -29,53 +29,53 @@ export class WhatsappController {
       accountId: process.env.ACCOUNT_ID,
       token: process.env.TOKEN,
     });
-    // const data = await WhatsappApi.getPhoneNumberId('105439585742847');
-    // send single products
-
-    // const send = await WhatsappApi.sendSingleProduct({
-    //   to: '8801833962595',
-    //   catalog_id: '1188420285405731',
-    //   product_retailer_id: '8qhne30rmj',
-    //   bodyText:
-    //     'Handpicked, locally sourced fruits that are cold-pressed for maximum flavour. Natural ingredients. No Added Preservatives.',
-    //   footerText: 'Same Day Delivery in Bengalur',
-    // });
-    // send multiple products
-    // const send = await WhatsappApi.sendMultipleProduct({
-    //   to: '8801833962595',
-    //   catalog_id: '1188420285405731',
-    //   sections: [
-    //     {
-    //       title: 'Fresh Juices',
-    //       product_items: [
-    //         {
-    //           product_retailer_id: '8qhne30rmj',
-    //         },
-    //         {
-    //           product_retailer_id: 'qs22ilbax0',
-    //         },
-    //       ],
-    //     },
-    //     {
-    //       title: 'Fresh Juices 2',
-    //       product_items: [
-    //         {
-    //           product_retailer_id: '8qhne30rmj',
-    //         },
-    //         {
-    //           product_retailer_id: 'qs22ilbax0',
-    //         },
-    //       ],
-    //     },
-    //   ],
-    //   bodyText:
-    //     'Handpicked, locally sourced fruits that are cold-pressed for maximum flavour. Natural ingredients. No Added Preservatives.',
-    //   footerText: 'Same Day Delivery in Bengaluru',
-    //   headerText: 'View Beverages',
-    // });
-
-    // send interactive
     try {
+      // const send = await WhatsappApi.getPhoneNumberIds();
+      // send single products
+
+      // const send = await WhatsappApi.sendSingleProduct({
+      //   to: '8801833962595',
+      //   catalog_id: '1188420285405731',
+      //   product_retailer_id: '8qhne30rmj',
+      //   bodyText:
+      //     'Handpicked, locally sourced fruits that are cold-pressed for maximum flavour. Natural ingredients. No Added Preservatives.',
+      //   footerText: 'Same Day Delivery in Bengalur',
+      // });
+      // send multiple products
+      // const send = await WhatsappApi.sendMultipleProduct({
+      //   to: '8801833962595',
+      //   catalog_id: '1188420285405731',
+      //   sections: [
+      //     {
+      //       title: 'Fresh Juices',
+      //       product_items: [
+      //         {
+      //           product_retailer_id: '8qhne30rmj',
+      //         },
+      //         {
+      //           product_retailer_id: 'qs22ilbax0',
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       title: 'Fresh Juices 2',
+      //       product_items: [
+      //         {
+      //           product_retailer_id: '8qhne30rmj',
+      //         },
+      //         {
+      //           product_retailer_id: 'qs22ilbax0',
+      //         },
+      //       ],
+      //     },
+      //   ],
+      //   bodyText:
+      //     'Handpicked, locally sourced fruits that are cold-pressed for maximum flavour. Natural ingredients. No Added Preservatives.',
+      //   footerText: 'Same Day Delivery in Bengaluru',
+      //   headerText: 'View Beverages',
+      // });
+
+      // send interactive
       // const send = await WhatsappApi.sendButtonMessage({
       //   to: '8801833962595',
       //   headerText: 'header',
