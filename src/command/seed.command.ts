@@ -16,6 +16,7 @@ export class SeedCommand extends CommandRunner {
 
   async seed(param: string[]) {
     try {
+      console.log(`Prisma Env: ${process.env.PRISMA_ENV}`);
       console.log('Seeding started...');
 
       await this.roleSeed();

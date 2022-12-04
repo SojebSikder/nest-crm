@@ -19,7 +19,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "cmd": "ts-node cmd.ts"
+    "cmd": "cross-env PRISMA_ENV=1 ts-node cmd.ts"
   },
   "dependencies": {
     "@casl/ability": "^6.3.2",
@@ -40,6 +40,7 @@
     "@types/nodemailer": "^6.4.6",
     "axios": "^1.2.0",
     "bcrypt": "^5.1.0",
+    "cross-env": "^7.0.3",
     "dayjs": "^1.11.6",
     "ejs": "^3.1.8",
     "helmet": "^6.0.0",
