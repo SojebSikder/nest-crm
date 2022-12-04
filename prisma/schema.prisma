@@ -247,11 +247,10 @@ model WhatsappChannel {
   deleted_at DateTime?
   status     Int?      @default(1)
 
-  name                  String?
-  description           String? @db.Text
-  phone_number          String?
-  business_account_name String?
-  verified_name         String?
+  channel_name                   String?
+  whatsapp_phone_number          String?
+  whatsapp_business_account_name String?
+  whatsapp_verified_name         String?
 
   webhook_key  String?
   verify_token String?
