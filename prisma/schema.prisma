@@ -53,6 +53,7 @@ model User {
   WorkspaceUser     WorkspaceUser[]
   WorkspaceTeam     WorkspaceTeam[]
   WorkspaceTeamUser WorkspaceTeamUser[]
+  WhatsappChannel   WhatsappChannel[]
 
   @@map("users")
 }
@@ -173,10 +174,11 @@ model Workspace {
   name     String?
   timezone String?
 
-  tenant_id     Int?
-  Tenant        User?           @relation(fields: [tenant_id], references: [id])
-  WorkspaceUser WorkspaceUser[]
-  WorkspaceTeam WorkspaceTeam[]
+  tenant_id       Int?
+  Tenant          User?             @relation(fields: [tenant_id], references: [id])
+  WorkspaceUser   WorkspaceUser[]
+  WorkspaceTeam   WorkspaceTeam[]
+  WhatsappChannel WhatsappChannel[]
 
   @@map("workspaces")
 }
@@ -237,4 +239,51 @@ model WorkspaceTeamUser {
   @@map("workspace_team_users")
 }
 
+// whatsapp channel for tenant
+model WhatsappChannel {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  status     Int?      @default(1)
+
+  name                  String?
+  description           String? @db.Text
+  phone_number          String?
+  business_account_name String?
+  verified_name         String?
+
+  webhook_key  String?
+  verify_token String?
+
+  verified Boolean? @default(false)
+
+  channel_id Int?
+  Channel    Channel? @relation(fields: [channel_id], references: [id])
+
+  workspace_id Int
+  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  tenant_id Int?
+  Tenant    User? @relation(fields: [tenant_id], references: [id])
+
+  @@map("whatsapp_channels")
+}
+
 // ------------------ end workspace ---------------
+// all channel list
+model Channel {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  status     Int?      @default(1)
+
+  label           String?
+  name            String?
+  icon            String?
+  description     String?           @db.Text
+  WhatsappChannel WhatsappChannel[]
+
+  @@map("channels")
+}
