@@ -511,6 +511,25 @@ export class WhatsappApi {
   }
 
   /**
+   * Delete whatsapp message template
+   * @returns
+   */
+  static async deleteMessageTemplate(templateName: string): Promise<boolean> {
+    const _header = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this._token}}`,
+      },
+    };
+    const response = await Fetch.delete(
+      `https://graph.facebook.com/${this._api_version}/${this._account_id}/message_templates?name=${templateName}`,
+      _header,
+    );
+
+    return response.data.success;
+  }
+
+  /**
    * Get whatsapp business profile details
    * @returns
    */

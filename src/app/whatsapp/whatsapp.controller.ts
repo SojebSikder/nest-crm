@@ -128,18 +128,22 @@ export class WhatsappController {
 
       // get message templates
       // const send = await WhatsappApi.getMessageTemplates();
-      // create message templates
-      const send = await WhatsappApi.createMessageTemplate({
-        category: 'MARKETING',
-        components: [
-          {
-            type: 'BODY',
-            text: 'message-text',
-          },
-        ],
-        name: 'hello_world_template',
-        language: 'en_US',
-      });
+      // create message template
+      // const send = await WhatsappApi.createMessageTemplate({
+      //   category: 'MARKETING',
+      //   components: [
+      //     {
+      //       type: 'BODY',
+      //       text: 'message-text',
+      //     },
+      //   ],
+      //   name: 'hello_world_template_2',
+      //   language: 'en_US',
+      // });
+      // delete message template
+      const send = await WhatsappApi.deleteMessageTemplate(
+        'hello_world_template_2',
+      );
 
       console.log(send);
       return 'done';
