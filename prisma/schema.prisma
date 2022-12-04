@@ -256,6 +256,12 @@ model WhatsappChannel {
   webhook_key  String?
   verify_token String?
 
+  // whatsapp business account access token
+  access_token    String? @db.Text
+  // whatsapp business account id
+  account_id      String? @db.Text
+  phone_number_id String?
+
   verified Boolean? @default(false)
 
   channel_id Int?
