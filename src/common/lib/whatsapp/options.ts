@@ -14,10 +14,35 @@ export class MessageTemplate {
   id?: string;
 }
 
+/**
+ * Template component
+ */
+export class WhatsappTemplateComponent {
+  static bodyText(message: string): MessageTemplateComponent {
+    return {
+      type: 'BODY',
+      text: message,
+    };
+  }
+  static footerText(message: string): MessageTemplateComponent {
+    return {
+      type: 'FOOTER',
+      text: message,
+    };
+  }
+}
+
 export type MessageTemplateComponent = {
-  type: string;
+  type: TemplateComponentType;
   text: string;
 };
+export type TemplateComponentType =
+  | 'HEADER'
+  | 'BODY'
+  | 'FOOTER'
+  | 'BUTTONS'
+  | 'URL'
+  | (string & Record<string, unknown>);
 export class CreateMessageTemplate extends MessageTemplate {
   components?: MessageTemplateComponent[];
 }

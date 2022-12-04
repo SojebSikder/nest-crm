@@ -141,9 +141,19 @@ export class WhatsappController {
       //   language: 'en_US',
       // });
       // delete message template
-      const send = await WhatsappApi.deleteMessageTemplate(
-        'hello_world_template_2',
-      );
+      // const send = await WhatsappApi.deleteMessageTemplate(
+      //   'hello_world_template_2',
+      // );
+      // create message template
+      const send = await WhatsappApi.createMessageTemplate({
+        category: 'MARKETING',
+        components: [
+          WhatsappApi.component().template.bodyText(''),
+          WhatsappApi.component().template.footerText('footer-text'),
+        ],
+        name: 'hello_world_template_2',
+        language: 'en_US',
+      });
 
       console.log(send);
       return 'done';

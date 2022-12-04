@@ -6,6 +6,7 @@ import {
   GetPhoneNumberIdOption,
   MessageTemplate,
   Section,
+  WhatsappTemplateComponent,
 } from './options';
 
 // Whatsapp cloud api version
@@ -484,6 +485,9 @@ export class WhatsappApi {
     return response.data.data;
   }
 
+  static component() {
+    return { template: WhatsappTemplateComponent };
+  }
   /**
    * Create whatsapp message template
    * @returns
