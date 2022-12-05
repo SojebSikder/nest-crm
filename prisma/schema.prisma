@@ -415,10 +415,13 @@ model Contact {
 }
 
 // message conversation
+// TODO do something on creator and participant
 model Conversation {
   id             Int      @id @default(autoincrement())
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
+  // is conversation
+  is_open        Boolean? @default(true)
   creator_id     Int
   participant_id Int
   Creator        User     @relation("creator", fields: [creator_id], references: [id])
@@ -426,6 +429,7 @@ model Conversation {
 }
 
 // message
+// TODO do something on creator and participant
 model Message {
   id              Int       @id @default(autoincrement())
   created_at      DateTime  @default(now())
