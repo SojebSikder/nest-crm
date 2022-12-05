@@ -194,10 +194,11 @@ model Notification {
   status     Int?      @default(1)
 
   // user_who_fired_event
-  sender_id   Int?
-  Sender      User?   @relation(fields: [sender_id], references: [id])
+  sender_id Int?
+  Sender    User? @relation(fields: [sender_id], references: [id])
   // user_to_notify 
-  receiver_id String?
+  // receiver_id Int?
+  // Receiver    User? @relation(fields: [receiver_id], references: [id])
 
   notification_event_id Int?
   NotificationEvent     NotificationEvent? @relation(fields: [notification_event_id], references: [id])
