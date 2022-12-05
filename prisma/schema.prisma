@@ -55,6 +55,8 @@ model User {
   WorkspaceTeamUser WorkspaceTeamUser[]
   WhatsappChannel   WhatsappChannel[]
   Contact           Contact[]
+  Snippet           Snippet[]
+  File              File[]
 
   @@map("users")
 }
@@ -181,6 +183,8 @@ model Workspace {
   WorkspaceTeam   WorkspaceTeam[]
   WhatsappChannel WhatsappChannel[]
   Contact         Contact[]
+  Snippet         Snippet[]
+  File            File[]
 
   @@map("workspaces")
 }
@@ -287,6 +291,47 @@ model WhatsappChannel {
   @@map("whatsapp_channels")
 }
 
+// message snippet
+model Snippet {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  status     Int?      @default(1)
+
+  name    String?
+  message String? @db.Text
+
+  workspace_id Int
+  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  tenant_id Int?
+  Tenant    User? @relation(fields: [tenant_id], references: [id])
+
+  @@map("snippets")
+}
+
+// message file
+model File {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  status     Int?      @default(1)
+
+  name        String?
+  description String? @db.Text
+  attachment  String?
+
+  workspace_id Int
+  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  tenant_id Int?
+  Tenant    User? @relation(fields: [tenant_id], references: [id])
+
+  @@map("files")
+}
+
 // customer contact number
 model Contact {
   id         Int       @id @default(autoincrement())
@@ -298,6 +343,7 @@ model Contact {
   fname        String?
   lname        String?
   phone_number String?
+  country_code String?
 
   workspace_id Int
   Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
