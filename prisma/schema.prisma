@@ -54,6 +54,7 @@ model User {
   WorkspaceTeam     WorkspaceTeam[]
   WorkspaceTeamUser WorkspaceTeamUser[]
   WhatsappChannel   WhatsappChannel[]
+  Contact           Contact[]
 
   @@map("users")
 }
@@ -179,6 +180,7 @@ model Workspace {
   WorkspaceUser   WorkspaceUser[]
   WorkspaceTeam   WorkspaceTeam[]
   WhatsappChannel WhatsappChannel[]
+  Contact         Contact[]
 
   @@map("workspaces")
 }
@@ -283,6 +285,27 @@ model WhatsappChannel {
   Tenant    User? @relation(fields: [tenant_id], references: [id])
 
   @@map("whatsapp_channels")
+}
+
+// customer contact number
+model Contact {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  status     Int?      @default(1)
+
+  fname        String?
+  lname        String?
+  phone_number String?
+
+  workspace_id Int
+  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  tenant_id Int?
+  Tenant    User? @relation(fields: [tenant_id], references: [id])
+
+  @@map("contacts")
 }
 
 // ------------------ end workspace ---------------
