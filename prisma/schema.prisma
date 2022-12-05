@@ -247,6 +247,16 @@ model WhatsappChannel {
   deleted_at DateTime?
   status     Int?      @default(1)
 
+  // business profile
+  avatar      String?
+  address     String?
+  description String?
+  email       String?
+  vertical    String?
+  website_1   String?
+  website_2   String?
+  // end business profile
+
   channel_name                   String?
   whatsapp_phone_number          String?
   whatsapp_business_account_name String?
