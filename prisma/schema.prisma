@@ -308,6 +308,9 @@ model Snippet {
   tenant_id Int?
   Tenant    User? @relation(fields: [tenant_id], references: [id])
 
+  // user_id Int?
+  // User    User? @relation("user", fields: [user_id], references: [id])
+
   @@map("snippets")
 }
 
@@ -328,6 +331,9 @@ model File {
 
   tenant_id Int?
   Tenant    User? @relation(fields: [tenant_id], references: [id])
+
+  // user_id Int?
+  // User    User? @relation("user", fields: [user_id], references: [id])
 
   @@map("files")
 }
