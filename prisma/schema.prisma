@@ -417,30 +417,33 @@ model Contact {
 // message conversation
 // TODO do something on creator and participant
 model Conversation {
-  id             Int      @id @default(autoincrement())
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  messaging_product String?  @default("whatsapp")
   // is conversation
-  is_open        Boolean? @default(true)
-  creator_id     Int
-  participant_id Int
-  Creator        User     @relation("creator", fields: [creator_id], references: [id])
-  Participant    User     @relation("participant", fields: [participant_id], references: [id])
+  is_open           Boolean? @default(true)
+  creator_id        Int
+  participant_id    Int
+  Creator           User     @relation("creator", fields: [creator_id], references: [id])
+  Participant       User     @relation("participant", fields: [participant_id], references: [id])
 }
 
 // message
 // TODO do something on creator and participant
 model Message {
-  id              Int       @id @default(autoincrement())
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-  read_at         DateTime?
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  read_at    DateTime?
+
   text            String
   sender_id       Int
   receiver_id     Int
   conversation_id Int
-  sender          User      @relation("sender", fields: [sender_id], references: [id])
-  receiver        User      @relation("receiver", fields: [receiver_id], references: [id])
+  sender          User   @relation("sender", fields: [sender_id], references: [id])
+  receiver        User   @relation("receiver", fields: [receiver_id], references: [id])
 }
 
 // ------------------ end workspace ---------------
