@@ -16,11 +16,12 @@ model Profile {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  fname  String?
-  lname  String?
-  bio    String?
-  User   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
+  fname    String?
+  lname    String?
+  bio      String?
+  language String?
+  User     User    @relation(fields: [user_id], references: [id])
+  user_id  Int     @unique
 
   @@map("profiles")
 }
@@ -32,6 +33,10 @@ model User {
   updated_at DateTime  @default(now())
   deleted_at DateTime?
   status     Int?      @default(1)
+
+  // available values:
+  // online, busy, offline
+  availability String?
 
   email    String?  @unique
   username String?  @unique
