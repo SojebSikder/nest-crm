@@ -62,6 +62,7 @@ model User {
   Contact           Contact[]
   Snippet           Snippet[]
   File              File[]
+  Notification      Notification[]
 
   @@map("users")
 }
@@ -193,7 +194,8 @@ model Notification {
   status     Int?      @default(1)
 
   // user_who_fired_event
-  sender_id   String?
+  sender_id   Int?
+  Sender      User?   @relation(fields: [sender_id], references: [id])
   // user_to_notify 
   receiver_id String?
 
