@@ -64,6 +64,10 @@ model User {
   File                 File[]
   SenderNotification   Notification[]      @relation("sender")
   ReceiverNotification Notification[]      @relation("receiver")
+  Creator              Conversation[]      @relation("creator")
+  Participant          Conversation[]      @relation("participant")
+  Sender               Message[]           @relation("sender")
+  Receiver             Message[]           @relation("receiver")
 
   @@map("users")
 }
@@ -408,6 +412,31 @@ model Contact {
   Tenant    User? @relation(fields: [tenant_id], references: [id])
 
   @@map("contacts")
+}
+
+// message conversation
+model Conversation {
+  id             Int      @id @default(autoincrement())
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  creator_id     Int
+  participant_id Int
+  Creator        User     @relation("creator", fields: [creator_id], references: [id])
+  Participant    User     @relation("participant", fields: [participant_id], references: [id])
+}
+
+// message
+model Message {
+  id              Int       @id @default(autoincrement())
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  read_at         DateTime?
+  text            String
+  sender_id       Int
+  receiver_id     Int
+  conversation_id Int
+  sender          User      @relation("sender", fields: [sender_id], references: [id])
+  receiver        User      @relation("receiver", fields: [receiver_id], references: [id])
 }
 
 // ------------------ end workspace ---------------
