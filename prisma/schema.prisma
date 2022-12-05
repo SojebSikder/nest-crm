@@ -177,8 +177,9 @@ model NotificationEvent {
   deleted_at DateTime?
   status     Int?      @default(1)
 
-  type String?
-  text String? @db.Text
+  type         String?
+  text         String?        @db.Text
+  Notification Notification[]
 
   @@map("notification_events")
 }
@@ -191,19 +192,16 @@ model Notification {
   deleted_at DateTime?
   status     Int?      @default(1)
 
-  name    String?
-  message String? @db.Text
-
   // user_who_fired_event
   sender_id   String?
   // user_to_notify 
   receiver_id String?
 
+  notification_event_id Int?
+  NotificationEvent     NotificationEvent? @relation(fields: [notification_event_id], references: [id])
+
   // seen_by_user, Is message seen by user (receiver user)
   seen Boolean? @default(false)
-
-  // workspace_id Int
-  // Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   // user_id Int?
   // User    User? @relation(fields: [user_id], references: [id])
