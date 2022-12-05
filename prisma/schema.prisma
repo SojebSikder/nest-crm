@@ -201,14 +201,15 @@ model Notification {
   receiver_id Int?
   Receiver    User? @relation("receiver", fields: [receiver_id], references: [id])
 
+  // notification id
   notification_event_id Int?
   NotificationEvent     NotificationEvent? @relation(fields: [notification_event_id], references: [id])
 
+  // entity id, e.g. message_id
+  entity_id Int?
+
   // seen_by_user, Is message seen by user (receiver user)
   seen Boolean? @default(false)
-
-  // user_id Int?
-  // User    User? @relation(fields: [user_id], references: [id])
 
   @@map("notifications")
 }
