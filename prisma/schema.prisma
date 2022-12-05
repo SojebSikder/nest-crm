@@ -169,6 +169,48 @@ model Note {
   @@map("notes")
 }
 
+// notification event
+model NotificationEvent {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  status     Int?      @default(1)
+
+  type String?
+  text String? @db.Text
+
+  @@map("notification_events")
+}
+
+// notification
+model Notification {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  status     Int?      @default(1)
+
+  name    String?
+  message String? @db.Text
+
+  // user_who_fired_event
+  sender_id   String?
+  // user_to_notify 
+  receiver_id String?
+
+  // seen_by_user, Is message seen by user (receiver user)
+  seen Boolean? @default(false)
+
+  // workspace_id Int
+  // Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  // user_id Int?
+  // User    User? @relation(fields: [user_id], references: [id])
+
+  @@map("notifications")
+}
+
 // ------------------ workspace ---------------
 // workspace
 model Workspace {
