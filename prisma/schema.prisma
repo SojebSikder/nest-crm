@@ -10,6 +10,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// main tenant (important table), if this table deleted, 
+// then everything will be deleted linked to this table
+model Organization {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  status     Int?      @default(1)
+
+  name          String?
+  phone_nummber String?
+  website       String?
+
+  User            User[]
+  Role            Role[]
+  Note            Note[]
+  Workspace       Workspace[]
+  WorkspaceTeam   WorkspaceTeam[]
+  WhatsappChannel WhatsappChannel[]
+  Snippet         Snippet[]
+  File            File[]
+  Contact         Contact[]
+
+  @@map("organizations")
+}
+
 // User profile
 model Profile {
   id         Int      @id @default(autoincrement())
@@ -47,23 +73,14 @@ model User {
   Profile  Profile?
 
   tenant_id Int?
-  Tenant    User?  @relation(name: "tanant", fields: [tenant_id], references: [id])
-  Tenants   User[] @relation("tanant")
+  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
-  Roles                Role[]
-  RoleUsers            RoleUser[]
-  Notes                Note[]
   Ucode                Ucode[]
-  Workspace            Workspace[]
-  WorkspaceUser        WorkspaceUser[]
-  WorkspaceTeam        WorkspaceTeam[]
-  WorkspaceTeamUser    WorkspaceTeamUser[]
-  WhatsappChannel      WhatsappChannel[]
-  Contact              Contact[]
-  Snippet              Snippet[]
-  File                 File[]
+  RoleUser             RoleUser[]
   SenderNotification   Notification[]      @relation("sender")
   ReceiverNotification Notification[]      @relation("receiver")
+  WorkspaceUser        WorkspaceUser[]
+  WorkspaceTeamUser    WorkspaceTeamUser[]
 
   @@map("users")
 }
@@ -76,8 +93,9 @@ model Ucode {
   updated_at DateTime @default(now())
   status     Int?     @default(1)
 
-  user_id    Int?
-  User       User?     @relation(fields: [user_id], references: [id])
+  user_id Int?
+  User    User? @relation(fields: [user_id], references: [id])
+
   token      String?   @db.Text
   email      String?
   expired_at DateTime?
@@ -93,9 +111,11 @@ model Role {
   deleted_at DateTime?
   status     Int?      @default(1)
 
-  title           String?
-  tenant_id       Int?
-  Tenant          User?            @relation(fields: [tenant_id], references: [id])
+  title String?
+
+  tenant_id Int?
+  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+
   PermissionRoles PermissionRole[]
   RoleUsers       RoleUser[]
   permissions     Permission[]
@@ -166,7 +186,7 @@ model Note {
   body  String? @db.Text
 
   tenant_id Int?
-  Tenant    User? @relation(fields: [tenant_id], references: [id])
+  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   @@map("notes")
 }
@@ -227,8 +247,9 @@ model Workspace {
   name     String?
   timezone String?
 
-  tenant_id       Int?
-  Tenant          User?             @relation(fields: [tenant_id], references: [id])
+  tenant_id Int?
+  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+
   WorkspaceUser   WorkspaceUser[]
   WorkspaceTeam   WorkspaceTeam[]
   WhatsappChannel WhatsappChannel[]
@@ -272,8 +293,9 @@ model WorkspaceTeam {
   workspace_id Int
   Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
-  tenant_id         Int?
-  Tenant            User?               @relation(fields: [tenant_id], references: [id])
+  tenant_id Int?
+  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+
   WorkspaceTeamUser WorkspaceTeamUser[]
 
   @@map("workspace_teams")
@@ -337,7 +359,7 @@ model WhatsappChannel {
   Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   tenant_id Int?
-  Tenant    User? @relation(fields: [tenant_id], references: [id])
+  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   @@map("whatsapp_channels")
 }
@@ -357,7 +379,7 @@ model Snippet {
   Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   tenant_id Int?
-  Tenant    User? @relation(fields: [tenant_id], references: [id])
+  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   // user_id Int?
   // User    User? @relation("user", fields: [user_id], references: [id])
@@ -381,7 +403,7 @@ model File {
   Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   tenant_id Int?
-  Tenant    User? @relation(fields: [tenant_id], references: [id])
+  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   // user_id Int?
   // User    User? @relation("user", fields: [user_id], references: [id])
@@ -406,7 +428,7 @@ model Contact {
   Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   tenant_id Int?
-  Tenant    User? @relation(fields: [tenant_id], references: [id])
+  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   @@map("contacts")
 }

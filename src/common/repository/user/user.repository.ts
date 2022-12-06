@@ -15,13 +15,13 @@ export class UserRepository {
         id: userId,
       },
       include: {
-        RoleUsers: {
+        RoleUser: {
           include: {
-            role: {
+            Role: {
               include: {
                 PermissionRoles: {
                   include: {
-                    permission: true,
+                    Permission: true,
                   },
                 },
               },
@@ -171,7 +171,13 @@ export class UserRepository {
    * @param param0
    * @returns
    */
-  static async createUser({ username, email, password, tenant_id, role_id }) {
+  static async createUser({
+    username,
+    email,
+    password,
+    tenant_id,
+    role_id = null,
+  }) {
     try {
       password = await bcrypt.hash(password, appConfig().security.salt);
       const user = await prisma.user.create({
@@ -183,11 +189,14 @@ export class UserRepository {
         },
       });
       if (user) {
-        // attach role
-        const role = await this.attachRole({
-          user_id: user.id,
-          role_id: role_id,
-        });
+        if (role_id) {
+          // attach role
+          const role = await this.attachRole({
+            user_id: user.id,
+            role_id: role_id,
+          });
+        }
+
         return user;
       } else {
         return false;

@@ -37,25 +37,33 @@ export class SeedCommand extends CommandRunner {
       email: 'admin@example.com',
       password: '123',
     });
+
     await UserRepository.createTenantAdminUser({
-      username: 'tadmin',
-      email: 'tadmin@example.com',
-      password: '123',
-      domain: 't',
-    });
-    const tenant = await UserRepository.createTenantAdminUser({
       username: 'sojebsikder',
       email: 'sojebsikder@gmail.com',
       password: '123',
       domain: 'sojebschool',
     });
 
+    const organization = await this.prisma.organization.create({
+      data: {
+        name: 'sojebsoft',
+        phone_nummber: '+8801822851484',
+        website: 'sojebsoft.com',
+      },
+    });
+
+    await UserRepository.createUser({
+      username: 'sojeb',
+      email: 'sojeb@gmail.com',
+      password: '123',
+      tenant_id: organization.id,
+    });
     await UserRepository.createUser({
       username: 'sikder',
       email: 'sikder@gmail.com',
       password: '123',
-      tenant_id: tenant.id,
-      role_id: 3,
+      tenant_id: organization.id,
     });
   }
 
@@ -133,7 +141,7 @@ export class SeedCommand extends CommandRunner {
     await this.prisma.roleUser.create({
       data: {
         user_id: 3,
-        role_id: 2,
+        role_id: 3,
       },
     });
   }
