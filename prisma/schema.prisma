@@ -64,10 +64,6 @@ model User {
   File                 File[]
   SenderNotification   Notification[]      @relation("sender")
   ReceiverNotification Notification[]      @relation("receiver")
-  Creator              Conversation[]      @relation("creator")
-  Participant          Conversation[]      @relation("participant")
-  Sender               Message[]           @relation("sender")
-  Receiver             Message[]           @relation("receiver")
 
   @@map("users")
 }
@@ -415,7 +411,6 @@ model Contact {
 }
 
 // message conversation
-// TODO do something on creator and participant
 model Conversation {
   id         Int      @id @default(autoincrement())
   created_at DateTime @default(now())
@@ -424,26 +419,29 @@ model Conversation {
   messaging_product String?  @default("whatsapp")
   // is conversation
   is_open           Boolean? @default(true)
-  creator_id        Int
-  participant_id    Int
-  Creator           User     @relation("creator", fields: [creator_id], references: [id])
-  Participant       User     @relation("participant", fields: [participant_id], references: [id])
+  creator_id        Int?
+  // values: contact, user
+  creator_type      String?
+  participant_id    Int?
+  // values: contact, user
+  participant_type  String?
 }
 
 // message
-// TODO do something on creator and participant
 model Message {
   id         Int       @id @default(autoincrement())
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   read_at    DateTime?
 
-  text            String
-  sender_id       Int
-  receiver_id     Int
+  text            String?
+  sender_id       Int?
+  // values: contact, user
+  sender_type     String?
+  receiver_id     Int?
+  // values: contact, user
+  receiver_type   String?
   conversation_id Int
-  sender          User   @relation("sender", fields: [sender_id], references: [id])
-  receiver        User   @relation("receiver", fields: [receiver_id], references: [id])
 }
 
 // ------------------ end workspace ---------------
