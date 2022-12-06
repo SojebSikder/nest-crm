@@ -40,17 +40,31 @@ export class AppController {
     const lname = data.lname;
     const email = data.email;
     const password = data.password;
+
+    if (!fname) {
+      throw new HttpException(
+        'First name not provided',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+    if (!lname) {
+      throw new HttpException(
+        'Last name not provided',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
     if (!email) {
       throw new HttpException('Email not provided', HttpStatus.UNAUTHORIZED);
     }
     if (!password) {
       throw new HttpException('Password not provided', HttpStatus.UNAUTHORIZED);
     }
+
     return this.authService.register({
       fname: fname,
       lname: lname,
-      email,
-      password,
+      email: email,
+      password: password,
     });
   }
 
