@@ -38,12 +38,12 @@ export class SeedCommand extends CommandRunner {
       password: '123',
     });
 
-    await UserRepository.createTenantAdminUser({
-      username: 'sojebsikder',
-      email: 'sojebsikder@gmail.com',
-      password: '123',
-      domain: 'sojebschool',
-    });
+    // await UserRepository.createTenantAdminUser({
+    //   username: 'sojebsikder',
+    //   email: 'sojebsikder@gmail.com',
+    //   password: '123',
+    //   domain: 'sojebschool',
+    // });
 
     const organization = await this.prisma.organization.create({
       data: {
