@@ -235,6 +235,7 @@ model Workspace {
   Contact         Contact[]
   Snippet         Snippet[]
   File            File[]
+  Conversation    Conversation[]
 
   @@map("workspaces")
 }
@@ -425,6 +426,11 @@ model Conversation {
   participant_id    Int?
   // values: contact, user
   participant_type  String?
+
+  workspace_id Int
+  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  @@map("conversations")
 }
 
 // message
@@ -442,6 +448,8 @@ model Message {
   // values: contact, user
   receiver_type   String?
   conversation_id Int
+
+  @@map("messages")
 }
 
 // ------------------ end workspace ---------------
