@@ -78,12 +78,19 @@ export class AuthService extends PrismaClient {
       };
     }
 
-    await this.prisma.user.create({
-      data: {
-        username: username,
-        email: email,
-        password: password,
-      },
+    // await this.prisma.user.create({
+    //   data: {
+    //     username: username,
+    //     email: email,
+    //     password: password,
+    //   },
+    // });
+    // create a tenant admin (main subscriber)
+    await UserRepository.createTenantAdminUser({
+      username: username,
+      email: email,
+      password: password,
+      role_id: 2, // tenant admin
     });
     return {
       statusCode: 401,

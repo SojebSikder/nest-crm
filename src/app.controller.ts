@@ -7,6 +7,7 @@ import {
   Body,
   HttpStatus,
   Req,
+  HttpException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AppService } from './app.service';
@@ -35,7 +36,19 @@ export class AppController {
 
   @Post('auth/register')
   create(@Body() data) {
-    return this.authService.register(data);
+    const username = data.username;
+    const email = data.email;
+    const password = data.password;
+    if (!username) {
+      throw new HttpException('Username not provided', HttpStatus.UNAUTHORIZED);
+    }
+    if (!email) {
+      throw new HttpException('Email not provided', HttpStatus.UNAUTHORIZED);
+    }
+    if (!password) {
+      throw new HttpException('Password not provided', HttpStatus.UNAUTHORIZED);
+    }
+    return this.authService.register({ username: username, email, password });
   }
 
   @UseGuards(LocalAuthGuard)
