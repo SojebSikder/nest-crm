@@ -34,9 +34,9 @@ export class AbilityFactory {
   defineAbility(user) {
     const { can, cannot, build } = new AbilityBuilder(AppAbility);
 
-    for (const permissionRoles of user.RoleUsers[0].role.PermissionRoles) {
-      const action = permissionRoles.permission.action;
-      const subject = permissionRoles.permission.subject;
+    for (const permissionRoles of user.RoleUser[0].Role.PermissionRoles) {
+      const action = permissionRoles.Permission.action;
+      const subject = permissionRoles.Permission.subject;
 
       can(Action[action], subject);
       // if (
