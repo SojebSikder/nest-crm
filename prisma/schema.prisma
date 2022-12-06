@@ -443,10 +443,10 @@ model Conversation {
   // is conversation open or close
   is_open           Boolean? @default(true)
   creator_id        Int?
-  // values: contact, user
+  // values: contact, workspace
   creator_type      String?
   participant_id    Int?
-  // values: contact, user
+  // values: contact, workspace
   participant_type  String?
 
   workspace_id Int
@@ -464,10 +464,10 @@ model Message {
 
   text            String?
   sender_id       Int?
-  // values: contact, user
+  // values: contact, workspace
   sender_type     String?
   receiver_id     Int?
-  // values: contact, user
+  // values: contact, workspace
   receiver_type   String?
   conversation_id Int
 
