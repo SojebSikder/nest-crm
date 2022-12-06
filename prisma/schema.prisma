@@ -418,7 +418,7 @@ model Conversation {
   updated_at DateTime @updatedAt
 
   messaging_product String?  @default("whatsapp")
-  // is conversation
+  // is conversation open or close
   is_open           Boolean? @default(true)
   creator_id        Int?
   // values: contact, user
