@@ -36,19 +36,22 @@ export class AppController {
 
   @Post('auth/register')
   create(@Body() data) {
-    const username = data.username;
+    const fname = data.fname;
+    const lname = data.lname;
     const email = data.email;
     const password = data.password;
-    if (!username) {
-      throw new HttpException('Username not provided', HttpStatus.UNAUTHORIZED);
-    }
     if (!email) {
       throw new HttpException('Email not provided', HttpStatus.UNAUTHORIZED);
     }
     if (!password) {
       throw new HttpException('Password not provided', HttpStatus.UNAUTHORIZED);
     }
-    return this.authService.register({ username: username, email, password });
+    return this.authService.register({
+      fname: fname,
+      lname: lname,
+      email,
+      password,
+    });
   }
 
   @UseGuards(LocalAuthGuard)

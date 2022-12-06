@@ -148,7 +148,13 @@ export class UserRepository {
    * @param param0
    * @returns
    */
-  static async createTenantAdminUser({ username, email, password, role_id }) {
+  static async createTenantAdminUser({
+    fname,
+    lname,
+    email,
+    password,
+    role_id,
+  }) {
     try {
       // begin transaction
       await prisma.$transaction(async (tx) => {
@@ -165,7 +171,9 @@ export class UserRepository {
 
           const user = await prisma.user.create({
             data: {
-              username: username,
+              fname: fname,
+              lname: lname,
+              // username: username,
               email: email,
               password: password,
               tenant_id: organization.id,
