@@ -148,19 +148,48 @@ export class UserRepository {
    * @param param0
    * @returns
    */
-  static async createTenantAdminUser({ domain, username, email, password }) {
+  static async createTenantAdminUser({ username, email, password, role_id }) {
     try {
-      password = await bcrypt.hash(password, appConfig().security.salt);
+      // begin transaction
+      await prisma.$transaction(async (tx) => {
+        // create a organization
+        const organization = await prisma.organization.create({
+          data: {
+            name: 'organization_xyz',
+          },
+        });
 
-      const user = await prisma.user.create({
-        data: {
-          username: username,
-          email: email,
-          password: password,
-          domain: domain,
-        },
+        if (organization) {
+          // create user
+          password = await bcrypt.hash(password, appConfig().security.salt);
+
+          const user = await prisma.user.create({
+            data: {
+              username: username,
+              email: email,
+              password: password,
+              tenant_id: organization.id,
+            },
+          });
+          if (user) {
+            // attach role
+            const role = await this.attachRole({
+              user_id: user.id,
+              role_id: role_id,
+            });
+            // create a workspace
+            const workspace = await prisma.workspace.create({
+              data: {
+                name: 'My New Workspace',
+                tenant_id: organization.id,
+              },
+            });
+            return user;
+          } else {
+            return false;
+          }
+        }
       });
-      return user;
     } catch (error) {
       throw error;
     }
