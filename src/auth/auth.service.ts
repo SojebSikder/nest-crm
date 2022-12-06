@@ -1,15 +1,9 @@
 // external imports
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClient } from '@prisma/client';
 //internal imports
-import appConfig from 'src/config/app.config';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserRepository } from 'src/common/repository/user/user.repository';
 
@@ -53,8 +47,6 @@ export class AuthService extends PrismaClient {
   }
 
   async register({ username, email, password }) {
-    password = await bcrypt.hash(password, appConfig().security.salt);
-
     // Check if email and username is exists
     const userEmailExist = await UserRepository.exist({
       field: 'email',
@@ -78,13 +70,6 @@ export class AuthService extends PrismaClient {
       };
     }
 
-    // await this.prisma.user.create({
-    //   data: {
-    //     username: username,
-    //     email: email,
-    //     password: password,
-    //   },
-    // });
     // create a tenant admin (main subscriber)
     await UserRepository.createTenantAdminUser({
       username: username,
