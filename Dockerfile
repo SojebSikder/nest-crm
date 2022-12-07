@@ -21,7 +21,7 @@ RUN yarn build
 # Set NODE_ENV environment variable
 ENV NODE_ENV production
 
-FROM node:18-alpine AS production
+FROM node:18 AS production
 
 # Copy the bundled code from the build stage to the production image
 COPY --chown=node:node --from=build /svr/app/node_modules ./node_modules
