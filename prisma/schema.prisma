@@ -23,15 +23,14 @@ model Organization {
   phone_number String?
   website      String?
 
-  User            User[]
-  Role            Role[]
-  Note            Note[]
-  Workspace       Workspace[]
-  WorkspaceTeam   WorkspaceTeam[]
-  WhatsappChannel WhatsappChannel[]
-  Snippet         Snippet[]
-  File            File[]
-  Contact         Contact[]
+  users             User[]
+  roles             Role[]
+  workspaces        Workspace[]
+  workspace_teams   WorkspaceTeam[]
+  whatsapp_channels WhatsappChannel[]
+  snippets          Snippet[]
+  files             File[]
+  contacts          Contact[]
 
   @@map("organizations")
 }
@@ -46,7 +45,7 @@ model Profile {
   lname    String?
   bio      String?
   language String?
-  User     User    @relation(fields: [user_id], references: [id])
+  user     User    @relation(fields: [user_id], references: [id])
   user_id  Int     @unique
 
   @@map("profiles")
@@ -70,17 +69,18 @@ model User {
   lname    String?  @db.VarChar(255)
   password String?  @db.VarChar(255)
   domain   String?  @unique
-  Profile  Profile?
+  profile  Profile?
 
   tenant_id Int?
-  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
-  Ucode                Ucode[]
-  RoleUser             RoleUser[]
-  SenderNotification   Notification[]      @relation("sender")
-  ReceiverNotification Notification[]      @relation("receiver")
-  WorkspaceUser        WorkspaceUser[]
-  WorkspaceTeamUser    WorkspaceTeamUser[]
+  ucodes                 Ucode[]
+  role_users             RoleUser[]
+  sender_notifications   Notification[]      @relation("sender")
+  receiver_notifications Notification[]      @relation("receiver")
+  workspace_users        WorkspaceUser[]
+  workspace_team_users   WorkspaceTeamUser[]
+  contacts               Contact[]
 
   @@map("users")
 }
@@ -94,7 +94,7 @@ model Ucode {
   status     Int?     @default(1)
 
   user_id Int?
-  User    User? @relation(fields: [user_id], references: [id])
+  user    User? @relation(fields: [user_id], references: [id])
 
   token      String?   @db.Text
   email      String?
@@ -115,11 +115,11 @@ model Role {
   name  String?
 
   tenant_id Int?
-  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
-  PermissionRoles PermissionRole[]
-  RoleUsers       RoleUser[]
-  permissions     Permission[]
+  permission_roles PermissionRole[]
+  role_users       RoleUser[]
+  permissions      Permission[]
 
   @@map("roles")
 }
@@ -132,13 +132,13 @@ model Permission {
   deleted_at DateTime?
   status     Int?      @default(1)
 
-  title           String?
-  action          String?
-  subject         String?
-  conditions      String?          @db.Text
-  fields          String?          @db.Text
-  PermissionRoles PermissionRole[]
-  Roles           Role[]
+  title            String?
+  action           String?
+  subject          String?
+  conditions       String?          @db.Text
+  fields           String?          @db.Text
+  permission_roles PermissionRole[]
+  roles            Role[]
 
   @@map("permissions")
 }
@@ -150,10 +150,10 @@ model PermissionRole {
   updated_at DateTime @default(now())
 
   permission_id Int
-  Permission    Permission? @relation(fields: [permission_id], references: [id], onDelete: Cascade)
+  permission    Permission? @relation(fields: [permission_id], references: [id], onDelete: Cascade)
 
   role_id Int
-  Role    Role? @relation(fields: [role_id], references: [id], onDelete: Cascade)
+  role    Role? @relation(fields: [role_id], references: [id], onDelete: Cascade)
 
   @@id([permission_id, role_id])
   @@map("permission_roles")
@@ -166,31 +166,31 @@ model RoleUser {
   updated_at DateTime @default(now())
 
   role_id Int
-  Role    Role? @relation(fields: [role_id], references: [id], onDelete: Cascade)
+  role    Role? @relation(fields: [role_id], references: [id], onDelete: Cascade)
 
   user_id Int
-  User    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@id([role_id, user_id])
   @@map("role_users")
 }
 
 // just for example
-model Note {
-  id         Int       @id @default(autoincrement())
-  created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
-  deleted_at DateTime?
-  status     Int?      @default(1)
+// model Note {
+//   id         Int       @id @default(autoincrement())
+//   created_at DateTime  @default(now())
+//   updated_at DateTime  @default(now())
+//   deleted_at DateTime?
+//   status     Int?      @default(1)
 
-  title String?
-  body  String? @db.Text
+//   title String?
+//   body  String? @db.Text
 
-  tenant_id Int?
-  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+//   tenant_id Int?
+//   tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
-  @@map("notes")
-}
+//   @@map("notes")
+// }
 
 // notification event
 model NotificationEvent {
@@ -200,9 +200,9 @@ model NotificationEvent {
   deleted_at DateTime?
   status     Int?      @default(1)
 
-  type         String?
-  text         String?        @db.Text
-  Notification Notification[]
+  type          String?
+  text          String?        @db.Text
+  notifications Notification[]
 
   @@map("notification_events")
 }
@@ -217,14 +217,14 @@ model Notification {
 
   // user_who_fired_event
   sender_id   Int?
-  Sender      User? @relation("sender", fields: [sender_id], references: [id])
+  sender      User? @relation("sender", fields: [sender_id], references: [id])
   // user_to_notify 
   receiver_id Int?
-  Receiver    User? @relation("receiver", fields: [receiver_id], references: [id])
+  receiver    User? @relation("receiver", fields: [receiver_id], references: [id])
 
   // notification id
   notification_event_id Int?
-  NotificationEvent     NotificationEvent? @relation(fields: [notification_event_id], references: [id])
+  notification_event    NotificationEvent? @relation(fields: [notification_event_id], references: [id])
 
   // entity id, e.g. message_id
   entity_id Int?
@@ -249,15 +249,15 @@ model Workspace {
   timezone String?
 
   tenant_id Int?
-  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
-  WorkspaceUser   WorkspaceUser[]
-  WorkspaceTeam   WorkspaceTeam[]
-  WhatsappChannel WhatsappChannel[]
-  Contact         Contact[]
-  Snippet         Snippet[]
-  File            File[]
-  Conversation    Conversation[]
+  workspace_users   WorkspaceUser[]
+  workspace_teams   WorkspaceTeam[]
+  whatsapp_channels WhatsappChannel[]
+  contacts          Contact[]
+  snippets          Snippet[]
+  files             File[]
+  conversations     Conversation[]
 
   @@map("workspaces")
 }
@@ -270,10 +270,10 @@ model WorkspaceUser {
   updated_at DateTime @default(now())
 
   workspace_id Int
-  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   user_id Int
-  User    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@id([workspace_id, user_id])
   @@map("workspace_users")
@@ -292,12 +292,12 @@ model WorkspaceTeam {
   description String? @db.Text
 
   workspace_id Int
-  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   tenant_id Int?
-  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
-  WorkspaceTeamUser WorkspaceTeamUser[]
+  workspace_team_users WorkspaceTeamUser[]
 
   @@map("workspace_teams")
 }
@@ -310,10 +310,10 @@ model WorkspaceTeamUser {
   updated_at DateTime @default(now())
 
   workspace_team_id Int
-  WorkspaceTeam     WorkspaceTeam? @relation(fields: [workspace_team_id], references: [id], onDelete: Cascade)
+  workspace_team    WorkspaceTeam? @relation(fields: [workspace_team_id], references: [id], onDelete: Cascade)
 
   user_id Int
-  User    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@id([workspace_team_id, user_id])
   @@map("workspace_team_users")
@@ -354,13 +354,13 @@ model WhatsappChannel {
   verified Boolean? @default(false)
 
   channel_id Int?
-  Channel    Channel? @relation(fields: [channel_id], references: [id])
+  channel    Channel? @relation(fields: [channel_id], references: [id])
 
   workspace_id Int
-  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   tenant_id Int?
-  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   @@map("whatsapp_channels")
 }
@@ -377,13 +377,10 @@ model Snippet {
   message String? @db.Text
 
   workspace_id Int
-  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   tenant_id Int?
-  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
-
-  // user_id Int?
-  // User    User? @relation("user", fields: [user_id], references: [id])
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   @@map("snippets")
 }
@@ -401,10 +398,10 @@ model File {
   attachment  String?
 
   workspace_id Int
-  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   tenant_id Int?
-  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   // user_id Int?
   // User    User? @relation("user", fields: [user_id], references: [id])
@@ -423,13 +420,15 @@ model Contact {
   fname        String?
   lname        String?
   phone_number String?
-  country_code String?
+
+  assignee_id Int?
+  assignee    User? @relation(fields: [assignee_id], references: [id], onDelete: SetNull)
 
   workspace_id Int
-  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   tenant_id Int?
-  Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   @@map("contacts")
 }
@@ -451,7 +450,7 @@ model Conversation {
   participant_type  String?
 
   workspace_id Int
-  Workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   @@map("conversations")
 }
@@ -484,11 +483,11 @@ model Channel {
   deleted_at DateTime?
   status     Int?      @default(1)
 
-  label           String?
-  name            String?
-  icon            String?
-  description     String?           @db.Text
-  WhatsappChannel WhatsappChannel[]
+  label             String?
+  name              String?
+  icon              String?
+  description       String?           @db.Text
+  whatsapp_channels WhatsappChannel[]
 
   @@map("channels")
 }
