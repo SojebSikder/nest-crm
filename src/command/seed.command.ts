@@ -235,11 +235,13 @@ export class SeedCommand extends CommandRunner {
   async roleSeed() {
     await this.prisma.role.createMany({
       data: [
+        // system role
         {
           id: 1,
           title: 'Super Admin', // system admin, do not assign to a tenant/user
           name: 'su-admin',
         },
+        // organization role
         {
           id: 2,
           title: 'Admin',
@@ -259,6 +261,22 @@ export class SeedCommand extends CommandRunner {
           id: 5,
           title: 'Member',
           name: 'member',
+        },
+        // workspace role
+        {
+          id: 6,
+          title: 'Owner',
+          name: 'owner',
+        },
+        {
+          id: 6,
+          title: 'Manager',
+          name: 'manager',
+        },
+        {
+          id: 7,
+          title: 'Agent',
+          name: 'agent',
         },
       ],
     });
