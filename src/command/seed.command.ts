@@ -135,8 +135,9 @@ export class SeedCommand extends CommandRunner {
       },
       { title: 'organization_user_management', subject: 'OrganizationUser' },
       {
-        title: 'billing_management',
-        subject: 'Organization',
+        title: 'organization_billing_management',
+        subject: 'OrganizationBilling',
+        scope: ['read', 'create'],
       },
     ];
 
