@@ -492,3 +492,20 @@ model Channel {
 
   @@map("channels")
 }
+
+// this table stores countries list
+model Country {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  status     Int?     @default(1)
+
+  // country flag image
+  flag         String?
+  // country name
+  name         String?
+  country_code String?
+  dial_code    String?
+
+  @@map("countries")
+}

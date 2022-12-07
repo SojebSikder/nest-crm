@@ -71,6 +71,7 @@ CREATE TABLE `roles` (
     `deleted_at` DATETIME(3) NULL,
     `status` INTEGER NULL DEFAULT 1,
     `title` VARCHAR(191) NULL,
+    `name` VARCHAR(191) NULL,
     `tenant_id` INTEGER NULL,
 
     PRIMARY KEY (`id`)
@@ -326,6 +327,20 @@ CREATE TABLE `channels` (
     `name` VARCHAR(191) NULL,
     `icon` VARCHAR(191) NULL,
     `description` TEXT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `countries` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `status` INTEGER NULL DEFAULT 1,
+    `flag` VARCHAR(191) NULL,
+    `name` VARCHAR(191) NULL,
+    `country_code` VARCHAR(191) NULL,
+    `dial_code` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
