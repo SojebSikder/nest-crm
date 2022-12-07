@@ -114,20 +114,6 @@ CREATE TABLE `role_users` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `notes` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `deleted_at` DATETIME(3) NULL,
-    `status` INTEGER NULL DEFAULT 1,
-    `title` VARCHAR(191) NULL,
-    `body` TEXT NULL,
-    `tenant_id` INTEGER NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `notification_events` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -277,7 +263,7 @@ CREATE TABLE `contacts` (
     `fname` VARCHAR(191) NULL,
     `lname` VARCHAR(191) NULL,
     `phone_number` VARCHAR(191) NULL,
-    `country_code` VARCHAR(191) NULL,
+    `assignee_id` INTEGER NULL,
     `workspace_id` INTEGER NOT NULL,
     `tenant_id` INTEGER NULL,
 
@@ -379,9 +365,6 @@ ALTER TABLE `role_users` ADD CONSTRAINT `role_users_role_id_fkey` FOREIGN KEY (`
 ALTER TABLE `role_users` ADD CONSTRAINT `role_users_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `notes` ADD CONSTRAINT `notes_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE `notifications` ADD CONSTRAINT `notifications_sender_id_fkey` FOREIGN KEY (`sender_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -431,6 +414,9 @@ ALTER TABLE `files` ADD CONSTRAINT `files_workspace_id_fkey` FOREIGN KEY (`works
 
 -- AddForeignKey
 ALTER TABLE `files` ADD CONSTRAINT `files_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `contacts` ADD CONSTRAINT `contacts_assignee_id_fkey` FOREIGN KEY (`assignee_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `contacts` ADD CONSTRAINT `contacts_workspace_id_fkey` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
