@@ -19,11 +19,14 @@ export class SeedCommand extends CommandRunner {
       console.log(`Prisma Env: ${process.env.PRISMA_ENV}`);
       console.log('Seeding started...');
 
-      await this.roleSeed();
-      await this.permissionSeed();
-      await this.userSeed();
-      await this.roleUserSeed();
-      await this.permissionRoleSeed();
+      // begin transaaction
+      await this.prisma.$transaction(async ($tx) => {
+        await this.roleSeed();
+        await this.permissionSeed();
+        await this.userSeed();
+        await this.roleUserSeed();
+        await this.permissionRoleSeed();
+      });
 
       console.log('Seeding done.');
     } catch (error) {
@@ -45,26 +48,26 @@ export class SeedCommand extends CommandRunner {
     //   domain: 'sojebschool',
     // });
 
-    // const organization = await this.prisma.organization.create({
-    //   data: {
-    //     name: 'sojebsoft',
-    //     phone_number: '+8801822851484',
-    //     website: 'sojebsoft.com',
-    //   },
-    // });
+    const organization = await this.prisma.organization.create({
+      data: {
+        name: 'sojebsoft',
+        phone_number: '+8801822851484',
+        website: 'sojebsoft.com',
+      },
+    });
 
-    // await UserRepository.createUser({
-    //   username: 'sojeb',
-    //   email: 'sojeb@gmail.com',
-    //   password: '123',
-    //   tenant_id: organization.id,
-    // });
-    // await UserRepository.createUser({
-    //   username: 'sikder',
-    //   email: 'sikder@gmail.com',
-    //   password: '123',
-    //   tenant_id: organization.id,
-    // });
+    await UserRepository.createUser({
+      username: 'sojeb',
+      email: 'sojeb@gmail.com',
+      password: '123',
+      tenant_id: organization.id,
+    });
+    await UserRepository.createUser({
+      username: 'sikder',
+      email: 'sikder@gmail.com',
+      password: '123',
+      tenant_id: organization.id,
+    });
   }
 
   async roleUserSeed() {
@@ -173,7 +176,7 @@ export class SeedCommand extends CommandRunner {
   async permissionRoleSeed() {
     const all_permissions = await this.prisma.permission.findMany();
     const admin_permissions = all_permissions.filter(function (permission) {
-      return permission.title.substring(0, 18) == 'tenant_management_';
+      return permission.title.substring(0, 18) == 'system_tenant_management_';
     });
 
     const adminPermissionRoleArray = [];
@@ -190,7 +193,7 @@ export class SeedCommand extends CommandRunner {
     const tenant_admin_permissions = all_permissions.filter(function (
       permission,
     ) {
-      return permission.title.substring(0, 18) != 'tenant_management_';
+      return permission.title.substring(0, 18) != 'system_tenant_management_';
     });
 
     const tenantAdminPermissionRoleArray = [];
