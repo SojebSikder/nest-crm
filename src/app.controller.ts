@@ -10,11 +10,18 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 
+@ApiTags('auth')
 @Controller()
 export class AppController {
   constructor(
@@ -34,6 +41,7 @@ export class AppController {
     return user;
   }
 
+  @ApiOperation({ summary: 'Register a user' })
   @Post('auth/register')
   create(@Body() data) {
     const fname = data.fname;
@@ -68,6 +76,7 @@ export class AppController {
     });
   }
 
+  @ApiOperation({ summary: 'Login user' })
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
