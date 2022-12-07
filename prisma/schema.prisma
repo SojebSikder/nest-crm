@@ -19,9 +19,9 @@ model Organization {
   deleted_at DateTime?
   status     Int?      @default(1)
 
-  name          String?
-  phone_nummber String?
-  website       String?
+  name         String?
+  phone_number String?
+  website      String?
 
   User            User[]
   Role            Role[]

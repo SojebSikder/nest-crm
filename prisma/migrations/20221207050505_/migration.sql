@@ -6,7 +6,7 @@ CREATE TABLE `organizations` (
     `deleted_at` DATETIME(3) NULL,
     `status` INTEGER NULL DEFAULT 1,
     `name` VARCHAR(191) NULL,
-    `phone_nummber` VARCHAR(191) NULL,
+    `phone_number` VARCHAR(191) NULL,
     `website` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)

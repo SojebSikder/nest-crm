@@ -16,8 +16,12 @@ export class UserService extends PrismaClient {
 
   async me({ userId }) {
     const user = await UserRepository.getUserDetails({ userId: userId });
-    const excludedData = PrismaHelper.exclude(user, ['password']);
-    return excludedData;
+    if (user) {
+      const excludedData = PrismaHelper.exclude(user, ['password']);
+      return excludedData;
+    } else {
+      return false;
+    }
   }
 
   async create(createUserDto: CreateUserDto, tenant_id) {

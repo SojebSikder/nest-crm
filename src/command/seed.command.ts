@@ -48,7 +48,7 @@ export class SeedCommand extends CommandRunner {
     const organization = await this.prisma.organization.create({
       data: {
         name: 'sojebsoft',
-        phone_nummber: '+8801822851484',
+        phone_number: '+8801822851484',
         website: 'sojebsoft.com',
       },
     });

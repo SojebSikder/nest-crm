@@ -15,6 +15,11 @@ export class UserRepository {
         id: userId,
       },
       include: {
+        Tenant: {
+          include: {
+            Workspace: true,
+          },
+        },
         RoleUser: {
           include: {
             Role: {
