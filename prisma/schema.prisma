@@ -112,6 +112,7 @@ model Role {
   status     Int?      @default(1)
 
   title String?
+  name  String?
 
   tenant_id Int?
   Tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)

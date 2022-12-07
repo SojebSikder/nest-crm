@@ -150,10 +150,40 @@ export class SeedCommand extends CommandRunner {
     let i = 0;
     const permissions = [];
     const permissionGroups = [
-      { title: 'tenant_management', subject: 'Tenant' },
+      // (system level )super admin level permission
+      { title: 'system_tenant_management', subject: 'SystemTenant' },
+      // end (system level )super admin level permission
       { title: 'user_management', subject: 'User' },
       { title: 'role_management', subject: 'Role' },
-      { title: 'note_management', subject: 'Note' },
+      { title: 'note_management', subject: 'Note' }, // TODO delete later demo
+      // Workspace
+      { title: 'workspace_management', subject: 'Workspace' },
+      { title: 'workspace_user_management', subject: 'WorkspaceUser' },
+      { title: 'workspace_team_management', subject: 'WorkspaceTeam' },
+      { title: 'workspace_channel_management', subject: 'WorkspaceChannel' },
+      { title: 'workspace_snippet_management', subject: 'WorkspaceSnippet' },
+      { title: 'workspace_file_management', subject: 'WorkspaceFile' },
+      { title: 'workspace_contact_management', subject: 'WorkspaceContact' },
+      {
+        title: 'workspace_broadcast_management',
+        subject: 'WorkspaceBroadcast',
+      },
+      {
+        title: 'workspace_workflow_management',
+        subject: 'WorkspaceWorkflow',
+      },
+      {
+        title: 'workspace_report_management',
+        subject: 'WorkspaceReport',
+      },
+      {
+        title: 'workspace_data_backup_management',
+        subject: 'WorkspaceDataBackup',
+      },
+      // organization
+      { title: 'organization_management', subject: 'Organization' },
+      { title: 'organization_user_management', subject: 'OrganizationUser' },
+      { title: 'billing_management', subject: 'Organization' },
     ];
 
     for (const permissionGroup of permissionGroups) {
@@ -177,15 +207,28 @@ export class SeedCommand extends CommandRunner {
       data: [
         {
           id: 1,
-          title: 'Admin',
+          title: 'Super Admin', // system admin, do not assign to a tenant/user
+          name: 'su-admin',
         },
         {
           id: 2,
-          title: 'Tenant Admin',
+          title: 'Admin',
+          name: 'admin',
         },
         {
           id: 3,
-          title: 'Tenant User',
+          title: 'Billing Admin',
+          name: 'billing-admin',
+        },
+        {
+          id: 4,
+          title: 'User Admin',
+          name: 'user-admin',
+        },
+        {
+          id: 5,
+          title: 'Member',
+          name: 'member',
         },
       ],
     });
