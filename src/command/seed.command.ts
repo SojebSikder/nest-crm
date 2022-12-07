@@ -35,38 +35,20 @@ export class SeedCommand extends CommandRunner {
   }
 
   async userSeed() {
+    // system admin, user id: 1
     await UserRepository.createSuAdminUser({
       username: 'admin',
       email: 'admin@example.com',
       password: '123',
     });
 
-    // await UserRepository.createTenantAdminUser({
-    //   username: 'sojebsikder',
-    //   email: 'sojebsikder@gmail.com',
-    //   password: '123',
-    //   domain: 'sojebschool',
-    // });
-
-    const organization = await this.prisma.organization.create({
-      data: {
-        name: 'sojebsoft',
-        phone_number: '+8801822851484',
-        website: 'sojebsoft.com',
-      },
-    });
-
-    await UserRepository.createUser({
-      username: 'sojeb',
-      email: 'sojeb@gmail.com',
+    // subscriber (tenant admin), user id: 2
+    await UserRepository.createTenantAdminUser({
+      fname: 'sojeb',
+      lname: 'sikder',
+      email: 'sojebsikder@gmail.com',
       password: '123',
-      tenant_id: organization.id,
-    });
-    await UserRepository.createUser({
-      username: 'sikder',
-      email: 'sikder@gmail.com',
-      password: '123',
-      tenant_id: organization.id,
+      role_id: 2,
     });
   }
 
@@ -77,18 +59,12 @@ export class SeedCommand extends CommandRunner {
         role_id: 1,
       },
     });
-    await this.prisma.roleUser.create({
-      data: {
-        user_id: 2,
-        role_id: 2,
-      },
-    });
-    await this.prisma.roleUser.create({
-      data: {
-        user_id: 3,
-        role_id: 3,
-      },
-    });
+    // await this.prisma.roleUser.create({
+    //   data: {
+    //     user_id: 2,
+    //     role_id: 2,
+    //   },
+    // });
   }
 
   async permissionSeed() {
@@ -269,12 +245,12 @@ export class SeedCommand extends CommandRunner {
           name: 'owner',
         },
         {
-          id: 6,
+          id: 7,
           title: 'Manager',
           name: 'manager',
         },
         {
-          id: 7,
+          id: 8,
           title: 'Agent',
           name: 'agent',
         },

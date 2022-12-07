@@ -15,7 +15,7 @@ export class UserRepository {
         id: userId,
       },
       include: {
-        Tenant: {
+        WorkspaceUser: {
           include: {
             Workspace: true,
           },
@@ -195,6 +195,13 @@ export class UserRepository {
               data: {
                 name: 'My New Workspace',
                 tenant_id: organization.id,
+              },
+            });
+            // add this user to the workspace as an admin
+            await prisma.workspaceUser.create({
+              data: {
+                workspace_id: workspace.id,
+                user_id: user.id,
               },
             });
             return user;
