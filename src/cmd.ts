@@ -2,8 +2,8 @@
 import { Module } from '@nestjs/common';
 import { CommandFactory } from 'nest-commander';
 // internal imports
-import { PrismaService } from './src/prisma/prisma.service';
-import { SeedCommand } from './src/command/seed.command';
+import { PrismaService } from './prisma/prisma.service';
+import { SeedCommand } from './command/seed.command';
 
 @Module({
   providers: [SeedCommand, PrismaService],
