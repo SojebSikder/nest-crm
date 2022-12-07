@@ -45,26 +45,26 @@ export class SeedCommand extends CommandRunner {
     //   domain: 'sojebschool',
     // });
 
-    const organization = await this.prisma.organization.create({
-      data: {
-        name: 'sojebsoft',
-        phone_number: '+8801822851484',
-        website: 'sojebsoft.com',
-      },
-    });
+    // const organization = await this.prisma.organization.create({
+    //   data: {
+    //     name: 'sojebsoft',
+    //     phone_number: '+8801822851484',
+    //     website: 'sojebsoft.com',
+    //   },
+    // });
 
-    await UserRepository.createUser({
-      username: 'sojeb',
-      email: 'sojeb@gmail.com',
-      password: '123',
-      tenant_id: organization.id,
-    });
-    await UserRepository.createUser({
-      username: 'sikder',
-      email: 'sikder@gmail.com',
-      password: '123',
-      tenant_id: organization.id,
-    });
+    // await UserRepository.createUser({
+    //   username: 'sojeb',
+    //   email: 'sojeb@gmail.com',
+    //   password: '123',
+    //   tenant_id: organization.id,
+    // });
+    // await UserRepository.createUser({
+    //   username: 'sikder',
+    //   email: 'sikder@gmail.com',
+    //   password: '123',
+    //   tenant_id: organization.id,
+    // });
   }
 
   async permissionRoleSeed() {
@@ -175,25 +175,51 @@ export class SeedCommand extends CommandRunner {
       {
         title: 'workspace_report_management',
         subject: 'WorkspaceReport',
+        scope: ['read', 'show'],
       },
       {
         title: 'workspace_data_backup_management',
         subject: 'WorkspaceDataBackup',
+        scope: ['read', 'create'],
       },
       // organization
-      { title: 'organization_management', subject: 'Organization' },
+      {
+        title: 'organization_management',
+        subject: 'Organization',
+        scope: ['show', 'update'],
+      },
       { title: 'organization_user_management', subject: 'OrganizationUser' },
-      { title: 'billing_management', subject: 'Organization' },
+      {
+        title: 'billing_management',
+        subject: 'Organization',
+      },
     ];
 
     for (const permissionGroup of permissionGroups) {
-      for (const permission of ['read', 'create', 'update', 'show', 'delete']) {
-        permissions.push({
-          id: ++i,
-          title: permissionGroup.title + '_' + permission,
-          action: StringHelper.cfirst(permission),
-          subject: permissionGroup.subject,
-        });
+      if (permissionGroup.scope) {
+        for (const permission of permissionGroup.scope) {
+          permissions.push({
+            id: ++i,
+            title: permissionGroup.title + '_' + permission,
+            action: StringHelper.cfirst(permission),
+            subject: permissionGroup.subject,
+          });
+        }
+      } else {
+        for (const permission of [
+          'read',
+          'create',
+          'update',
+          'show',
+          'delete',
+        ]) {
+          permissions.push({
+            id: ++i,
+            title: permissionGroup.title + '_' + permission,
+            action: StringHelper.cfirst(permission),
+            subject: permissionGroup.subject,
+          });
+        }
       }
     }
 
