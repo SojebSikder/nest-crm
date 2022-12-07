@@ -419,10 +419,14 @@ model Contact {
 
   fname        String?
   lname        String?
+  email        String?
   phone_number String?
 
   assignee_id Int?
   assignee    User? @relation(fields: [assignee_id], references: [id], onDelete: SetNull)
+
+  country_id Int?
+  country    Country? @relation(fields: [country_id], references: [id], onDelete: SetNull)
 
   workspace_id Int
   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
@@ -505,6 +509,7 @@ model Country {
   name         String?
   country_code String?
   dial_code    String?
+  contacts     Contact[]
 
   @@map("countries")
 }

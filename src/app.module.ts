@@ -22,6 +22,7 @@ import { ProfileModule } from './app/profile/profile.module';
 import { MessageModule } from './message/message.module';
 import { WhatsappModule } from './app/whatsapp/whatsapp.module';
 import { SocketModule } from './socket/socket.module';
+import { ContactModule } from './app/space/contact/contact.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { SocketModule } from './socket/socket.module';
     MessageModule,
     WhatsappModule,
     SocketModule,
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [

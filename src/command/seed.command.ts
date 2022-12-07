@@ -76,7 +76,6 @@ export class SeedCommand extends CommandRunner {
       // end (system level )super admin level permission
       { title: 'user_management', subject: 'User' },
       { title: 'role_management', subject: 'Role' },
-      { title: 'note_management', subject: 'Note' }, // TODO delete later demo
       // Workspace
       { title: 'workspace_management', subject: 'Workspace' },
       { title: 'workspace_user_management', subject: 'WorkspaceUser' },
