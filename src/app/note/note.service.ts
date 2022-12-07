@@ -7,6 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 
+// TODO delete this module
 @Injectable()
 export class NoteService extends PrismaClient {
   constructor(private prisma: PrismaService) {
