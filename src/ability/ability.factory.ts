@@ -5,8 +5,7 @@ import {
 } from '@casl/ability';
 import { PrismaAbility, Subjects } from '@casl/prisma';
 import { Injectable } from '@nestjs/common';
-import { User, Note } from '@prisma/client';
-import { Permissions } from './permissions.enum';
+import { User } from '@prisma/client';
 
 export enum Action {
   Manage = 'manage', // wildcard for any action
@@ -23,7 +22,6 @@ export enum Action {
 export type AppSubjects = Subjects<{
   Tenant: User;
   User: User;
-  Note: Note;
 }>;
 
 type AppAbility = PrismaAbility<[string, AppSubjects]>;
@@ -34,9 +32,9 @@ export class AbilityFactory {
   defineAbility(user) {
     const { can, cannot, build } = new AbilityBuilder(AppAbility);
 
-    for (const permissionRoles of user.RoleUser[0].Role.PermissionRoles) {
-      const action = permissionRoles.Permission.action;
-      const subject = permissionRoles.Permission.subject;
+    for (const permissionRoles of user.role_users[0].role.permission_roles) {
+      const action = permissionRoles.permission.action;
+      const subject = permissionRoles.permission.subject;
 
       can(Action[action], subject);
       // if (

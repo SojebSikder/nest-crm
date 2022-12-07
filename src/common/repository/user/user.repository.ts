@@ -15,18 +15,18 @@ export class UserRepository {
         id: userId,
       },
       include: {
-        WorkspaceUser: {
+        workspace_users: {
           include: {
-            Workspace: true,
+            workspace: true,
           },
         },
-        RoleUser: {
+        role_users: {
           include: {
-            Role: {
+            role: {
               include: {
-                PermissionRoles: {
+                permission_roles: {
                   include: {
-                    Permission: true,
+                    permission: true,
                   },
                 },
               },
