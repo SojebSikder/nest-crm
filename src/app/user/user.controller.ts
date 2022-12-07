@@ -51,6 +51,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async me(@Request() req) {
+    console.log('Hello world');
+
     return await this.userService.me({ userId: req.user.userId });
   }
 
@@ -106,7 +108,8 @@ export class UserController {
   @UseGuards(SignedUrlGuard)
   async invitation(@Request() req, @Param('id') id: string) {
     try {
-      const user = await this.userService.me({ userId: id });
+      const user = await UserRepository.getUserDetails({ userId: id });
+      // const user = await this.userService.me({ userId: id });
       if (user.password) {
         throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
       } else {

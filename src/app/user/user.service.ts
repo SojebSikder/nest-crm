@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { UserRepository } from 'src/common/repository/user/user.repository';
 import appConfig from 'src/config/app.config';
+import { PrismaHelper } from 'src/prisma/helper/exclude';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -15,7 +16,8 @@ export class UserService extends PrismaClient {
 
   async me({ userId }) {
     const user = await UserRepository.getUserDetails({ userId: userId });
-    return user;
+    const excludedData = PrismaHelper.exclude(user, ['password']);
+    return excludedData;
   }
 
   async create(createUserDto: CreateUserDto, tenant_id) {
