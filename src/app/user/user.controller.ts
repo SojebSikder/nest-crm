@@ -51,9 +51,10 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   async me(@Request() req) {
-    console.log('Hello world');
-
-    return await this.userService.me({ userId: req.user.userId });
+    const data = await this.userService.me({ userId: req.user.userId });
+    return {
+      data: data,
+    };
   }
 
   @UseGuards(JwtAuthGuard, AbilitiesGuard)
