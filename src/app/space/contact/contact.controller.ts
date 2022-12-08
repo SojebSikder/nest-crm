@@ -26,7 +26,7 @@ import { UpdateContactDto } from './dto/update-contact.dto';
 @ApiBearerAuth()
 @ApiTags('contact')
 @UseGuards(JwtAuthGuard, AbilitiesGuard)
-@Controller('contact')
+@Controller('space/:workspace_id/contact')
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}
 
@@ -35,15 +35,21 @@ export class ContactController {
   @CheckAbilities({ action: Action.Create, subject: 'WorkspaceContact' })
   @Post()
   create(@Request() req, @Body() createContactDto: CreateContactDto) {
+    const workspace_id = req.workspace_id;
     const user = req.user;
-    return this.contactService.create(user.userId, createContactDto);
+    return this.contactService.create(
+      user.userId,
+      workspace_id,
+      createContactDto,
+    );
   }
 
   @CheckAbilities({ action: Action.Read, subject: 'WorkspaceContact' })
   @Get()
   async findAll(@Request() req) {
-    const workspace_id = req.query.workspace_id;
+    const workspace_id = req.params.workspace_id;
     const user = req.user;
+
     return await this.contactService.findAll(user.userId, workspace_id);
   }
 
