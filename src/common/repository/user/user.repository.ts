@@ -202,6 +202,7 @@ export class UserRepository {
               data: {
                 workspace_id: workspace.id,
                 user_id: user.id,
+                tenant_id: organization.id,
               },
             });
             return user;

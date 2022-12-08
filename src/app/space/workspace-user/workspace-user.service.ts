@@ -15,8 +15,20 @@ export class WorkspaceUserService extends PrismaClient {
   }
 
   async findAll(user_id, workspace_id) {
+    workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
     const workspaceUsers = this.prisma.workspaceUser.findMany({
+      include: {
+        user: {
+          select: {
+            id: true,
+            fname: true,
+            lname: true,
+            email: true,
+            tenant_id: true,
+          },
+        },
+      },
       where: {
         AND: [
           {
