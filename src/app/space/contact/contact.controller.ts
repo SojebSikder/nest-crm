@@ -34,15 +34,23 @@ export class ContactController {
   // @ApiResponse({ status: 403, description: 'Forbidden.' })
   @CheckAbilities({ action: Action.Create, subject: 'WorkspaceContact' })
   @Post()
-  create(@Request() req, @Body() createContactDto: CreateContactDto) {
-    const workspace_id = req.params.workspace_id;
-    const user = req.user;
+  async create(@Request() req, @Body() createContactDto: CreateContactDto) {
+    try {
+      const workspace_id = req.params.workspace_id;
+      const user = req.user;
 
-    return this.contactService.create(
-      user.userId,
-      workspace_id,
-      createContactDto,
-    );
+      await this.contactService.create(
+        user.userId,
+        workspace_id,
+        createContactDto,
+      );
+
+      return {
+        success: true,
+      };
+    } catch (error) {
+      throw error;
+    }
   }
 
   @CheckAbilities({ action: Action.Read, subject: 'WorkspaceContact' })
@@ -50,8 +58,13 @@ export class ContactController {
   async findAll(@Request() req) {
     const workspace_id = req.params.workspace_id;
     const user = req.user;
-
-    return await this.contactService.findAll(user.userId, workspace_id);
+    const contacts = await this.contactService.findAll(
+      user.userId,
+      workspace_id,
+    );
+    return {
+      data: contacts,
+    };
   }
 
   @CheckAbilities({ action: Action.Show, subject: 'WorkspaceContact' })

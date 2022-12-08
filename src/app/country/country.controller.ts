@@ -10,6 +10,9 @@ export class CountryController {
   @ApiOperation({ summary: 'Get all countries' })
   @Get()
   async findAll() {
-    return await this.countryService.findAll();
+    const countries = await this.countryService.findAll();
+    return {
+      data: countries,
+    };
   }
 }
