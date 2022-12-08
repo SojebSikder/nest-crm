@@ -34,7 +34,8 @@ export class ContactService extends PrismaClient {
 
       return true;
     } catch (error) {
-      return false;
+      // return false;
+      throw error;
     }
   }
 

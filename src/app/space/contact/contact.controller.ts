@@ -39,15 +39,21 @@ export class ContactController {
       const workspace_id = req.params.workspace_id;
       const user = req.user;
 
-      await this.contactService.create(
+      const contact = await this.contactService.create(
         user.userId,
         workspace_id,
         createContactDto,
       );
 
-      return {
-        success: true,
-      };
+      if (contact) {
+        return {
+          success: true,
+        };
+      } else {
+        return {
+          success: false,
+        };
+      }
     } catch (error) {
       throw error;
     }
