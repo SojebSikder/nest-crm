@@ -11,7 +11,6 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UserRepository } from './common/repository/user/user.repository';
-import { NoteModule } from './app/note/note.module';
 import { ThrottlerBehindProxyGuard } from './common/guard/throttler-behind-proxy.guard';
 import { TenantModule } from './su-admin/tenant/tenant.module';
 import { MailModule } from './mail/mail.module';
@@ -43,15 +42,14 @@ import { ContactModule } from './app/space/contact/contact.module';
     AuthModule,
     AbilityModule,
     MailModule,
+    SocketModule,
     // Super admin modules
     TenantModule,
     // app modules
-    NoteModule,
     UserModule,
     ProfileModule,
     MessageModule,
     WhatsappModule,
-    SocketModule,
     ContactModule,
   ],
   controllers: [AppController],
