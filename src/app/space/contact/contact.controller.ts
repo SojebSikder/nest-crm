@@ -36,14 +36,15 @@ export class ContactController {
   @Post()
   create(@Request() req, @Body() createContactDto: CreateContactDto) {
     const user = req.user;
-    const workspace_id = createContactDto.workspace_id;
-    return this.contactService.create(createContactDto);
+    return this.contactService.create(user.userId, createContactDto);
   }
 
   @CheckAbilities({ action: Action.Read, subject: 'WorkspaceContact' })
   @Get()
-  findAll() {
-    return this.contactService.findAll();
+  async findAll(@Request() req) {
+    const workspace_id = req.query.workspace_id;
+    const user = req.user;
+    return await this.contactService.findAll(user.userId, workspace_id);
   }
 
   @CheckAbilities({ action: Action.Show, subject: 'WorkspaceContact' })

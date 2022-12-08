@@ -33,8 +33,21 @@ export class ContactService extends PrismaClient {
     }
   }
 
-  findAll() {
-    return `This action returns all contact`;
+  async findAll(user_id: number, workspace_id: number) {
+    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const contacts = await this.prisma.contact.findMany({
+      where: {
+        AND: [
+          {
+            workspace_id: workspace_id,
+          },
+          {
+            tenant_id: tenant_id,
+          },
+        ],
+      },
+    });
+    return contacts;
   }
 
   findOne(id: number) {
