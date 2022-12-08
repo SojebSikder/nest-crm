@@ -23,14 +23,16 @@ model Organization {
   phone_number String?
   website      String?
 
-  users             User[]
-  roles             Role[]
-  workspaces        Workspace[]
-  workspace_teams   WorkspaceTeam[]
-  whatsapp_channels WhatsappChannel[]
-  snippets          Snippet[]
-  files             File[]
-  contacts          Contact[]
+  users                User[]
+  roles                Role[]
+  workspaces           Workspace[]
+  workspace_teams      WorkspaceTeam[]
+  whatsapp_channels    WhatsappChannel[]
+  snippets             Snippet[]
+  files                File[]
+  contacts             Contact[]
+  workspace_users      WorkspaceUser[]
+  workspace_team_users WorkspaceTeamUser[]
 
   @@map("organizations")
 }
@@ -275,6 +277,9 @@ model WorkspaceUser {
   user_id Int
   user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
+  tenant_id Int?
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+
   @@id([workspace_id, user_id])
   @@map("workspace_users")
 }
@@ -314,6 +319,9 @@ model WorkspaceTeamUser {
 
   user_id Int
   user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  tenant_id Int?
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   @@id([workspace_team_id, user_id])
   @@map("workspace_team_users")

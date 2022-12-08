@@ -22,6 +22,7 @@ export enum Action {
 export type AppSubjects = Subjects<{
   Tenant: User;
   User: User;
+  WorkspaceUser: User;
   WorkspaceContact: Contact;
 }>;
 

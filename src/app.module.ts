@@ -23,6 +23,7 @@ import { WhatsappModule } from './app/whatsapp/whatsapp.module';
 import { SocketModule } from './socket/socket.module';
 import { ContactModule } from './app/space/contact/contact.module';
 import { CountryModule } from './app/country/country.module';
+import { WorkspaceUserModule } from './app/space/workspace-user/workspace-user.module';
 
 @Module({
   imports: [
@@ -53,6 +54,7 @@ import { CountryModule } from './app/country/country.module';
     WhatsappModule,
     ContactModule,
     CountryModule,
+    WorkspaceUserModule,
   ],
   controllers: [AppController],
   providers: [
