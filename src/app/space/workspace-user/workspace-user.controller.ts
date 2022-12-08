@@ -41,7 +41,7 @@ export class WorkspaceUserController {
       user.userId,
       workspace_id,
     );
-    return workspaceUsers;
+    return { data: workspaceUsers };
   }
 
   @Get(':id')
