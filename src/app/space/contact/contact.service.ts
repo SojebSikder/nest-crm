@@ -16,6 +16,7 @@ export class ContactService extends PrismaClient {
     createContactDto: CreateContactDto,
   ) {
     try {
+      workspace_id = Number(workspace_id);
       const tenant_id = await UserRepository.getTenantId({ userId: user_id });
 
       await this.prisma.contact.create({

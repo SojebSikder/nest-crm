@@ -35,8 +35,9 @@ export class ContactController {
   @CheckAbilities({ action: Action.Create, subject: 'WorkspaceContact' })
   @Post()
   create(@Request() req, @Body() createContactDto: CreateContactDto) {
-    const workspace_id = req.workspace_id;
+    const workspace_id = req.params.workspace_id;
     const user = req.user;
+
     return this.contactService.create(
       user.userId,
       workspace_id,
