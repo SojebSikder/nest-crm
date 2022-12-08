@@ -62,10 +62,10 @@ import { WorkspaceUserModule } from './app/space/workspace-user/workspace-user.m
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerBehindProxyGuard,
-    },
+    // disbling throttling for dev {
+    //   provide: APP_GUARD,
+    //   useClass: ThrottlerBehindProxyGuard,
+    // },
     AppService,
     UserRepository,
   ],

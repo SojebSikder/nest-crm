@@ -34,16 +34,13 @@ export class AbilityFactory {
   defineAbility(user) {
     const { can, cannot, build } = new AbilityBuilder(AppAbility);
 
-    for (const permissionRoles of user.role_users[0].role.permission_roles) {
-      const action = permissionRoles.permission.action;
-      const subject = permissionRoles.permission.subject;
+    if (user) {
+      for (const permissionRoles of user.role_users[0].role.permission_roles) {
+        const action = permissionRoles.permission.action;
+        const subject = permissionRoles.permission.subject;
 
-      can(Action[action], subject);
-      // if (
-      //   Permissions.user_management_read == permissionRoles.permission.title
-      // ) {
-      //   can(Action.Read, 'User');
-      // }
+        can(Action[action], subject);
+      }
     }
 
     return build({
