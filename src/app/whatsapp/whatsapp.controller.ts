@@ -170,8 +170,7 @@ export class WhatsappController {
   async webhookPost(@Request() req, @Response() res) {
     try {
       // Parse the request body from the POST
-      const token =
-        'EAAMBZBUByhEEBAEyL9h4jLGjSIsuIZAGkZB8zZBVbdhXQl2idGg8utUsbjZCBi0BZCk6a3QhcCsEB1apB5wlig56tH2nWU95qPlQ4RpRlIuVHg634hk20YYZCce9JqNmnZBKCh4VF1VyTgjrk3NRvvtRnfbFvzfEWne6pnIf9fk6IZCTns2YIUwcQZAAdMYYajzB0dDRXLnFMvqwZDZD';
+      const token = process.env.TOKEN;
 
       // Check the Incoming webhook message
       // console.log(JSON.stringify(req.body, null, 2));
@@ -225,6 +224,7 @@ export class WhatsappController {
      *This will be the Verify Token value when you set up webhook
      **/
     const verify_token = 'hello';
+    console.log('GET webhook');
 
     // Parse params from the webhook verification request
     const mode = req.query['hub.mode'];

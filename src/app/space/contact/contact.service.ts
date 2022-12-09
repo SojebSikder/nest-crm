@@ -73,6 +73,11 @@ export class ContactService extends PrismaClient {
         ],
       },
     });
+    // const conversation = await this.prisma.conversation.findFirst({
+    //   where:{
+
+    //   }
+    // });
     return contacts;
   }
 
