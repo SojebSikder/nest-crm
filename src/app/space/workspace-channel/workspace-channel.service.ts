@@ -62,8 +62,17 @@ export class WorkspaceChannelService extends PrismaClient {
     return workspaceChannel;
   }
 
-  findAll() {
-    return `This action returns all workspaceChannel`;
+  async findAll(user_id: number, workspace_id: number) {
+    workspace_id = Number(workspace_id);
+    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+
+    const workspaceChannels = await this.prisma.workspaceChannel.findMany({
+      where: {
+        workspace_id: workspace_id,
+        tenant_id: tenant_id,
+      },
+    });
+    return workspaceChannels;
   }
 
   findOne(id: number) {

@@ -54,9 +54,19 @@ export class WorkspaceChannelController {
     }
   }
 
+  @ApiOperation({ summary: 'Read workspace channel' })
+  @CheckAbilities({ action: Action.Read, subject: 'WorkspaceChannel' })
   @Get()
-  findAll() {
-    return this.workspaceChannelService.findAll();
+  async findAll(@Req() req) {
+    const workspace_id = req.params.workspace_id;
+    const user = req.user;
+
+    const whatsappChannels = await this.workspaceChannelService.findAll(
+      user.userId,
+      workspace_id,
+    );
+
+    return whatsappChannels;
   }
 
   @Get(':id')
