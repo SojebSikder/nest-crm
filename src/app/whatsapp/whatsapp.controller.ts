@@ -145,18 +145,18 @@ export class WhatsappController {
       //   'hello_world_template_2',
       // );
       // create message template
-      const send = await WhatsappApi.createMessageTemplate({
-        category: 'ts',
-        components: [
-          WhatsappApi.component().template.headerText('body'),
-          WhatsappApi.component().template.bodyText('body'),
-          WhatsappApi.component().template.footerText('footer-text'),
-        ],
-        name: 'hello_world_template_2',
-        language: 'en_US',
-      });
+      // const send = await WhatsappApi.createMessageTemplate({
+      //   category: 'MARKETING',
+      //   components: [
+      //     WhatsappApi.component().template.headerText('body'),
+      //     WhatsappApi.component().template.bodyText('body'),
+      //     WhatsappApi.component().template.footerText('footer-text'),
+      //   ],
+      //   name: 'hello_world_template_2',
+      //   language: 'en_US',
+      // });
 
-      console.log(send);
+      // console.log(send);
       return 'done';
     } catch (error) {
       console.log(error.response.data);
@@ -223,8 +223,7 @@ export class WhatsappController {
      * UPDATE YOUR VERIFY TOKEN
      *This will be the Verify Token value when you set up webhook
      **/
-    const verify_token = 'hello';
-    console.log('GET webhook');
+    const verify_token = 'sojeb';
 
     // Parse params from the webhook verification request
     const mode = req.query['hub.mode'];

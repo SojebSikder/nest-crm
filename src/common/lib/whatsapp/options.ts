@@ -7,8 +7,9 @@ export type GetPhoneNumberIdOption = {
 
 // ----------------message template-----------
 export type TemplateCategory =
+  | 'TRANSACTIONAL'
   | 'MARKETING'
-  | 'ts'
+  | 'OTP'
   | (string & Record<string, unknown>);
 export class MessageTemplate {
   name: string;
