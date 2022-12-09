@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { WhatsappApi } from 'src/common/lib/whatsapp/Whatsapp';
 import { UserRepository } from 'src/common/repository/user/user.repository';
-import { WorkspaceChannelRepository } from 'src/common/repository/workspace-channel/workspace-channel.repository';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateWorkspaceChannelDto } from './dto/create-workspace-channel.dto';
 import { UpdateWorkspaceChannelDto } from './dto/update-workspace-channel.dto';
