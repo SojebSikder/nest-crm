@@ -206,7 +206,8 @@ export class WhatsappController {
           //   message: 'Ack: ' + msg_body,
           // });
           // find whatsapp channel via phone number id
-          const whatsappChannel = await this.prisma.whatsappChannel.findFirst({
+          // if channel type is whatsapp
+          const whatsappChannel = await this.prisma.workspaceChannel.findFirst({
             where: {
               phone_number_id: phone_number_id,
             },

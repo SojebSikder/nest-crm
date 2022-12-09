@@ -1,9 +1,5 @@
-import {
-  AbilityBuilder,
-  AbilityClass,
-  ExtractSubjectType,
-} from '@casl/ability';
-import { PrismaAbility, Subjects } from '@casl/prisma';
+import { AbilityBuilder, ExtractSubjectType, PureAbility } from '@casl/ability';
+import { createPrismaAbility, Subjects, PrismaQuery } from '@casl/prisma';
 import { Injectable } from '@nestjs/common';
 import { WorkspaceChannel, Contact, User } from '@prisma/client';
 
@@ -16,9 +12,6 @@ export enum Action {
   Delete = 'delete',
 }
 
-// export type Subjects = InferSubjects<User | Note> | 'all';
-// export type AppAbility = Ability<[Action, Subjects]>;
-
 export type AppSubjects = Subjects<{
   Tenant: User;
   User: User;
@@ -27,13 +20,14 @@ export type AppSubjects = Subjects<{
   WorkspaceChannel: WorkspaceChannel;
 }>;
 
-type AppAbility = PrismaAbility<[string, AppSubjects]>;
-const AppAbility = PrismaAbility as AbilityClass<AppAbility>;
+type AppAbility = PureAbility<[string, AppSubjects], PrismaQuery>;
 
 @Injectable()
 export class AbilityFactory {
   defineAbility(user) {
-    const { can, cannot, build } = new AbilityBuilder(AppAbility);
+    const { can, cannot, build } = new AbilityBuilder<AppAbility>(
+      createPrismaAbility,
+    );
 
     if (user) {
       for (const permissionRoles of user.role_users[0].role.permission_roles) {
