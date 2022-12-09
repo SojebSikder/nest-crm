@@ -25,6 +25,7 @@ import { ContactModule } from './app/space/contact/contact.module';
 import { CountryModule } from './app/country/country.module';
 import { WorkspaceUserModule } from './app/space/workspace-user/workspace-user.module';
 import { ChannelModule } from './app/space/channel/channel.module';
+import { WorkspaceChannelModule } from './app/space/workspace-channel/workspace-channel.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { ChannelModule } from './app/space/channel/channel.module';
     CountryModule,
     WorkspaceUserModule,
     ChannelModule,
+    WorkspaceChannelModule,
   ],
   controllers: [AppController],
   providers: [
