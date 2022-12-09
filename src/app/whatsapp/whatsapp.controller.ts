@@ -14,12 +14,14 @@ import { CreateWhatsappDto } from './dto/create-whatsapp.dto';
 import { UpdateWhatsappDto } from './dto/update-whatsapp.dto';
 import { SocketGateway } from 'src/socket/socket.gateway';
 import { WhatsappApi } from 'src/common/lib/whatsapp/Whatsapp';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Controller('whatsapp')
 export class WhatsappController {
   constructor(
     private readonly whatsappService: WhatsappService,
     private readonly socketGateway: SocketGateway,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Get('test')
@@ -190,16 +192,54 @@ export class WhatsappController {
           const msg_body =
             req.body.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
 
+          const contactName =
+            req.body.entry[0].changes[0].value.contacts[0].profile.name; // extract the message text from the webhook payload
+
           // set whatsapp credentials
           WhatsappApi.config({
             phoneNumberId: phone_number_id,
             token: token,
           });
           // send message back to user
-          await WhatsappApi.sendText({
-            to: from,
-            message: 'Ack: ' + msg_body,
+          // await WhatsappApi.sendText({
+          //   to: from,
+          //   message: 'Ack: ' + msg_body,
+          // });
+          // find whatsapp channel via phone number id
+          const whatsappChannel = await this.prisma.whatsappChannel.findFirst({
+            where: {
+              phone_number_id: phone_number_id,
+            },
           });
+          if (whatsappChannel) {
+            console.log('channel exist');
+
+            // check the contact existence
+            const contact = await this.prisma.contact.findFirst({
+              where: {
+                AND: [
+                  {
+                    workspace_id: whatsappChannel.workspace_id,
+                  },
+                  {
+                    tenant_id: whatsappChannel.tenant_id,
+                  },
+                ],
+              },
+            });
+            if (contact) {
+              // save message
+            } else {
+              // create new contact
+              await this.prisma.contact.create({
+                data: {
+                  fname: contactName,
+                  phone_number: from,
+                },
+              });
+            }
+          }
+
           // emit message
           this.socketGateway.server.emit('message', {
             name: 'sikder',
