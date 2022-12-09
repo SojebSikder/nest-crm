@@ -17,6 +17,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AbilitiesGuard } from 'src/ability/abilities.guard';
 import { CheckAbilities } from 'src/ability/abilities.decorator';
 import { Action } from 'src/ability/ability.factory';
+import appConfig from 'src/config/app.config';
 
 @ApiBearerAuth()
 @ApiTags('Workspace channel')
@@ -37,15 +38,22 @@ export class WorkspaceChannelController {
     const workspace_id = req.params.workspace_id;
     const user = req.user;
 
-    const channel = this.workspaceChannelService.create(
+    const channel = await this.workspaceChannelService.create(
       user.userId,
       workspace_id,
       createWorkspaceChannelDto,
     );
 
     if (channel) {
+      const webhook_url = `${appConfig().app.url}/api/whatsapp/webhook/${
+        channel.webhook_key
+      }`;
       return {
         success: true,
+        data: {
+          webhook_url: webhook_url,
+          verify_token: channel.verify_token,
+        },
       };
     } else {
       return {
@@ -65,8 +73,14 @@ export class WorkspaceChannelController {
       user.userId,
       workspace_id,
     );
-
-    return whatsappChannels;
+    const mappedWhatsappChannels = whatsappChannels.map((channel) => {
+      const webhook_url = `${appConfig().app.url}/api/whatsapp/webhook/${
+        channel.webhook_key
+      }`;
+      channel['webhook_url'] = webhook_url;
+      return channel;
+    });
+    return mappedWhatsappChannels;
   }
 
   @Get(':id')
