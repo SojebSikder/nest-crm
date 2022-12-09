@@ -43,6 +43,25 @@ export class ContactService extends PrismaClient {
     workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
     const contacts = await this.prisma.contact.findMany({
+      include: {
+        assignee: {
+          select: {
+            id: true,
+            fname: true,
+            lname: true,
+            email: true,
+          },
+        },
+        country: {
+          select: {
+            id: true,
+            name: true,
+            flag: true,
+            dial_code: true,
+            country_code: true,
+          },
+        },
+      },
       where: {
         AND: [
           {
