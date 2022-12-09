@@ -276,15 +276,15 @@ CREATE TABLE `contacts` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `contact_channels` (
+CREATE TABLE `contact_workspace_channels` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `channel_type` VARCHAR(191) NULL DEFAULT 'whatsapp',
-    `channel_id` INTEGER NOT NULL,
+    `workspace_channel_id` INTEGER NOT NULL,
     `contact_id` INTEGER NOT NULL,
+    `workspace_id` INTEGER NOT NULL,
     `tenant_id` INTEGER NULL,
 
-    PRIMARY KEY (`channel_id`, `contact_id`)
+    PRIMARY KEY (`workspace_channel_id`, `contact_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -451,10 +451,16 @@ ALTER TABLE `contacts` ADD CONSTRAINT `contacts_workspace_id_fkey` FOREIGN KEY (
 ALTER TABLE `contacts` ADD CONSTRAINT `contacts_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `contact_channels` ADD CONSTRAINT `contact_channels_contact_id_fkey` FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `contact_workspace_channels` ADD CONSTRAINT `contact_workspace_channels_workspace_channel_id_fkey` FOREIGN KEY (`workspace_channel_id`) REFERENCES `whatsapp_channels`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `contact_channels` ADD CONSTRAINT `contact_channels_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `contact_workspace_channels` ADD CONSTRAINT `contact_workspace_channels_contact_id_fkey` FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `contact_workspace_channels` ADD CONSTRAINT `contact_workspace_channels_workspace_id_fkey` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `contact_workspace_channels` ADD CONSTRAINT `contact_workspace_channels_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `conversations` ADD CONSTRAINT `conversations_workspace_id_fkey` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

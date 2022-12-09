@@ -23,17 +23,17 @@ model Organization {
   phone_number String?
   website      String?
 
-  users                User[]
-  roles                Role[]
-  workspaces           Workspace[]
-  workspace_teams      WorkspaceTeam[]
-  snippets             Snippet[]
-  files                File[]
-  contacts             Contact[]
-  workspace_users      WorkspaceUser[]
-  workspace_team_users WorkspaceTeamUser[]
-  ContactChannel       ContactChannel[]
-  workspace_channels   WorkspaceChannel[]
+  users                      User[]
+  roles                      Role[]
+  workspaces                 Workspace[]
+  workspace_teams            WorkspaceTeam[]
+  snippets                   Snippet[]
+  files                      File[]
+  contacts                   Contact[]
+  workspace_users            WorkspaceUser[]
+  workspace_team_users       WorkspaceTeamUser[]
+  workspace_channels         WorkspaceChannel[]
+  contact_workspace_channels ContactWorkspaceChannel[]
 
   @@map("organizations")
 }
@@ -257,11 +257,12 @@ model Workspace {
   workspace_users WorkspaceUser[]
   workspace_teams WorkspaceTeam[]
 
-  contacts           Contact[]
-  snippets           Snippet[]
-  files              File[]
-  conversations      Conversation[]
-  workspace_channels WorkspaceChannel[]
+  contacts                   Contact[]
+  snippets                   Snippet[]
+  files                      File[]
+  conversations              Conversation[]
+  workspace_channels         WorkspaceChannel[]
+  contact_workspace_channels ContactWorkspaceChannel[]
 
   @@map("workspaces")
 }
@@ -373,8 +374,9 @@ model WorkspaceChannel {
   workspace_id Int
   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
-  tenant_id Int?
-  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  tenant_id               Int?
+  tenant                  Organization?             @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  ContactWorkspaceChannel ContactWorkspaceChannel[]
 
   @@map("whatsapp_channels")
 }
@@ -445,31 +447,33 @@ model Contact {
   workspace_id Int
   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
-  tenant_id      Int?
-  tenant         Organization?    @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
-  ContactChannel ContactChannel[]
+  tenant_id                  Int?
+  tenant                     Organization?             @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  contact_workspace_channels ContactWorkspaceChannel[]
 
   @@map("contacts")
 }
 
 // contact and channel relationship
-model ContactChannel {
+model ContactWorkspaceChannel {
   // id         Int      @id @default(autoincrement())
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
 
-  channel_type String? @default("whatsapp")
-  channel_id   Int
-  // channel    WorkspaceTeam? @relation(fields: [channel_id], references: [id], onDelete: Cascade)
+  workspace_channel_id Int
+  workspace_channel    WorkspaceChannel? @relation(fields: [workspace_channel_id], references: [id], onDelete: Cascade)
 
   contact_id Int
   contact    Contact? @relation(fields: [contact_id], references: [id], onDelete: Cascade)
 
+  workspace_id Int
+  workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
   tenant_id Int?
   tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
-  @@id([channel_id, contact_id])
-  @@map("contact_channels")
+  @@id([workspace_channel_id, contact_id])
+  @@map("contact_workspace_channels")
 }
 
 // message conversation
