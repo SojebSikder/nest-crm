@@ -10,7 +10,6 @@ import { AppService } from './app.service';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { UserRepository } from './common/repository/user/user.repository';
 import { ThrottlerBehindProxyGuard } from './common/guard/throttler-behind-proxy.guard';
 import { TenantModule } from './su-admin/tenant/tenant.module';
 import { MailModule } from './mail/mail.module';
@@ -69,7 +68,6 @@ import { WorkspaceChannelModule } from './app/space/workspace-channel/workspace-
     //   useClass: ThrottlerBehindProxyGuard,
     // },
     AppService,
-    UserRepository,
   ],
 })
 export class AppModule {
