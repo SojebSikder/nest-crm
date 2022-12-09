@@ -68,8 +68,14 @@ export class WorkspaceChannelService extends PrismaClient {
 
     const workspaceChannels = await this.prisma.workspaceChannel.findMany({
       where: {
-        workspace_id: workspace_id,
-        tenant_id: tenant_id,
+        AND: [
+          {
+            workspace_id: workspace_id,
+          },
+          {
+            tenant_id: tenant_id,
+          },
+        ],
       },
     });
     return workspaceChannels;
@@ -79,11 +85,56 @@ export class WorkspaceChannelService extends PrismaClient {
     return `This action returns a #${id} workspaceChannel`;
   }
 
-  update(id: number, updateWorkspaceChannelDto: UpdateWorkspaceChannelDto) {
-    return `This action updates a #${id} workspaceChannel`;
+  async update(
+    user_id: number,
+    workspace_id: number,
+    id: number,
+    updateWorkspaceChannelDto: UpdateWorkspaceChannelDto,
+  ) {
+    workspace_id = Number(workspace_id);
+    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const workspaceChannel = await this.prisma.workspaceChannel.updateMany({
+      where: {
+        AND: [
+          {
+            workspace_id: workspace_id,
+          },
+          {
+            tenant_id: tenant_id,
+          },
+        ],
+      },
+      data: {
+        avatar: updateWorkspaceChannelDto.avatar,
+        address: updateWorkspaceChannelDto.address,
+        description: updateWorkspaceChannelDto.description,
+        email: updateWorkspaceChannelDto.email,
+        vertical: updateWorkspaceChannelDto.vertical,
+        website_1: updateWorkspaceChannelDto.website_1,
+        website_2: updateWorkspaceChannelDto.website_2,
+      },
+    });
+    return workspaceChannel;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} workspaceChannel`;
+  async remove(user_id: number, workspace_id: number, id: number) {
+    workspace_id = Number(workspace_id);
+    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const workspaceChannel = await this.prisma.workspaceChannel.deleteMany({
+      where: {
+        AND: [
+          {
+            id: id,
+          },
+          {
+            workspace_id: workspace_id,
+          },
+          {
+            tenant_id: tenant_id,
+          },
+        ],
+      },
+    });
+    return workspaceChannel;
   }
 }

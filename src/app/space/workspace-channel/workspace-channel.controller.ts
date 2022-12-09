@@ -74,16 +74,37 @@ export class WorkspaceChannelController {
     return this.workspaceChannelService.findOne(+id);
   }
 
+  @ApiOperation({ summary: 'Update workspace channel' })
+  @CheckAbilities({ action: Action.Update, subject: 'WorkspaceChannel' })
   @Patch(':id')
-  update(
+  async update(
+    @Req() req,
     @Param('id') id: string,
     @Body() updateWorkspaceChannelDto: UpdateWorkspaceChannelDto,
   ) {
-    return this.workspaceChannelService.update(+id, updateWorkspaceChannelDto);
+    const workspace_id = req.params.workspace_id;
+    const user = req.user;
+    const workspaceChannel = await this.workspaceChannelService.update(
+      user.userId,
+      workspace_id,
+      +id,
+      updateWorkspaceChannelDto,
+    );
+    if (workspaceChannel) {
+      return {
+        success: true,
+      };
+    } else {
+      return { success: false };
+    }
   }
 
+  @ApiOperation({ summary: 'Delete workspace channel' })
+  @CheckAbilities({ action: Action.Delete, subject: 'WorkspaceChannel' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.workspaceChannelService.remove(+id);
+  remove(@Req() req, @Param('id') id: string) {
+    const workspace_id = req.params.workspace_id;
+    const user = req.user;
+    return this.workspaceChannelService.remove(user.userId, workspace_id, +id);
   }
 }
