@@ -27,7 +27,7 @@ export class ContactService extends PrismaClient {
           phone_number: createContactDto.phone_number,
           country_id: Number(createContactDto.country_id),
           assignee_id: Number(createContactDto.assignee_id),
-          workspace_id: Number(workspace_id),
+          workspace_id: workspace_id,
           tenant_id: tenant_id,
         },
       });
