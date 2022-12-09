@@ -1,1 +1,4 @@
-export class CreateWorkspaceChannelDto {}
+export class CreateWorkspaceChannelDto {
+  access_token: string;
+  account_id: string;
+}
