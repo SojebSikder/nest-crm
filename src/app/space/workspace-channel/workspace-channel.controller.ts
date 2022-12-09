@@ -102,9 +102,20 @@ export class WorkspaceChannelController {
   @ApiOperation({ summary: 'Delete workspace channel' })
   @CheckAbilities({ action: Action.Delete, subject: 'WorkspaceChannel' })
   @Delete(':id')
-  remove(@Req() req, @Param('id') id: string) {
+  async remove(@Req() req, @Param('id') id: string) {
     const workspace_id = req.params.workspace_id;
     const user = req.user;
-    return this.workspaceChannelService.remove(user.userId, workspace_id, +id);
+    const workspaceChannel = await this.workspaceChannelService.remove(
+      user.userId,
+      workspace_id,
+      +id,
+    );
+    if (workspaceChannel) {
+      return {
+        success: true,
+      };
+    } else {
+      return { success: false };
+    }
   }
 }
