@@ -38,27 +38,32 @@ export class WorkspaceChannelController {
     const workspace_id = req.params.workspace_id;
     const user = req.user;
 
-    const channel = await this.workspaceChannelService.create(
-      user.userId,
-      workspace_id,
-      createWorkspaceChannelDto,
-    );
+    try {
+      const channel = await this.workspaceChannelService.create(
+        user.userId,
+        workspace_id,
+        createWorkspaceChannelDto,
+      );
 
-    if (channel) {
-      const webhook_url = `${appConfig().app.url}/api/whatsapp/webhook/${
-        channel.webhook_key
-      }`;
-      return {
-        success: true,
-        data: {
-          webhook_url: webhook_url,
-          verify_token: channel.verify_token,
-        },
-      };
-    } else {
-      return {
-        success: false,
-      };
+      if (channel) {
+        const webhook_url = `${appConfig().app.url}/api/whatsapp/webhook/${
+          channel.webhook_key
+        }`;
+        return {
+          success: true,
+          data: {
+            webhook_url: webhook_url,
+            verify_token: channel.verify_token,
+          },
+        };
+      } else {
+        return {
+          success: false,
+        };
+      }
+    } catch (error) {
+      // console.log(error.response.data);
+      throw error;
     }
   }
 

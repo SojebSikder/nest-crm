@@ -45,8 +45,8 @@ export class WorkspaceChannelService extends PrismaClient {
         description: profileDetails.description,
         email: profileDetails.email,
         vertical: profileDetails.vertical,
-        website_1: profileDetails.websites[0],
-        website_2: profileDetails.websites[1],
+        // website_1: profileDetails.websites[0],
+        // website_2: profileDetails.websites[1],
         //
         access_token: createWorkspaceChannelDto.access_token,
         account_id: createWorkspaceChannelDto.account_id,

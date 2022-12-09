@@ -475,7 +475,7 @@ export class WhatsappApi {
     const _header = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this._token}}`,
+        Authorization: `Bearer ${this._token}`,
       },
     };
     const response = await Fetch.get(
@@ -502,7 +502,7 @@ export class WhatsappApi {
     const _header = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this._token}}`,
+        Authorization: `Bearer ${this._token}`,
       },
     };
     const response = await Fetch.post(
@@ -522,7 +522,7 @@ export class WhatsappApi {
     const _header = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this._token}}`,
+        Authorization: `Bearer ${this._token}`,
       },
     };
     const response = await Fetch.delete(
@@ -541,7 +541,7 @@ export class WhatsappApi {
     const _header = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this._token}}`,
+        Authorization: `Bearer ${this._token}`,
       },
     };
     const response = await Fetch.get(
@@ -561,7 +561,7 @@ export class WhatsappApi {
     const _header = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this._token}}`,
+        Authorization: `Bearer ${this._token}`,
       },
     };
     const data = {
@@ -591,7 +591,7 @@ export class WhatsappApi {
     const _header = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this._token}}`,
+        Authorization: `Bearer ${this._token}`,
       },
     };
     const response = await Fetch.get(
@@ -622,7 +622,7 @@ export class WhatsappApi {
     const _header = {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this._token}}`,
+        Authorization: `Bearer ${this._token}`,
       },
     };
     const response = await Fetch.get(
