@@ -5,7 +5,7 @@ import {
 } from '@casl/ability';
 import { PrismaAbility, Subjects } from '@casl/prisma';
 import { Injectable } from '@nestjs/common';
-import { Contact, User } from '@prisma/client';
+import { WorkspaceChannel, Contact, User } from '@prisma/client';
 
 export enum Action {
   Manage = 'manage', // wildcard for any action
@@ -24,6 +24,7 @@ export type AppSubjects = Subjects<{
   User: User;
   WorkspaceUser: User;
   WorkspaceContact: Contact;
+  WorkspaceChannel: WorkspaceChannel;
 }>;
 
 type AppAbility = PrismaAbility<[string, AppSubjects]>;

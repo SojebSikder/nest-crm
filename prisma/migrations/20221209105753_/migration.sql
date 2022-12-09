@@ -162,6 +162,7 @@ CREATE TABLE `workspace_users` (
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `workspace_id` INTEGER NOT NULL,
     `user_id` INTEGER NOT NULL,
+    `tenant_id` INTEGER NULL,
 
     PRIMARY KEY (`workspace_id`, `user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -187,6 +188,7 @@ CREATE TABLE `workspace_team_users` (
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `workspace_team_id` INTEGER NOT NULL,
     `user_id` INTEGER NOT NULL,
+    `tenant_id` INTEGER NULL,
 
     PRIMARY KEY (`workspace_team_id`, `user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -198,6 +200,7 @@ CREATE TABLE `whatsapp_channels` (
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `deleted_at` DATETIME(3) NULL,
     `status` INTEGER NULL DEFAULT 1,
+    `channel_type` VARCHAR(191) NULL DEFAULT 'whatsapp',
     `avatar` VARCHAR(191) NULL,
     `address` VARCHAR(191) NULL,
     `description` VARCHAR(191) NULL,
@@ -262,12 +265,26 @@ CREATE TABLE `contacts` (
     `status` INTEGER NULL DEFAULT 1,
     `fname` VARCHAR(191) NULL,
     `lname` VARCHAR(191) NULL,
+    `email` VARCHAR(191) NULL,
     `phone_number` VARCHAR(191) NULL,
     `assignee_id` INTEGER NULL,
+    `country_id` INTEGER NULL,
     `workspace_id` INTEGER NOT NULL,
     `tenant_id` INTEGER NULL,
 
     PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `contact_channels` (
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `channel_type` VARCHAR(191) NULL DEFAULT 'whatsapp',
+    `channel_id` INTEGER NOT NULL,
+    `contact_id` INTEGER NOT NULL,
+    `tenant_id` INTEGER NULL,
+
+    PRIMARY KEY (`channel_id`, `contact_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -309,8 +326,8 @@ CREATE TABLE `channels` (
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `deleted_at` DATETIME(3) NULL,
     `status` INTEGER NULL DEFAULT 1,
+    `type` VARCHAR(191) NULL DEFAULT 'whatsapp',
     `label` VARCHAR(191) NULL,
-    `name` VARCHAR(191) NULL,
     `icon` VARCHAR(191) NULL,
     `description` TEXT NULL,
 
@@ -383,6 +400,9 @@ ALTER TABLE `workspace_users` ADD CONSTRAINT `workspace_users_workspace_id_fkey`
 ALTER TABLE `workspace_users` ADD CONSTRAINT `workspace_users_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `workspace_users` ADD CONSTRAINT `workspace_users_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `workspace_teams` ADD CONSTRAINT `workspace_teams_workspace_id_fkey` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -393,6 +413,9 @@ ALTER TABLE `workspace_team_users` ADD CONSTRAINT `workspace_team_users_workspac
 
 -- AddForeignKey
 ALTER TABLE `workspace_team_users` ADD CONSTRAINT `workspace_team_users_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `workspace_team_users` ADD CONSTRAINT `workspace_team_users_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `whatsapp_channels` ADD CONSTRAINT `whatsapp_channels_channel_id_fkey` FOREIGN KEY (`channel_id`) REFERENCES `channels`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
@@ -419,10 +442,19 @@ ALTER TABLE `files` ADD CONSTRAINT `files_tenant_id_fkey` FOREIGN KEY (`tenant_i
 ALTER TABLE `contacts` ADD CONSTRAINT `contacts_assignee_id_fkey` FOREIGN KEY (`assignee_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `contacts` ADD CONSTRAINT `contacts_country_id_fkey` FOREIGN KEY (`country_id`) REFERENCES `countries`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `contacts` ADD CONSTRAINT `contacts_workspace_id_fkey` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `contacts` ADD CONSTRAINT `contacts_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `contact_channels` ADD CONSTRAINT `contact_channels_contact_id_fkey` FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `contact_channels` ADD CONSTRAINT `contact_channels_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `conversations` ADD CONSTRAINT `conversations_workspace_id_fkey` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
