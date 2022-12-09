@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { WhatsappApi } from 'src/common/lib/whatsapp/Whatsapp';
 import { UserRepository } from 'src/common/repository/user/user.repository';
+import { WorkspaceChannelRepository } from 'src/common/repository/workspace-channel/workspace-channel.repository';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateWorkspaceChannelDto } from './dto/create-workspace-channel.dto';
 import { UpdateWorkspaceChannelDto } from './dto/update-workspace-channel.dto';
@@ -93,9 +94,13 @@ export class WorkspaceChannelService extends PrismaClient {
   ) {
     workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+
     const workspaceChannel = await this.prisma.workspaceChannel.updateMany({
       where: {
         AND: [
+          {
+            id: id,
+          },
           {
             workspace_id: workspace_id,
           },
@@ -113,6 +118,19 @@ export class WorkspaceChannelService extends PrismaClient {
         website_1: updateWorkspaceChannelDto.website_1,
         website_2: updateWorkspaceChannelDto.website_2,
       },
+    });
+    // update whatsapp profile
+    WhatsappApi.config({
+      token: workspaceChannel[0].access_token,
+      accountId: workspaceChannel[0].account_id,
+      phoneNumberId: workspaceChannel[0].phone_number_id,
+    });
+    await WhatsappApi.updateBusinessProfileDeatils({
+      address: workspaceChannel[0].address,
+      description: workspaceChannel[0].description,
+      email: workspaceChannel[0].email,
+      vertical: workspaceChannel[0].vertical,
+      websites: [workspaceChannel[0].website_1, workspaceChannel[0].website_2],
     });
     return workspaceChannel;
   }
