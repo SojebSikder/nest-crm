@@ -85,7 +85,7 @@ export class WorkspaceChannelController {
       channel['webhook_url'] = webhook_url;
       return channel;
     });
-    return mappedWhatsappChannels;
+    return { data: mappedWhatsappChannels };
   }
 
   @Get(':id')
