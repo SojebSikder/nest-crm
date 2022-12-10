@@ -5,6 +5,24 @@ export type GetPhoneNumberIdOption = {
   quality_rating: string;
 };
 
+/**
+ * Message response
+ */
+export type MessageReponse = {
+  messaging_product: string;
+  contacts: [
+    {
+      input: string;
+      wa_id: string;
+    },
+  ];
+  messages: [
+    {
+      id: string;
+    },
+  ];
+};
+
 // ----------------message template-----------
 export type TemplateCategory =
   | 'TRANSACTIONAL'

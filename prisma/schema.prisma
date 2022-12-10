@@ -369,6 +369,7 @@ model WorkspaceChannel {
   verified Boolean? @default(false)
   // ----end whatsapp section----
 
+  // TODO currently not using, planning to remove
   channel_id Int?
   channel    Channel? @relation(fields: [channel_id], references: [id])
 

@@ -9,15 +9,14 @@ export class WorkspaceChannelRepository {
    * @returns
    */
   static async getDetails({
-    channel_id,
+    id,
     user_id,
     workspace_id,
   }: {
-    channel_id: number;
+    id: number;
     user_id: number;
     workspace_id: number;
   }) {
-    channel_id = Number(channel_id);
     workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
 
@@ -25,7 +24,7 @@ export class WorkspaceChannelRepository {
       where: {
         AND: [
           {
-            channel_id: channel_id,
+            id: id,
           },
           {
             workspace_id: workspace_id,

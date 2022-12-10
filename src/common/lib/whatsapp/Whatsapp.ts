@@ -4,6 +4,7 @@ import {
   BusinessProfile,
   CreateMessageTemplate,
   GetPhoneNumberIdOption,
+  MessageReponse,
   MessageTemplate,
   Section,
   WhatsappTemplateComponent,
@@ -93,7 +94,13 @@ export class WhatsappApi {
    * @param param0
    * @returns
    */
-  static async sendText({ to, message }: { to: string; message: string }) {
+  static async sendText({
+    to,
+    message,
+  }: {
+    to: string;
+    message: string;
+  }): Promise<MessageReponse> {
     const data = {
       messaging_product: 'whatsapp',
       to: to,
@@ -102,11 +109,13 @@ export class WhatsappApi {
     const _header = {
       headers: { 'Content-Type': 'application/json' },
     };
-    return await Fetch.post(
+    const response = await Fetch.post(
       `https://graph.facebook.com/${this._api_version}/${this._phone_number_id}/messages?access_token=${this._token}`,
       data,
       _header,
     );
+
+    return response.data;
   }
 
   /**

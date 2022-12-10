@@ -17,13 +17,13 @@ import { UrlGeneratorModule } from 'nestjs-url-generator';
 import { UserModule } from './app/user/user.module';
 import { AbilityModule } from './ability/ability.module';
 import { ProfileModule } from './app/profile/profile.module';
-import { MessageModule } from './message/message.module';
 import { WhatsappModule } from './app/whatsapp/whatsapp.module';
 import { SocketModule } from './socket/socket.module';
 import { ContactModule } from './app/space/contact/contact.module';
 import { CountryModule } from './app/country/country.module';
 import { WorkspaceUserModule } from './app/space/workspace-user/workspace-user.module';
 import { WorkspaceChannelModule } from './app/space/workspace-channel/workspace-channel.module';
+import { MessageModule } from './app/space/message/message.module';
 
 @Module({
   imports: [
