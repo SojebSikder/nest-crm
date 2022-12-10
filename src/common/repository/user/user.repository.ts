@@ -42,7 +42,7 @@ export class UserRepository {
    * get user tenant id
    * @returns
    */
-  static async getTenantId({ userId }) {
+  static async getTenantId({ userId }: { userId: number }) {
     const userDetails = await this.getUserDetails({ userId: userId });
     const tenant_id = userDetails.tenant_id ?? userDetails.id;
 

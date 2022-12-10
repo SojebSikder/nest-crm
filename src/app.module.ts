@@ -24,6 +24,7 @@ import { CountryModule } from './app/country/country.module';
 import { WorkspaceUserModule } from './app/space/workspace-user/workspace-user.module';
 import { WorkspaceChannelModule } from './app/space/workspace-channel/workspace-channel.module';
 import { MessageModule } from './app/space/message/message.module';
+import { ConversationModule } from './app/space/conversation/conversation.module';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import { MessageModule } from './app/space/message/message.module';
     CountryModule,
     WorkspaceUserModule,
     WorkspaceChannelModule,
+    ConversationModule,
   ],
   controllers: [AppController],
   providers: [
