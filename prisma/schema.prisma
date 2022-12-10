@@ -34,6 +34,7 @@ model Organization {
   workspace_team_users       WorkspaceTeamUser[]
   workspace_channels         WorkspaceChannel[]
   contact_workspace_channels ContactWorkspaceChannel[]
+  conversations              Conversation[]
 
   @@map("organizations")
 }
@@ -374,9 +375,12 @@ model WorkspaceChannel {
   workspace_id Int
   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
-  tenant_id               Int?
-  tenant                  Organization?             @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
-  ContactWorkspaceChannel ContactWorkspaceChannel[]
+  tenant_id Int?
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+
+  contact_workspace_channels ContactWorkspaceChannel[]
+  messages                   Message[]
+  conversations              Conversation[]
 
   @@map("whatsapp_channels")
 }
@@ -447,9 +451,12 @@ model Contact {
   workspace_id Int
   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
-  tenant_id                  Int?
-  tenant                     Organization?             @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  tenant_id Int?
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+
   contact_workspace_channels ContactWorkspaceChannel[]
+  messages                   Message[]
+  Conversation               Conversation[]
 
   @@map("contacts")
 }
@@ -482,18 +489,22 @@ model Conversation {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  messaging_product String?  @default("whatsapp")
   // is conversation open or close
-  is_open           Boolean? @default(true)
-  creator_id        Int?
-  // values: contact, workspace
-  creator_type      String?
-  participant_id    Int?
-  // values: contact, workspace
-  participant_type  String?
+  is_open Boolean? @default(true)
+
+  contact_id Int?
+  contact    Contact? @relation(fields: [contact_id], references: [id], onDelete: Cascade)
+
+  workspace_channel_id Int?
+  workspace_channel    WorkspaceChannel? @relation(fields: [workspace_channel_id], references: [id], onDelete: Cascade)
 
   workspace_id Int
   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  tenant_id Int?
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+
+  messages Message[]
 
   @@map("conversations")
 }
@@ -505,14 +516,21 @@ model Message {
   updated_at DateTime  @updatedAt
   read_at    DateTime?
 
-  text            String?
-  sender_id       Int?
-  // values: contact, workspace
-  sender_type     String?
-  receiver_id     Int?
-  // values: contact, workspace
-  receiver_type   String?
-  conversation_id Int
+  messaging_product String? @default("whatsapp")
+  message_id        String?
+
+  type      String? @default("text")
+  // type == text
+  text_body String?
+
+  contact_id Int?
+  contact    Contact? @relation(fields: [contact_id], references: [id], onDelete: Cascade)
+
+  workspace_channel_id Int?
+  workspace_channel    WorkspaceChannel? @relation(fields: [workspace_channel_id], references: [id], onDelete: Cascade)
+
+  conversation_id Int?
+  conversation    Conversation? @relation(fields: [conversation_id], references: [id], onDelete: Cascade)
 
   @@map("messages")
 }
