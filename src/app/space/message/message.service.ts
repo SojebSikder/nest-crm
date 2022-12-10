@@ -13,7 +13,11 @@ export class MessageService extends PrismaClient {
     super();
   }
 
-  async create(user_id, workspace_id, createMessageDto: CreateMessageDto) {
+  async create(
+    { user_id, workspace_id, conversation_id },
+    createMessageDto: CreateMessageDto,
+  ) {
+    conversation_id = Number(conversation_id);
     workspace_id = Number(workspace_id);
 
     // get tenant id
@@ -38,7 +42,7 @@ export class MessageService extends PrismaClient {
       where: {
         AND: [
           {
-            id: createMessageDto.conversation_id,
+            id: conversation_id,
           },
           {
             workspace_id: workspace_id,
@@ -72,7 +76,7 @@ export class MessageService extends PrismaClient {
           body_text: createMessageDto.body_text,
           contact_id: conversation.contact_id,
           workspace_channel_id: createMessageDto.workspace_channel_id,
-          conversation_id: createMessageDto.conversation_id,
+          conversation_id: conversation_id,
         },
       });
       if (message) {
@@ -85,8 +89,55 @@ export class MessageService extends PrismaClient {
     }
   }
 
-  findAll() {
-    return `This action returns all message`;
+  async findAll({ user_id, conversation_id, workspace_id }) {
+    // get tenant id
+    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    // check conversation is exist
+    const conversation = await this.prisma.conversation.findFirst({
+      include: {
+        contact: {
+          select: {
+            phone_number: true,
+          },
+        },
+      },
+      where: {
+        AND: [
+          {
+            id: conversation_id,
+          },
+          {
+            workspace_id: workspace_id,
+          },
+          {
+            tenant_id: tenant_id,
+          },
+        ],
+      },
+    });
+
+    if (!conversation) {
+      return false;
+    }
+
+    const messages = await this.prisma.message.findMany({
+      where: {
+        AND: [
+          {
+            contact_id: conversation.contact_id,
+          },
+          {
+            conversation_id: conversation_id,
+          },
+        ],
+      },
+    });
+
+    if (messages) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   findOne(id: number) {

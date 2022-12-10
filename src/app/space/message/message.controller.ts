@@ -21,7 +21,7 @@ import { Action } from 'src/ability/ability.factory';
 @ApiBearerAuth()
 @ApiTags('Message')
 @UseGuards(JwtAuthGuard, AbilitiesGuard)
-@Controller('space/:workspace_id/message')
+@Controller('space/:workspace_id/message/:conversation_id')
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
@@ -30,11 +30,11 @@ export class MessageController {
   @Post()
   async create(@Req() req, @Body() createMessageDto: CreateMessageDto) {
     const workspace_id = req.params.workspace_id;
+    const conversation_id = req.params.conversation_id;
     const user = req.user;
 
     const message = await this.messageService.create(
-      user.userId,
-      workspace_id,
+      { user_id: user.userId, workspace_id, conversation_id },
       createMessageDto,
     );
     if (message) {
@@ -48,9 +48,20 @@ export class MessageController {
     }
   }
 
+  @ApiOperation({ summary: 'Read messages' })
+  @CheckAbilities({ action: Action.Read, subject: 'WorkspaceContact' })
   @Get()
-  findAll() {
-    return this.messageService.findAll();
+  async findAll(@Req() req) {
+    const workspace_id = req.params.workspace_id;
+    const conversation_id = req.params.conversation_id;
+    const user = req.user;
+
+    const messages = await this.messageService.findAll({
+      user_id: user.userId,
+      conversation_id,
+      workspace_id,
+    });
+    return messages;
   }
 
   @Get(':id')
