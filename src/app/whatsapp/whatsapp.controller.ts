@@ -158,13 +158,15 @@ export class WhatsappController {
   async webhookPost(@Request() req, @Response() res) {
     try {
       const webhook_key = req.params.webhook_key;
+      if (!webhook_key) {
+        res.sendStatus(404);
+      }
       // Parse the request body from the POST
       const workspaceChannel = await this.whatsappService.findOne(webhook_key);
       let token = null;
       if (workspaceChannel) {
         token = workspaceChannel.access_token;
       } else {
-        // Return a '404 Not Found' if event is not from a WhatsApp API
         res.sendStatus(404);
       }
 
@@ -220,6 +222,9 @@ export class WhatsappController {
   async webhookGet(@Request() req, @Response() res) {
     try {
       const webhook_key = req.params.webhook_key;
+      if (!webhook_key) {
+        res.sendStatus(404);
+      }
       const workspaceChannel = await this.whatsappService.findOne(webhook_key);
       /**
        * UPDATE YOUR VERIFY TOKEN
