@@ -74,6 +74,9 @@ export class WhatsappService extends PrismaClient {
         where: {
           AND: [
             {
+              phone_number: from,
+            },
+            {
               workspace_id: whatsappChannel.workspace_id,
             },
             {
