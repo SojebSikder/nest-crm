@@ -185,6 +185,7 @@ export class WhatsappController {
           const phone_number_id =
             req.body.entry[0].changes[0].value.metadata.phone_number_id;
           const from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
+          const message_id = req.body.entry[0].changes[0].value.messages[0].id; // extract the message id from the webhook payload
           const msg_body =
             req.body.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
 
@@ -193,6 +194,8 @@ export class WhatsappController {
 
           // process whatsapp service
           const isProcessed = await this.whatsappService.processWhatsapp({
+            message_id: message_id,
+            body_text: msg_body,
             phone_number_id: phone_number_id,
             token: token,
             contactName: contactName,

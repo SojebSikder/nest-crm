@@ -43,7 +43,14 @@ export class WhatsappService extends PrismaClient {
     }
   }
 
-  async processWhatsapp({ phone_number_id, token, contactName, from }) {
+  async processWhatsapp({
+    phone_number_id,
+    token,
+    contactName,
+    from,
+    message_id,
+    body_text,
+  }) {
     // set whatsapp credentials
     WhatsappApi.config({
       phoneNumberId: phone_number_id,
@@ -78,6 +85,8 @@ export class WhatsappService extends PrismaClient {
       if (contact) {
         // save message
         return this.storeMessage({
+          message_id: message_id,
+          body_text: body_text,
           contact_id: contact.id,
           workspace_id: contact.workspace_id,
           tenant_id: contact.tenant_id,
@@ -109,6 +118,8 @@ export class WhatsappService extends PrismaClient {
             if (createContactWorkspaceChannel) {
               // save message
               return this.storeMessage({
+                message_id: message_id,
+                body_text: body_text,
                 contact_id: createContact.id,
                 workspace_id: createContact.workspace_id,
                 tenant_id: createContact.tenant_id,
@@ -127,6 +138,8 @@ export class WhatsappService extends PrismaClient {
   }
 
   async storeMessage({
+    message_id,
+    body_text,
     contact_id,
     workspace_id,
     tenant_id,
@@ -155,8 +168,8 @@ export class WhatsappService extends PrismaClient {
         // if message type is text
         const saveMessage = await MessageRepository.saveMessage({
           type: 'text',
-          message_id: '',
-          body_text: '',
+          message_id: message_id,
+          body_text: body_text,
           contact_id: contact_id,
           workspace_channel_id: isConversationExist.workspace_channel_id,
           conversation_id: isConversationExist.id,
