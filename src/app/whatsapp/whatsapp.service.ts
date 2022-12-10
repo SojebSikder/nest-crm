@@ -81,12 +81,31 @@ export class WhatsappService extends PrismaClient {
       if (contact) {
         // save message
       } else {
-        // create new contact
-        await this.prisma.contact.create({
-          data: {
-            fname: contactName,
-            phone_number: from,
-          },
+        await this.prisma.$transaction(async ($tx) => {
+          // create new contact
+          const createContact = await this.prisma.contact.create({
+            data: {
+              fname: contactName,
+              phone_number: from,
+            },
+          });
+          if (createContact) {
+            // create contact workspace channel relationship
+            const createContactWorkspaceChannel =
+              await this.prisma.contactWorkspaceChannel.create({
+                data: {
+                  contact_id: createContact.id,
+                  workspace_channel_id: whatsappChannel.id,
+                  workspace_id: whatsappChannel.workspace_id,
+                  tenant_id: whatsappChannel.tenant_id,
+                },
+              });
+            if (createContactWorkspaceChannel) {
+              return true;
+            } else {
+              return false;
+            }
+          }
         });
       }
       return true;
