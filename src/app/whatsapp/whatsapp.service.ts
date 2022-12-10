@@ -63,8 +63,6 @@ export class WhatsappService extends PrismaClient {
       },
     });
     if (whatsappChannel) {
-      console.log('channel exist');
-
       // check the contact existence
       const contact = await this.prisma.contact.findFirst({
         where: {
