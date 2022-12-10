@@ -87,6 +87,8 @@ export class WhatsappService extends PrismaClient {
             data: {
               fname: contactName,
               phone_number: from,
+              workspace_id: whatsappChannel.workspace_id,
+              tenant_id: whatsappChannel.tenant_id,
             },
           });
           if (createContact) {
