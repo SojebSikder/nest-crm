@@ -28,6 +28,22 @@ export class WhatsappService extends PrismaClient {
     }
   }
 
+  async verify_whatsapp(webhook_key: string) {
+    const workspaceChannel = await this.prisma.workspaceChannel.updateMany({
+      where: {
+        webhook_key: webhook_key,
+      },
+      data: {
+        verified: true,
+      },
+    });
+    if (workspaceChannel) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   async processWhatsapp({ phone_number_id, token, contactName, from }) {
     // set whatsapp credentials
     WhatsappApi.config({
