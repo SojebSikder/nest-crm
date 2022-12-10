@@ -521,7 +521,7 @@ model Message {
 
   type      String? @default("text")
   // type == text
-  text_body String?
+  body_text String?
 
   contact_id Int?
   contact    Contact? @relation(fields: [contact_id], references: [id], onDelete: Cascade)
