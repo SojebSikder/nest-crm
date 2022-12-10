@@ -1,27 +1,13 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Request,
-  Response,
-} from '@nestjs/common';
+import { Controller, Get, Post, Request, Response } from '@nestjs/common';
 import { WhatsappService } from './whatsapp.service';
-import { CreateWhatsappDto } from './dto/create-whatsapp.dto';
-import { UpdateWhatsappDto } from './dto/update-whatsapp.dto';
 import { SocketGateway } from 'src/socket/socket.gateway';
 import { WhatsappApi } from 'src/common/lib/whatsapp/Whatsapp';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 @Controller('whatsapp')
 export class WhatsappController {
   constructor(
     private readonly whatsappService: WhatsappService,
     private readonly socketGateway: SocketGateway,
-    private readonly prisma: PrismaService,
   ) {}
 
   @Get('test')
@@ -195,57 +181,21 @@ export class WhatsappController {
           const contactName =
             req.body.entry[0].changes[0].value.contacts[0].profile.name; // extract the message text from the webhook payload
 
-          // set whatsapp credentials
-          WhatsappApi.config({
-            phoneNumberId: phone_number_id,
+          // process whatsapp service
+          const isProcessed = await this.whatsappService.processWhatsapp({
+            phone_number_id: phone_number_id,
             token: token,
+            contactName: contactName,
+            from: from,
           });
-          // send message back to user
-          // await WhatsappApi.sendText({
-          //   to: from,
-          //   message: 'Ack: ' + msg_body,
-          // });
-          // find whatsapp channel via phone number id
-          // if channel type is whatsapp
-          const whatsappChannel = await this.prisma.workspaceChannel.findFirst({
-            where: {
-              phone_number_id: phone_number_id,
-            },
-          });
-          if (whatsappChannel) {
-            console.log('channel exist');
 
-            // check the contact existence
-            const contact = await this.prisma.contact.findFirst({
-              where: {
-                AND: [
-                  {
-                    workspace_id: whatsappChannel.workspace_id,
-                  },
-                  {
-                    tenant_id: whatsappChannel.tenant_id,
-                  },
-                ],
-              },
+          if (isProcessed) {
+            // emit message
+            this.socketGateway.server.emit('message', {
+              name: 'sikder',
+              text: msg_body,
             });
-            if (contact) {
-              // save message
-            } else {
-              // create new contact
-              await this.prisma.contact.create({
-                data: {
-                  fname: contactName,
-                  phone_number: from,
-                },
-              });
-            }
           }
-
-          // emit message
-          this.socketGateway.server.emit('message', {
-            name: 'sikder',
-            text: msg_body,
-          });
         }
         res.sendStatus(200);
       } else {
@@ -258,13 +208,18 @@ export class WhatsappController {
   }
 
   // public api
-  @Get('webhook')
-  webhookGet(@Request() req, @Response() res) {
+  @Get('webhook/:webhook_key')
+  async webhookGet(@Request() req, @Response() res) {
+    const webhook_key = req.params.webhook_key;
+    const workspaceChannel = await this.whatsappService.findOne(webhook_key);
     /**
      * UPDATE YOUR VERIFY TOKEN
      *This will be the Verify Token value when you set up webhook
      **/
-    const verify_token = 'sojeb';
+    let verify_token = null;
+    if (workspaceChannel) {
+      verify_token = workspaceChannel.verify_token;
+    }
 
     // Parse params from the webhook verification request
     const mode = req.query['hub.mode'];
@@ -283,33 +238,5 @@ export class WhatsappController {
         res.sendStatus(403);
       }
     }
-  }
-
-  @Post()
-  create(@Body() createWhatsappDto: CreateWhatsappDto) {
-    return this.whatsappService.create(createWhatsappDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.whatsappService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.whatsappService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateWhatsappDto: UpdateWhatsappDto,
-  ) {
-    return this.whatsappService.update(+id, updateWhatsappDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.whatsappService.remove(+id);
   }
 }
