@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { WhatsappApi } from 'src/common/lib/whatsapp/Whatsapp';
+import { MessageRepository } from 'src/common/repository/message/workspace-channel.repository';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateWhatsappDto } from './dto/create-whatsapp.dto';
-import { UpdateWhatsappDto } from './dto/update-whatsapp.dto';
 
 @Injectable()
 export class WhatsappService extends PrismaClient {
@@ -78,8 +77,15 @@ export class WhatsappService extends PrismaClient {
       });
       if (contact) {
         // save message
+        return this.storeMessage({
+          contact_id: contact.id,
+          workspace_id: contact.workspace_id,
+          tenant_id: contact.tenant_id,
+          workspace_channel_id: whatsappChannel.id,
+        });
       } else {
-        await this.prisma.$transaction(async ($tx) => {
+        // create contact
+        await this.prisma.$transaction(async () => {
           // create new contact
           const createContact = await this.prisma.contact.create({
             data: {
@@ -101,7 +107,13 @@ export class WhatsappService extends PrismaClient {
                 },
               });
             if (createContactWorkspaceChannel) {
-              return true;
+              // save message
+              return this.storeMessage({
+                contact_id: createContact.id,
+                workspace_id: createContact.workspace_id,
+                tenant_id: createContact.tenant_id,
+                workspace_channel_id: whatsappChannel.id,
+              });
             } else {
               return false;
             }
@@ -112,5 +124,65 @@ export class WhatsappService extends PrismaClient {
     } else {
       return false;
     }
+  }
+
+  async storeMessage({
+    contact_id,
+    workspace_id,
+    tenant_id,
+    workspace_channel_id,
+  }) {
+    return await this.prisma.$transaction(async () => {
+      // save message
+      // check if conversation exist
+      const isConversationExist = await this.prisma.conversation.findFirst({
+        where: {
+          AND: [
+            {
+              contact_id: contact_id,
+            },
+            {
+              workspace_id: workspace_id,
+            },
+            {
+              tenant_id: tenant_id,
+            },
+          ],
+        },
+      });
+      if (isConversationExist) {
+        // save message
+        // if message type is text
+        const saveMessage = await MessageRepository.saveMessage({
+          type: 'text',
+          message_id: '',
+          body_text: '',
+          contact_id: contact_id,
+          workspace_channel_id: isConversationExist.workspace_channel_id,
+          conversation_id: isConversationExist.id,
+        });
+        return saveMessage;
+      } else {
+        // create conversation
+        const createConversation = await this.prisma.conversation.create({
+          data: {
+            contact_id: contact_id,
+            workspace_channel_id: workspace_channel_id,
+            workspace_id: workspace_id,
+            tenant_id: tenant_id,
+          },
+        });
+        // save message
+        const saveMessage = await MessageRepository.saveMessage({
+          type: 'text',
+          message_id: '',
+          body_text: '',
+          contact_id: contact_id,
+          workspace_channel_id: createConversation.workspace_channel_id,
+          conversation_id: createConversation.id,
+        });
+        return saveMessage;
+      }
+    });
   }
 }
