@@ -61,10 +61,10 @@ import { ConversationModule } from './app/space/conversation/conversation.module
   ],
   controllers: [AppController],
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: ThrottlerGuard,
+    // },
     // disbling throttling for dev {
     //   provide: APP_GUARD,
     //   useClass: ThrottlerBehindProxyGuard,
