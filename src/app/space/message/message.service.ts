@@ -81,7 +81,7 @@ export class MessageService extends PrismaClient {
         },
       });
       if (message) {
-        return true;
+        return message;
       } else {
         return false;
       }

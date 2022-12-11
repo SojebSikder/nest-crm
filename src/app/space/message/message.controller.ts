@@ -40,6 +40,7 @@ export class MessageController {
     if (message) {
       return {
         success: true,
+        data: message,
       };
     } else {
       return {
