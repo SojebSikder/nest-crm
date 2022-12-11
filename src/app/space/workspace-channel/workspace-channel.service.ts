@@ -39,6 +39,7 @@ export class WorkspaceChannelService extends PrismaClient {
     // create record
     const workspaceChannel = await this.prisma.workspaceChannel.create({
       data: {
+        channel_name: 'WhatsApp Cloud API',
         // profile
         avatar: profileDetails.profile_picture_url,
         address: profileDetails.address,
