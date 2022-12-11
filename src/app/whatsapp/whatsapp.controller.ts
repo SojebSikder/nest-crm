@@ -192,29 +192,31 @@ export class WhatsappController {
           const contactName =
             req.body.entry[0].changes[0].value.contacts[0].profile.name; // extract the message text from the webhook payload
 
-          // process whatsapp service
-          const isProcessed = await this.whatsappService.processWhatsapp({
-            message_id: message_id,
-            body_text: msg_body,
-            phone_number_id: phone_number_id,
-            token: token,
-            contactName: contactName,
-            from: from,
-          });
-
-          if (isProcessed) {
-            const contact = await this.whatsappService.findContact({
-              phone_number_id,
-              from,
+          if (message_id) {
+            // process whatsapp service
+            const isProcessed = await this.whatsappService.processWhatsapp({
+              message_id: message_id,
+              body_text: msg_body,
+              phone_number_id: phone_number_id,
+              token: token,
+              contactName: contactName,
+              from: from,
             });
-            if (contact) {
-              const contact_id = contact.id;
-              // emit message
-              this.socketGateway.server.socketsJoin(`${contact_id}`);
-              this.socketGateway.server.to(`${contact_id}`).emit('message', {
-                message_id: message_id,
-                body_text: msg_body,
+
+            if (isProcessed) {
+              const contact = await this.whatsappService.findContact({
+                phone_number_id,
+                from,
               });
+              if (contact) {
+                const contact_id = contact.id;
+                // emit message
+                this.socketGateway.server.socketsJoin(`${contact_id}`);
+                this.socketGateway.server.to(`${contact_id}`).emit('message', {
+                  message_id: message_id,
+                  body_text: msg_body,
+                });
+              }
             }
           }
         }
