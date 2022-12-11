@@ -203,11 +203,19 @@ export class WhatsappController {
           });
 
           if (isProcessed) {
-            // emit message
-            this.socketGateway.server.emit('message', {
-              name: 'sikder',
-              text: msg_body,
+            const contact = await this.whatsappService.findContact({
+              phone_number_id,
+              from,
             });
+            if (contact) {
+              const contact_id = contact.id;
+              // emit message
+              this.socketGateway.server.socketsJoin(`${contact_id}`);
+              this.socketGateway.server.to(`${contact_id}`).emit('message', {
+                message_id: message_id,
+                body_text: msg_body,
+              });
+            }
           }
         }
         res.sendStatus(200);
