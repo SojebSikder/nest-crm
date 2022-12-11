@@ -37,7 +37,7 @@ export class ConversationController {
     const workspace_id = req.params.workspace_id;
     const user = req.user;
 
-    const conversations = this.conversationService.findAll(
+    const conversations = await this.conversationService.findAll(
       user.userId,
       workspace_id,
     );

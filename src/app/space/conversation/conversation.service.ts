@@ -19,6 +19,17 @@ export class ConversationService extends PrismaClient {
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
     // get all open conversations
     const conversations = await this.prisma.conversation.findMany({
+      include: {
+        contact: {
+          select: {
+            id: true,
+            fname: true,
+            lname: true,
+            email: true,
+            assignee_id: true,
+          },
+        },
+      },
       where: {
         AND: [
           {
@@ -41,6 +52,17 @@ export class ConversationService extends PrismaClient {
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
     // get all open conversations
     const conversation = await this.prisma.conversation.findMany({
+      include: {
+        contact: {
+          select: {
+            id: true,
+            fname: true,
+            lname: true,
+            email: true,
+            assignee_id: true,
+          },
+        },
+      },
       where: {
         AND: [
           {
