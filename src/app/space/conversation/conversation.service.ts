@@ -15,6 +15,7 @@ export class ConversationService extends PrismaClient {
   }
 
   async findAll(user_id, workspace_id) {
+    workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
     // get all open conversations
     const conversations = await this.prisma.conversation.findMany({
@@ -36,6 +37,7 @@ export class ConversationService extends PrismaClient {
   }
 
   async findOne(user_id, workspace_id, id: number) {
+    workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
     // get all open conversations
     const conversation = await this.prisma.conversation.findMany({
