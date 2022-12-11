@@ -72,6 +72,7 @@ export class MessageService extends PrismaClient {
       const message = this.prisma.message.create({
         data: {
           type: 'text',
+          message_from_workspace: true,
           message_id: message_id,
           body_text: createMessageDto.body_text,
           contact_id: conversation.contact_id,
@@ -136,7 +137,7 @@ export class MessageService extends PrismaClient {
     });
 
     if (messages) {
-      return true;
+      return messages;
     } else {
       return false;
     }

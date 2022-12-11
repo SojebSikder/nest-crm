@@ -61,7 +61,13 @@ export class MessageController {
       conversation_id,
       workspace_id,
     });
-    return messages;
+    if (messages) {
+      return {
+        data: messages,
+      };
+    } else {
+      return [];
+    }
   }
 
   @Get(':id')

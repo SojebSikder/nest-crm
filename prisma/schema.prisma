@@ -517,6 +517,9 @@ model Message {
   updated_at DateTime  @updatedAt
   read_at    DateTime?
 
+  // message sent from workspace
+  message_from_workspace Boolean? @default(false)
+
   messaging_product String? @default("whatsapp")
   message_id        String?
 
