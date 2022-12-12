@@ -18,6 +18,7 @@ export type AppSubjects = Subjects<{
   WorkspaceUser: User;
   WorkspaceContact: Contact;
   WorkspaceChannel: WorkspaceChannel;
+  WorkspaceDataBackup: Contact;
 }>;
 
 type AppAbility = PureAbility<[string, AppSubjects], PrismaQuery>;

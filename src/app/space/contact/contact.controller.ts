@@ -8,13 +8,19 @@ import {
   Delete,
   UseGuards,
   Request,
+  UseInterceptors,
+  ParseFilePipe,
+  UploadedFile,
+  FileTypeValidator,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
   ApiOperation,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { diskStorage } from 'multer';
 import { CheckAbilities } from 'src/ability/abilities.decorator';
 import { AbilitiesGuard } from 'src/ability/abilities.guard';
 import { Action } from 'src/ability/ability.factory';
@@ -54,6 +60,39 @@ export class ContactController {
           success: false,
         };
       }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // import contact
+  // @ApiOperation({ summary: 'Import contact' })
+  // @CheckAbilities({ action: Action.Create, subject: 'WorkspaceDataBackup' })
+  @Post('import')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './files',
+      }),
+    }),
+  )
+  async import(
+    @Request() req,
+    @Body() importContactDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          // new MaxFileSizeValidator({ maxSize: 1000 }),
+          new FileTypeValidator({ fileType: 'csv' }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
+    try {
+      // const workspace_id = req.params.workspace_id;
+      // const user = req.user;
+      console.log(file);
     } catch (error) {
       throw error;
     }
