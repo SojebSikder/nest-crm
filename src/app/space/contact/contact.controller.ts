@@ -22,7 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { readFileSync } from 'fs';
 import { diskStorage } from 'multer';
-import Papa from 'papaparse';
+import * as Papa from 'papaparse';
 import { CheckAbilities } from 'src/ability/abilities.decorator';
 import { AbilitiesGuard } from 'src/ability/abilities.guard';
 import { Action } from 'src/ability/ability.factory';
@@ -96,12 +96,13 @@ export class ContactController {
       // const user = req.user;
       const csvFile = readFileSync(`files/${file.filename}`);
       const csvData = csvFile.toString();
-      console.log(csvData);
-      // const parsedCsv = Papa.parse(csvData, {
-      //   header: true,
-      //   skipEmptyLines: true,
-      //   complete: (results) => results.data,
-      // });
+
+      const parsedCsv = Papa.parse(csvData, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => results.data,
+      });
+      console.log(parsedCsv);
     } catch (error) {
       throw error;
     }
