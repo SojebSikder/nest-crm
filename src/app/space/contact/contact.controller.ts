@@ -20,7 +20,9 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { readFileSync } from 'fs';
 import { diskStorage } from 'multer';
+import Papa from 'papaparse';
 import { CheckAbilities } from 'src/ability/abilities.decorator';
 import { AbilitiesGuard } from 'src/ability/abilities.guard';
 import { Action } from 'src/ability/ability.factory';
@@ -92,7 +94,14 @@ export class ContactController {
     try {
       // const workspace_id = req.params.workspace_id;
       // const user = req.user;
-      console.log(file);
+      const csvFile = readFileSync(file.filename);
+      const csvData = csvFile.toString();
+      console.log(csvData);
+      const parsedCsv = Papa.parse(csvData, {
+        header: true,
+        skipEmptyLines: true,
+        complete: (results) => results.data,
+      });
     } catch (error) {
       throw error;
     }
