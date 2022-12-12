@@ -27,7 +27,7 @@ export class WhatsappService extends PrismaClient {
     }
   }
 
-  async findContact({ phone_number_id, from }) {
+  async findConversation({ phone_number_id, from }) {
     const whatsappChannel = await this.prisma.workspaceChannel.findFirst({
       where: {
         phone_number_id: phone_number_id,
@@ -51,7 +51,22 @@ export class WhatsappService extends PrismaClient {
         },
       });
       if (contact) {
-        return contact;
+        const conversation = await this.prisma.conversation.findFirst({
+          where: {
+            AND: [
+              {
+                contact_id: contact.id,
+              },
+              {
+                workspace_id: contact.workspace_id,
+              },
+              {
+                tenant_id: contact.tenant_id,
+              },
+            ],
+          },
+        });
+        return conversation;
       } else {
         return false;
       }

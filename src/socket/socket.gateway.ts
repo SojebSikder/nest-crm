@@ -3,6 +3,10 @@ import {
   SubscribeMessage,
   MessageBody,
   WebSocketServer,
+  ConnectedSocket,
+  OnGatewayConnection,
+  OnGatewayInit,
+  OnGatewayDisconnect,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { SocketService } from './socket.service';
@@ -14,10 +18,22 @@ import { UpdateSocketDto } from './dto/update-socket.dto';
     origin: '*',
   },
 })
-export class SocketGateway {
+export class SocketGateway
+  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
+{
   @WebSocketServer()
   server: Server;
   constructor(private readonly socketService: SocketService) {}
+  afterInit(server: Server) {
+    console.log('Websocket server started');
+  }
+
+  handleConnection(client: Socket, ...args: any[]) {
+    console.log('new connection!', client.id);
+  }
+  handleDisconnect(client: any) {
+    console.log('client disconnected!', client.id);
+  }
 
   @SubscribeMessage('createSocket')
   create(@MessageBody() createSocketDto: CreateSocketDto) {

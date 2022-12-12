@@ -204,18 +204,23 @@ export class WhatsappController {
             });
 
             if (isProcessed) {
-              const contact = await this.whatsappService.findContact({
+              const conversation = await this.whatsappService.findConversation({
                 phone_number_id,
                 from,
               });
-              if (contact) {
-                const contact_id = contact.id;
+              if (conversation) {
+                const conversation_id = conversation.id;
                 // emit message
-                this.socketGateway.server.socketsJoin(`${contact_id}`);
-                this.socketGateway.server.to(`${contact_id}`).emit('message', {
-                  message_id: message_id,
-                  body_text: msg_body,
-                });
+
+                const data = {
+                  message: {
+                    message_id: message_id,
+                    body_text: msg_body,
+                    from: from,
+                    conversation_id: conversation_id,
+                  },
+                };
+                this.socketGateway.server.emit('message', data);
               }
             }
           }
