@@ -94,14 +94,14 @@ export class ContactController {
     try {
       // const workspace_id = req.params.workspace_id;
       // const user = req.user;
-      const csvFile = readFileSync(file.filename);
+      const csvFile = readFileSync(`files/${file.filename}`);
       const csvData = csvFile.toString();
       console.log(csvData);
-      const parsedCsv = Papa.parse(csvData, {
-        header: true,
-        skipEmptyLines: true,
-        complete: (results) => results.data,
-      });
+      // const parsedCsv = Papa.parse(csvData, {
+      //   header: true,
+      //   skipEmptyLines: true,
+      //   complete: (results) => results.data,
+      // });
     } catch (error) {
       throw error;
     }
