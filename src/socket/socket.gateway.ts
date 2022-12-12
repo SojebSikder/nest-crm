@@ -35,6 +35,11 @@ export class SocketGateway
     console.log('client disconnected!', client.id);
   }
 
+  @SubscribeMessage('send_message')
+  listenForMessages(@MessageBody() data: string) {
+    this.server.emit('message', data);
+  }
+
   @SubscribeMessage('createSocket')
   create(@MessageBody() createSocketDto: CreateSocketDto) {
     return this.socketService.create(createSocketDto);
