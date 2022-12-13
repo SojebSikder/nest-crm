@@ -7,11 +7,12 @@ import {
   Param,
   Delete,
   UseGuards,
-  Request,
   UseInterceptors,
   ParseFilePipe,
   UploadedFile,
   FileTypeValidator,
+  Req,
+  Res,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
@@ -20,13 +21,15 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { readFileSync } from 'fs';
+import { Response } from 'express';
+import { createReadStream, readFileSync } from 'fs';
 import { diskStorage } from 'multer';
 import * as Papa from 'papaparse';
 import { CheckAbilities } from 'src/ability/abilities.decorator';
 import { AbilitiesGuard } from 'src/ability/abilities.guard';
 import { Action } from 'src/ability/ability.factory';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Readable } from 'stream';
 import { ContactService } from './contact.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
@@ -42,7 +45,7 @@ export class ContactController {
   // @ApiResponse({ status: 403, description: 'Forbidden.' })
   @CheckAbilities({ action: Action.Create, subject: 'WorkspaceContact' })
   @Post()
-  async create(@Request() req, @Body() createContactDto: CreateContactDto) {
+  async create(@Req() req, @Body() createContactDto: CreateContactDto) {
     try {
       const workspace_id = req.params.workspace_id;
       const user = req.user;
@@ -79,7 +82,7 @@ export class ContactController {
     }),
   )
   async import(
-    @Request() req,
+    @Req() req,
     @Body() importContactDto,
     @UploadedFile(
       new ParseFilePipe({
@@ -112,7 +115,7 @@ export class ContactController {
   @ApiOperation({ summary: 'Export contact' })
   @CheckAbilities({ action: Action.Read, subject: 'WorkspaceDataBackup' })
   @Get('export')
-  async export(@Request() req) {
+  async export(@Req() req, @Res() res: Response) {
     try {
       const workspace_id = req.params.workspace_id;
       const user = req.user;
@@ -141,7 +144,20 @@ export class ContactController {
         ],
         data: mappedContacts,
       });
-      return parsedCsv;
+      // const file = createReadStream(parsedCsv);
+      // file.pipe(res);
+
+      const buffer = Buffer.from(parsedCsv, 'base64');
+      const readable = new Readable();
+      // readable._read = () => {
+      //   //
+      // }; // _read is required but you can noop it
+      readable.push(buffer);
+      readable.push(null);
+
+      readable.pipe(res); // consume the stream
+
+      // return parsedCsv;
     } catch (error) {
       throw error;
     }
@@ -149,7 +165,7 @@ export class ContactController {
 
   @CheckAbilities({ action: Action.Read, subject: 'WorkspaceContact' })
   @Get()
-  async findAll(@Request() req) {
+  async findAll(@Req() req) {
     const workspace_id = req.params.workspace_id;
     const user = req.user;
     const contacts = await this.contactService.findAll(
