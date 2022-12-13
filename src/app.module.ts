@@ -25,6 +25,7 @@ import { WorkspaceUserModule } from './app/space/workspace-user/workspace-user.m
 import { WorkspaceChannelModule } from './app/space/workspace-channel/workspace-channel.module';
 import { MessageModule } from './app/space/message/message.module';
 import { ConversationModule } from './app/space/conversation/conversation.module';
+import { PermissionModule } from './app/space/permission/permission.module';
 
 @Module({
   imports: [
@@ -58,6 +59,7 @@ import { ConversationModule } from './app/space/conversation/conversation.module
     WorkspaceUserModule,
     WorkspaceChannelModule,
     ConversationModule,
+    PermissionModule,
   ],
   controllers: [AppController],
   providers: [

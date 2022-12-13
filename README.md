@@ -12,8 +12,6 @@ yarn install
 
 Seed dummy data to database
 
-**(// comment out prisma middleware inside prisma module service, when seeding data using command line)**
-
 ```
 yarn cmd seed
 ```

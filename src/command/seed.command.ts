@@ -21,10 +21,10 @@ export class SeedCommand extends CommandRunner {
 
       // begin transaaction
       await this.prisma.$transaction(async ($tx) => {
-        await this.roleSeed();
-        await this.permissionSeed();
-        await this.userSeed();
-        await this.roleUserSeed();
+        // await this.roleSeed();
+        // await this.permissionSeed();
+        // await this.userSeed();
+        // await this.roleUserSeed();
         await this.permissionRoleSeed();
       });
 
@@ -80,6 +80,10 @@ export class SeedCommand extends CommandRunner {
       { title: 'workspace_management', subject: 'Workspace' },
       { title: 'workspace_user_management', subject: 'WorkspaceUser' },
       { title: 'workspace_team_management', subject: 'WorkspaceTeam' },
+      {
+        title: 'workspace_conversation_management',
+        subject: 'WorkspaceConversation',
+      },
       { title: 'workspace_channel_management', subject: 'WorkspaceChannel' },
       { title: 'workspace_snippet_management', subject: 'WorkspaceSnippet' },
       { title: 'workspace_file_management', subject: 'WorkspaceFile' },
@@ -151,25 +155,26 @@ export class SeedCommand extends CommandRunner {
 
   async permissionRoleSeed() {
     const all_permissions = await this.prisma.permission.findMany();
-    const admin_permissions = all_permissions.filter(function (permission) {
-      return permission.title.substring(0, 18) == 'system_tenant_management_';
+    const su_admin_permissions = all_permissions.filter(function (permission) {
+      return permission.title.substring(0, 25) == 'system_tenant_management_';
     });
 
+    // su admin permission
     const adminPermissionRoleArray = [];
-    for (const admin_permission of admin_permissions) {
+    for (const su_admin_permission of su_admin_permissions) {
       adminPermissionRoleArray.push({
         role_id: 1,
-        permission_id: admin_permission.id,
+        permission_id: su_admin_permission.id,
       });
     }
     await this.prisma.permissionRole.createMany({
       data: adminPermissionRoleArray,
     });
-    //
+    // admin
     const tenant_admin_permissions = all_permissions.filter(function (
       permission,
     ) {
-      return permission.title.substring(0, 18) != 'system_tenant_management_';
+      return permission.title.substring(0, 25) != 'system_tenant_management_';
     });
 
     const tenantAdminPermissionRoleArray = [];
@@ -182,22 +187,18 @@ export class SeedCommand extends CommandRunner {
     await this.prisma.permissionRole.createMany({
       data: tenantAdminPermissionRoleArray,
     });
-    //
-    const tenant_user_permissions = all_permissions.filter(function (
-      permission,
-    ) {
+    // agent
+    const agent_permissions = all_permissions.filter(function (permission) {
       return (
-        permission.title.substring(0, 17) == 'asset_management_' ||
-        permission.title.substring(0, 17) == 'image_management_' ||
-        permission.title.substring(0, 20) == 'document_management_' ||
-        permission.title.substring(0, 16) == 'note_management_'
+        permission.title.substring(0, 17) ==
+        'workspace_conversation_management_'
       );
     });
 
     const tenantUserPermissionRoleArray = [];
-    for (const user_permission of tenant_user_permissions) {
+    for (const user_permission of agent_permissions) {
       tenantUserPermissionRoleArray.push({
-        role_id: 3,
+        role_id: 8,
         permission_id: user_permission.id,
       });
     }
@@ -205,6 +206,29 @@ export class SeedCommand extends CommandRunner {
       data: tenantUserPermissionRoleArray,
     });
     //
+    // //
+    // const tenant_user_permissions = all_permissions.filter(function (
+    //   permission,
+    // ) {
+    //   return (
+    //     permission.title.substring(0, 17) == 'asset_management_' ||
+    //     permission.title.substring(0, 17) == 'image_management_' ||
+    //     permission.title.substring(0, 20) == 'document_management_' ||
+    //     permission.title.substring(0, 16) == 'note_management_'
+    //   );
+    // });
+
+    // const tenantUserPermissionRoleArray = [];
+    // for (const user_permission of tenant_user_permissions) {
+    //   tenantUserPermissionRoleArray.push({
+    //     role_id: 3,
+    //     permission_id: user_permission.id,
+    //   });
+    // }
+    // await this.prisma.permissionRole.createMany({
+    //   data: tenantUserPermissionRoleArray,
+    // });
+    // //
   }
 
   async roleSeed() {
