@@ -155,6 +155,10 @@ export class ContactController {
       readable.push(buffer);
       readable.push(null);
 
+      res.set({
+        'Content-Type': 'csv',
+        'Content-Disposition': 'attachment; filename="data.csv"',
+      });
       readable.pipe(res); // consume the stream
 
       // return parsedCsv;
