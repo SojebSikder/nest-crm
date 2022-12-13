@@ -68,8 +68,8 @@ export class ContactController {
   }
 
   // import contact
-  // @ApiOperation({ summary: 'Import contact' })
-  // @CheckAbilities({ action: Action.Create, subject: 'WorkspaceDataBackup' })
+  @ApiOperation({ summary: 'Import contact' })
+  @CheckAbilities({ action: Action.Create, subject: 'WorkspaceDataBackup' })
   @Post('import')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -103,6 +103,45 @@ export class ContactController {
         complete: (results) => results.data,
       });
       console.log(parsedCsv);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // export contact
+  @ApiOperation({ summary: 'Export contact' })
+  @CheckAbilities({ action: Action.Read, subject: 'WorkspaceDataBackup' })
+  @Get('export')
+  async export(@Request() req) {
+    try {
+      const workspace_id = req.params.workspace_id;
+      const user = req.user;
+      const contacts = await this.contactService.findAll(
+        user.userId,
+        workspace_id,
+      );
+
+      const mappedContacts = contacts.map((contact) => {
+        return [
+          contact.fname,
+          contact.lname,
+          contact.phone_number,
+          contact.email,
+          contact.assignee && contact.assignee.email,
+        ];
+      });
+
+      const parsedCsv = Papa.unparse({
+        fields: [
+          'First Name',
+          'Last Name',
+          'Phone Number',
+          'Email',
+          'Assignee',
+        ],
+        data: mappedContacts,
+      });
+      return parsedCsv;
     } catch (error) {
       throw error;
     }

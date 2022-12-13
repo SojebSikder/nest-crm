@@ -10,6 +10,7 @@ export class ContactService extends PrismaClient {
   constructor(private prisma: PrismaService) {
     super();
   }
+
   async create(
     user_id: number,
     workspace_id: number,
