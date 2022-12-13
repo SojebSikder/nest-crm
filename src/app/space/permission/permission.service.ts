@@ -16,7 +16,7 @@ export class PermissionService extends PrismaClient {
       },
       include: {
         permission_roles: {
-          include: {
+          select: {
             permission: {
               select: {
                 id: true,
