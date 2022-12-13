@@ -13,23 +13,18 @@ import {
   FileTypeValidator,
   Req,
   Res,
+  StreamableFile,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import {
-  ApiBearerAuth,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
-import { createReadStream, readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { diskStorage } from 'multer';
 import * as Papa from 'papaparse';
 import { CheckAbilities } from 'src/ability/abilities.decorator';
 import { AbilitiesGuard } from 'src/ability/abilities.guard';
 import { Action } from 'src/ability/ability.factory';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { Readable } from 'stream';
 import { ContactService } from './contact.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
@@ -115,7 +110,7 @@ export class ContactController {
   @ApiOperation({ summary: 'Export contact' })
   @CheckAbilities({ action: Action.Read, subject: 'WorkspaceDataBackup' })
   @Get('export')
-  async export(@Req() req, @Res() res: Response) {
+  async export(@Req() req, @Res({ passthrough: true }) res: Response) {
     try {
       const workspace_id = req.params.workspace_id;
       const user = req.user;
@@ -144,24 +139,14 @@ export class ContactController {
         ],
         data: mappedContacts,
       });
-      // const file = createReadStream(parsedCsv);
-      // file.pipe(res);
 
-      const buffer = Buffer.from(parsedCsv, 'base64');
-      const readable = new Readable();
-      // readable._read = () => {
-      //   //
-      // }; // _read is required but you can noop it
-      readable.push(buffer);
-      readable.push(null);
+      const buffer = Buffer.from(parsedCsv);
 
       res.set({
-        'Content-Type': 'csv',
+        'Content-Type': 'application/csv',
         'Content-Disposition': 'attachment; filename="data.csv"',
       });
-      readable.pipe(res); // consume the stream
-
-      // return parsedCsv;
+      return new StreamableFile(buffer);
     } catch (error) {
       throw error;
     }
