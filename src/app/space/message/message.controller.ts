@@ -26,7 +26,7 @@ export class MessageController {
   constructor(private readonly messageService: MessageService) {}
 
   @ApiOperation({ summary: 'Send message' })
-  @CheckAbilities({ action: Action.Create, subject: 'WorkspaceContact' })
+  @CheckAbilities({ action: Action.Create, subject: 'WorkspaceConversation' })
   @Post()
   async create(@Req() req, @Body() createMessageDto: CreateMessageDto) {
     const workspace_id = req.params.workspace_id;
@@ -50,7 +50,7 @@ export class MessageController {
   }
 
   @ApiOperation({ summary: 'Read messages' })
-  @CheckAbilities({ action: Action.Read, subject: 'WorkspaceContact' })
+  @CheckAbilities({ action: Action.Read, subject: 'WorkspaceConversation' })
   @Get()
   async findAll(@Req() req) {
     const workspace_id = req.params.workspace_id;

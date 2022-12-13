@@ -21,10 +21,10 @@ export class SeedCommand extends CommandRunner {
 
       // begin transaaction
       await this.prisma.$transaction(async ($tx) => {
-        // await this.roleSeed();
-        // await this.permissionSeed();
-        // await this.userSeed();
-        // await this.roleUserSeed();
+        await this.roleSeed();
+        await this.permissionSeed();
+        await this.userSeed();
+        await this.roleUserSeed();
         await this.permissionRoleSeed();
       });
 

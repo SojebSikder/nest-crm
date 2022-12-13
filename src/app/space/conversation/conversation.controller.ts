@@ -31,7 +31,7 @@ export class ConversationController {
   }
 
   @ApiOperation({ summary: 'Read conversations' })
-  @CheckAbilities({ action: Action.Read, subject: 'WorkspaceContact' })
+  @CheckAbilities({ action: Action.Read, subject: 'WorkspaceConversation' })
   @Get()
   async findAll(@Req() req) {
     const workspace_id = req.params.workspace_id;
@@ -47,7 +47,7 @@ export class ConversationController {
   }
 
   @ApiOperation({ summary: 'Show conversation' })
-  @CheckAbilities({ action: Action.Show, subject: 'WorkspaceContact' })
+  @CheckAbilities({ action: Action.Show, subject: 'WorkspaceConversation' })
   @Get(':id')
   async findOne(@Req() req, @Param('id') id: string) {
     const workspace_id = req.params.workspace_id;
