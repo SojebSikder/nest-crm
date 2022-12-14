@@ -162,7 +162,7 @@ export class UserRepository {
   }) {
     try {
       // begin transaction
-      await prisma.$transaction(async (tx) => {
+      return await prisma.$transaction(async (tx) => {
         // create a organization
         const organization = await prisma.organization.create({
           data: {
@@ -209,6 +209,8 @@ export class UserRepository {
           } else {
             return false;
           }
+        } else {
+          return false;
         }
       });
     } catch (error) {

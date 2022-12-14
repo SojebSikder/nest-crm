@@ -10,14 +10,51 @@ const Stripe = new stripe(STRIPE_SECRET_KEY, {
  * Stripe payment method helper
  */
 export class StripeMethod {
+  static async createCheckoutSession(customer: string, price: string) {
+    const success_url = `${
+      appConfig().app.url
+    }/success?session_id={CHECKOUT_SESSION_ID}`;
+    const cancel_url = `${appConfig().app.url}/failed`;
+
+    const session = await Stripe.checkout.sessions.create({
+      mode: 'subscription',
+      payment_method_types: ['card'],
+      customer: customer,
+      line_items: [
+        {
+          price: price,
+          quantity: 1,
+        },
+      ],
+      subscription_data: {
+        trial_period_days: 14,
+      },
+      success_url: success_url,
+      cancel_url: cancel_url,
+    });
+    return session;
+  }
   /**
    * Add customer to stripe
    * @param email
    * @returns
    */
-  async addNewCustomer(email: string) {
+  static async addNewCustomer({
+    user_id,
+    name,
+    email,
+  }: {
+    user_id: number;
+    name: string;
+    email: string;
+  }) {
     const customer = await Stripe.customers.create({
+      name: name,
       email: email,
+
+      metadata: {
+        user_id: user_id,
+      },
       description: 'New Customer',
     });
     return customer;
@@ -28,7 +65,7 @@ export class StripeMethod {
    * @param id
    * @returns
    */
-  async getCustomerByID(id: string) {
+  static async getCustomerByID(id: string) {
     const customer = await Stripe.customers.retrieve(id);
     return customer;
   }
