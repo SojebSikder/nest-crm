@@ -34,6 +34,23 @@ export class SeedCommand extends CommandRunner {
     }
   }
 
+  //---- subscription plan section ----
+  async planSeed() {
+    // system admin, user id: 1
+    await this.prisma.plan.createMany({
+      data: [
+        {
+          name: 'Team',
+          price_per_month: 99,
+        },
+        {
+          name: 'Business',
+          price_per_month: 299,
+        },
+      ],
+    });
+  }
+  //---- user section ----
   async userSeed() {
     // system admin, user id: 1
     await UserRepository.createSuAdminUser({

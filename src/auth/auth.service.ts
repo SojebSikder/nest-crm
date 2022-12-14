@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client';
 //internal imports
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserRepository } from 'src/common/repository/user/user.repository';
-import { StripeMethod } from 'src/common/lib/Payment/Stripe';
+import { StripeMethod } from 'src/common/lib/Payment/stripe/Stripe';
 
 @Injectable()
 export class AuthService extends PrismaClient {

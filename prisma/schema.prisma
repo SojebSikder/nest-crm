@@ -576,3 +576,28 @@ model Country {
 }
 
 // subscription model
+// list of plans
+model Plan {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  status     Int?     @default(1)
+
+  name            String
+  price_per_month Decimal
+}
+
+// user subscription
+model Subscription {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  status     Int?     @default(1)
+
+  client_id Int
+  plan_id   Int
+  start_at  DateTime
+  end_at    DateTime
+
+  payment_method String?
+}

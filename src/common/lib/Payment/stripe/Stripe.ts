@@ -6,6 +6,7 @@ const Stripe = new stripe(STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15',
 });
 
+const STRIPE_WEBHOOK_SECRET = 'wh_xx';
 /**
  * Stripe payment method helper
  */
@@ -68,5 +69,14 @@ export class StripeMethod {
   static async getCustomerByID(id: string) {
     const customer = await Stripe.customers.retrieve(id);
     return customer;
+  }
+
+  static createWebhook(rawBody: string, sig: string) {
+    const event = Stripe.webhooks.constructEvent(
+      rawBody,
+      sig,
+      STRIPE_WEBHOOK_SECRET,
+    );
+    return event;
   }
 }
