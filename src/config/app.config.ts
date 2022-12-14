@@ -29,4 +29,11 @@ export default () => ({
       callback: process.env.FACEBOOK_CALLBACK_URL,
     },
   },
+
+  payment: {
+    stripe: {
+      publishable_key: process.env.STRIPE_PUBLISHABLE_KEY,
+      secret_key: process.env.STRIPE_SECRET_KEY,
+    },
+  },
 });
