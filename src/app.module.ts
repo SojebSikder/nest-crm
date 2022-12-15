@@ -26,6 +26,8 @@ import { WorkspaceChannelModule } from './app/space/workspace-channel/workspace-
 import { MessageModule } from './app/space/message/message.module';
 import { ConversationModule } from './app/space/conversation/conversation.module';
 import { PermissionModule } from './app/space/permission/permission.module';
+import { StripeModule } from './app/stripe/stripe.module';
+import { BillingModule } from './app/organization/billing/billing.module';
 
 @Module({
   imports: [
@@ -60,6 +62,8 @@ import { PermissionModule } from './app/space/permission/permission.module';
     WorkspaceChannelModule,
     ConversationModule,
     PermissionModule,
+    StripeModule,
+    BillingModule,
   ],
   controllers: [AppController],
   providers: [

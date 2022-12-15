@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Request, Response } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { WhatsappService } from './whatsapp.service';
 import { SocketGateway } from 'src/socket/socket.gateway';
 import { WhatsappApi } from 'src/common/lib/whatsapp/Whatsapp';
@@ -155,7 +155,7 @@ export class WhatsappController {
 
   // public api
   @Post('webhook/:webhook_key')
-  async webhookPost(@Request() req, @Response() res) {
+  async webhookPost(@Req() req, @Res() res) {
     try {
       const webhook_key = req.params.webhook_key;
       if (!webhook_key) {
@@ -237,7 +237,7 @@ export class WhatsappController {
 
   // public api
   @Get('webhook/:webhook_key')
-  async webhookGet(@Request() req, @Response() res) {
+  async webhookGet(@Req() req, @Res() res) {
     try {
       const webhook_key = req.params.webhook_key;
       if (!webhook_key) {

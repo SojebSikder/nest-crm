@@ -71,7 +71,20 @@ export class StripeMethod {
     return customer;
   }
 
-  static createWebhook(rawBody: string, sig: string) {
+  /**
+   *
+   * @param customer
+   * @returns
+   */
+  static async createBillingSession(customer) {
+    const session = await Stripe.billingPortal.sessions.create({
+      customer: customer,
+      return_url: appConfig().app.url,
+    });
+    return session;
+  }
+
+  static createWebhook(rawBody: string, sig: string | string[]) {
     const event = Stripe.webhooks.constructEvent(
       rawBody,
       sig,

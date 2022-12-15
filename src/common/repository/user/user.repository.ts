@@ -38,6 +38,23 @@ export class UserRepository {
     return user;
   }
 
+  static async getUserByBillingID(billingID) {
+    const user = await prisma.user.findFirst({
+      where: {
+        billing_id: billingID,
+      },
+      include: {
+        tenant: true,
+        subscriptions: {
+          include: {
+            plan: true,
+          },
+        },
+      },
+    });
+    return user;
+  }
+
   /**
    * get user tenant id
    * @returns
