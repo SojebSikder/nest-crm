@@ -26,6 +26,8 @@ export class SeedCommand extends CommandRunner {
         await this.userSeed();
         await this.roleUserSeed();
         await this.permissionRoleSeed();
+        // subscription and plan seed
+        await this.planSeed();
       });
 
       console.log('Seeding done.');
@@ -41,10 +43,12 @@ export class SeedCommand extends CommandRunner {
       data: [
         {
           name: 'Team',
+          plan_price_id: 'price_1MEvhxJ1sD6uaGBLDQ2DqVEK',
           price_per_month: 99,
         },
         {
           name: 'Business',
+          plan_price_id: 'price_1MEviEJ1sD6uaGBLIbqAWP2Z',
           price_per_month: 299,
         },
       ],

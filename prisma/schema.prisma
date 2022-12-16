@@ -38,6 +38,7 @@ model Organization {
   workspace_channels         WorkspaceChannel[]
   contact_workspace_channels ContactWorkspaceChannel[]
   conversations              Conversation[]
+  Subscription               Subscription[]
 
   @@map("organizations")
 }
@@ -591,6 +592,8 @@ model Plan {
   status     Int?     @default(1)
 
   name            String
+  // stripe product price id
+  plan_price_id   String?
   price_per_month Decimal
 
   subscriptions Subscription[]
@@ -605,8 +608,8 @@ model Subscription {
   updated_at DateTime @default(now())
   status     Int?     @default(1)
 
-  client_id Int
-  client    User? @relation(fields: [client_id], references: [id], onDelete: Cascade)
+  tenant_id Int
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   plan_id Int
   plan    Plan? @relation(fields: [plan_id], references: [id], onDelete: Cascade)
@@ -615,6 +618,8 @@ model Subscription {
   end_at   DateTime
 
   payment_method String?
+  User           User?   @relation(fields: [userId], references: [id])
+  userId         Int?
 
   @@map("subscriptions")
 }

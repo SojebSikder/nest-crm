@@ -14,12 +14,12 @@ import { StripeMethod } from 'src/common/lib/Payment/stripe/Stripe';
 import { Request, Response } from 'express';
 import Stripe from 'stripe';
 import { UserRepository } from 'src/common/repository/user/user.repository';
+import { DateHelper } from 'src/common/helper/date.helper';
 
 @Controller('stripe')
 export class StripeController {
   constructor(private readonly stripeService: StripeService) {}
 
-  // TODO
   @Post('webhook')
   async create(@Req() req: Request, @Res() res: Response) {
     const sig = req.headers['stripe-signature'];
@@ -40,64 +40,76 @@ export class StripeController {
         break;
       case 'customer.subscription.created': {
         const user = await UserRepository.getUserByBillingID(data.customer);
+        const plan = await this.stripeService.plan.findFirst({
+          where: {
+            AND: [
+              {
+                plan_price_id: data.plan.id,
+              },
+              {
+                status: 1,
+              },
+            ],
+          },
+        });
 
-        if (data.plan.id === process.env.PRODUCT_BASIC) {
-          console.log('You are talking about basic product');
-          user.plan = 'basic';
+        if (plan) {
+          // add subscription
+          const start_date = DateHelper.now();
+          const end_date = DateHelper.add(30, 'days').toISOString();
+          await this.stripeService.subscription.create({
+            data: {
+              tenant_id: user.tenant_id,
+              plan_id: plan.id,
+              start_at: start_date,
+              end_at: end_date,
+              payment_method: 'stripe',
+            },
+          });
         }
-
-        if (data.plan.id === process.env.PRODUCT_PRO) {
-          console.log('You are talking about pro product');
-          user.plan = 'pro';
-        }
-
-        const hasTrial = true;
-        const endDate = new Date(data.current_period_end * 1000);
-
-        await this.stripeService.update(user.id, { trial_end_at: endDate });
-
         break;
       }
       case 'customer.subscription.updated': {
         // started trial
-        const user = await UserService.getUserByBillingID(data.customer);
+        const user = await UserRepository.getUserByBillingID(data.customer);
 
-        if (data.plan.id == process.env.PRODUCT_BASIC) {
-          console.log('You are talking about basic product');
-          user.plan = 'basic';
+        const plan = await this.stripeService.plan.findFirst({
+          where: {
+            AND: [
+              {
+                plan_price_id: data.plan.id,
+              },
+              {
+                status: 1,
+              },
+            ],
+          },
+        });
+
+        if (plan) {
+          if (data.canceled_at) {
+            // cancelled
+            await this.stripeService.subscription.deleteMany({
+              where: {
+                tenant_id: user.tenant_id,
+              },
+            });
+          } else {
+            // add subscription
+            const start_date = DateHelper.now();
+            const end_date = DateHelper.add(30, 'days').toISOString();
+            await this.stripeService.subscription.updateMany({
+              where: {
+                tenant_id: user.tenant_id,
+              },
+              data: {
+                plan_id: plan.id,
+                start_at: start_date,
+                end_at: end_date,
+              },
+            });
+          }
         }
-
-        if (data.plan.id === process.env.PRODUCT_PRO) {
-          console.log('You are talking about pro product');
-          user.plan = 'pro';
-        }
-
-        const isOnTrial = data.status === 'trialing';
-
-        if (isOnTrial) {
-          user.hasTrial = true;
-          user.endDate = new Date(data.current_period_end * 1000);
-        } else if (data.status === 'active') {
-          user.hasTrial = false;
-          user.endDate = new Date(data.current_period_end * 1000);
-        }
-
-        if (data.canceled_at) {
-          // cancelled
-          console.log('You just canceled the subscription' + data.canceled_at);
-          user.plan = 'none';
-          user.hasTrial = false;
-          user.endDate = null;
-        }
-        console.log(
-          'actual',
-          user.hasTrial,
-          data.current_period_end,
-          user.plan,
-        );
-
-        await user.save();
-        console.log('customer changed', JSON.stringify(data));
         break;
       }
       default:
