@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
 import appConfig from '../../../config/app.config';
+import { DateHelper } from 'src/common/helper/date.helper';
 
 const prisma = new PrismaClient();
 
@@ -180,10 +181,12 @@ export class UserRepository {
     try {
       // begin transaction
       return await prisma.$transaction(async (tx) => {
-        // create a organization
+        // create a organization with 14 days trial period
+        const end_date = DateHelper.add(14, 'days').toISOString();
         const organization = await prisma.organization.create({
           data: {
             name: 'organization_xyz',
+            trial_end_at: end_date,
           },
         });
 
