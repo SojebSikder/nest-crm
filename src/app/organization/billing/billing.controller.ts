@@ -33,7 +33,7 @@ export class BillingController {
   constructor(private readonly billingService: BillingService) {}
 
   @ApiOperation({ summary: 'Manage billing' })
-  @ApiResponse({ description: 'Forbidden.' })
+  @ApiResponse({ description: 'returns stripe billing session url' })
   @CheckAbilities({ action: Action.Create, subject: 'OrganizationBilling' })
   @Post('billing')
   async create(@Body() createBillingDto: CreateBillingDto) {
