@@ -30,6 +30,7 @@ export class StripeController {
       res.status(400).send(`Webhook Error: ${error.message}`);
       return;
     }
+
     const data: any = event.data.object;
     // handle the event
     switch (event.type) {
@@ -39,82 +40,36 @@ export class StripeController {
       case 'invoice.paid':
         break;
       case 'customer.subscription.created': {
-        const user = await UserRepository.getUserByBillingID(data.customer);
-        const plan = await this.stripeService.plan.findFirst({
-          where: {
-            AND: [
-              {
-                plan_price_id: data.plan.id,
-              },
-              {
-                status: 1,
-              },
-            ],
-          },
+        // create subscription
+        await this.stripeService.create({
+          customer: data.customer,
+          plan_price_id: data.plan.id,
         });
 
-        if (plan) {
-          // add subscription
-          const start_date = DateHelper.now();
-          const end_date = DateHelper.add(30, 'days').toISOString();
-          await this.stripeService.subscription.create({
-            data: {
-              tenant_id: user.tenant_id,
-              plan_id: plan.id,
-              start_at: start_date,
-              end_at: end_date,
-              payment_method: 'stripe',
-            },
-          });
-        }
         break;
       }
+
       case 'customer.subscription.updated': {
-        // started trial
         const user = await UserRepository.getUserByBillingID(data.customer);
 
-        const plan = await this.stripeService.plan.findFirst({
-          where: {
-            AND: [
-              {
-                plan_price_id: data.plan.id,
-              },
-              {
-                status: 1,
-              },
-            ],
-          },
-        });
-
-        if (plan) {
-          if (data.canceled_at) {
-            // cancelled
-            await this.stripeService.subscription.deleteMany({
-              where: {
-                tenant_id: user.tenant_id,
-              },
-            });
-          } else {
-            // add subscription
-            const start_date = DateHelper.now();
-            const end_date = DateHelper.add(30, 'days').toISOString();
-            await this.stripeService.subscription.updateMany({
-              where: {
-                tenant_id: user.tenant_id,
-              },
-              data: {
-                plan_id: plan.id,
-                start_at: start_date,
-                end_at: end_date,
-              },
-            });
-          }
+        if (data.canceled_at) {
+          // cancelled
+          await this.stripeService.subscription.deleteMany({
+            where: {
+              tenant_id: user.tenant_id,
+            },
+          });
+        } else {
+          // update plan
+          await this.stripeService.update(user.tenant_id, {
+            plan_price_id: data.plan.id,
+          });
         }
         break;
       }
       default:
     }
-    return this.stripeService.create();
+    return res.sendStatus(200);
   }
 
   @Get()
