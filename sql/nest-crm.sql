@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2022 at 05:49 PM
+-- Generation Time: Dec 16, 2022 at 02:29 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -21,6 +21,30 @@ SET time_zone = "+00:00";
 --
 -- Database: `nest-crm`
 --
+
+--
+-- Dumping data for table `contacts`
+--
+
+INSERT INTO `contacts` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `fname`, `lname`, `email`, `phone_number`, `assignee_id`, `country_id`, `workspace_id`, `tenant_id`) VALUES
+(9, '2022-12-10 07:00:14.796', '2022-12-10 07:00:14.796', NULL, 1, 'sojebsikder', NULL, NULL, '8801833962595', NULL, NULL, 3, 3),
+(10, '2022-12-11 15:34:03.743', '2022-12-11 15:34:03.743', NULL, 1, 'jeasikajannat', NULL, NULL, '8801734887145', NULL, NULL, 3, 3);
+
+--
+-- Dumping data for table `contact_workspace_channels`
+--
+
+INSERT INTO `contact_workspace_channels` (`created_at`, `updated_at`, `workspace_channel_id`, `contact_id`, `workspace_id`, `tenant_id`) VALUES
+('2022-12-10 07:00:14.859', '2022-12-10 07:00:14.859', 2, 9, 3, 3),
+('2022-12-11 15:34:03.868', '2022-12-11 15:34:03.868', 2, 10, 3, 3);
+
+--
+-- Dumping data for table `conversations`
+--
+
+INSERT INTO `conversations` (`id`, `created_at`, `updated_at`, `is_open`, `workspace_id`, `contact_id`, `tenant_id`, `workspace_channel_id`) VALUES
+(1, '2022-12-10 10:59:06.709', '2022-12-10 10:59:06.709', 1, 3, 9, 3, 2),
+(2, '2022-12-11 15:34:03.956', '2022-12-11 15:34:03.956', 1, 3, 10, 3, 2);
 
 --
 -- Dumping data for table `countries`
@@ -273,6 +297,235 @@ INSERT INTO `countries` (`id`, `created_at`, `updated_at`, `status`, `flag`, `na
 (244, '2022-12-07 22:47:12.650', '2022-12-07 22:47:12.650', 1, 'https://cdn.kcak11.com/CountryFlags/countries/ye.svg', 'Yemen', 'YE', '+967'),
 (245, '2022-12-07 22:47:12.667', '2022-12-07 22:47:12.667', 1, 'https://cdn.kcak11.com/CountryFlags/countries/zm.svg', 'Zambia', 'ZM', '+260'),
 (246, '2022-12-07 22:47:12.687', '2022-12-07 22:47:12.687', 1, 'https://cdn.kcak11.com/CountryFlags/countries/zw.svg', 'Zimbabwe', 'ZW', '+263');
+
+--
+-- Dumping data for table `messages`
+--
+
+INSERT INTO `messages` (`id`, `created_at`, `updated_at`, `read_at`, `conversation_id`, `contact_id`, `message_id`, `messaging_product`, `type`, `workspace_channel_id`, `body_text`, `message_from_workspace`) VALUES
+(27, '2022-12-11 15:34:36.481', '2022-12-11 15:34:36.481', NULL, 2, 10, 'wamid.HBgNODgwMTczNDg4NzE0NRUCABIYIEUyMTREOEEzMkY2QTkyNTJCN0E2NEVBMkU1OTMyMTI5AA==', 'whatsapp', 'text', 2, 'My name is jeasika', 0),
+(34, '2022-12-12 11:17:16.974', '2022-12-12 11:17:16.974', NULL, 1, 9, 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjA4MzhDQzM2MDc2ODBCMDEzAA==', 'whatsapp', 'text', 2, 'hi', 0),
+(35, '2022-12-12 11:18:55.703', '2022-12-12 11:18:55.703', NULL, 1, 9, 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjAzNUE3M0UxNUU5MzU3REFFAA==', 'whatsapp', 'text', 2, 'asasa', 0),
+(36, '2022-12-12 11:20:10.555', '2022-12-12 11:20:10.555', NULL, 1, 9, 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjBBQkRGRTA0QkVFREUxMEE0AA==', 'whatsapp', 'text', 2, 'asas', 0),
+(37, '2022-12-12 11:20:23.155', '2022-12-12 11:20:23.155', NULL, 1, 9, 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjA4QjI2NDRFRTk0M0U0Mjk3AA==', 'whatsapp', 'text', 2, 'wohho', 0),
+(38, '2022-12-12 11:37:17.254', '2022-12-12 11:37:17.254', NULL, 1, 9, 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjBDREEyNDY3NUJGRTNCQjk3AA==', 'whatsapp', 'text', 2, 'qwqqeqe', 0),
+(39, '2022-12-12 11:37:29.451', '2022-12-12 11:37:29.451', NULL, 1, 9, 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjBBREY0MzQ1QkNBQTAxNjQxAA==', 'whatsapp', 'text', 2, 'w33423234234324', 0);
+
+--
+-- Dumping data for table `organizations`
+--
+
+INSERT INTO `organizations` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `name`, `phone_number`, `website`) VALUES
+(3, '2022-12-09 15:07:08.797', '2022-12-09 15:07:08.797', NULL, 1, 'organization_xyz', NULL, NULL);
+
+--
+-- Dumping data for table `permissions`
+--
+
+INSERT INTO `permissions` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `title`, `action`, `subject`, `conditions`, `fields`) VALUES
+(1, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'system_tenant_management_read', 'Read', 'SystemTenant', NULL, NULL),
+(2, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'system_tenant_management_create', 'Create', 'SystemTenant', NULL, NULL),
+(3, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'system_tenant_management_update', 'Update', 'SystemTenant', NULL, NULL),
+(4, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'system_tenant_management_show', 'Show', 'SystemTenant', NULL, NULL),
+(5, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'system_tenant_management_delete', 'Delete', 'SystemTenant', NULL, NULL),
+(6, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'user_management_read', 'Read', 'User', NULL, NULL),
+(7, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'user_management_create', 'Create', 'User', NULL, NULL),
+(8, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'user_management_update', 'Update', 'User', NULL, NULL),
+(9, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'user_management_show', 'Show', 'User', NULL, NULL),
+(10, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'user_management_delete', 'Delete', 'User', NULL, NULL),
+(11, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'role_management_read', 'Read', 'Role', NULL, NULL),
+(12, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'role_management_create', 'Create', 'Role', NULL, NULL),
+(13, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'role_management_update', 'Update', 'Role', NULL, NULL),
+(14, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'role_management_show', 'Show', 'Role', NULL, NULL),
+(15, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'role_management_delete', 'Delete', 'Role', NULL, NULL),
+(16, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_management_read', 'Read', 'Workspace', NULL, NULL),
+(17, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_management_create', 'Create', 'Workspace', NULL, NULL),
+(18, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_management_update', 'Update', 'Workspace', NULL, NULL),
+(19, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_management_show', 'Show', 'Workspace', NULL, NULL),
+(20, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_management_delete', 'Delete', 'Workspace', NULL, NULL),
+(21, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_user_management_read', 'Read', 'WorkspaceUser', NULL, NULL),
+(22, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_user_management_create', 'Create', 'WorkspaceUser', NULL, NULL),
+(23, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_user_management_update', 'Update', 'WorkspaceUser', NULL, NULL),
+(24, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_user_management_show', 'Show', 'WorkspaceUser', NULL, NULL),
+(25, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_user_management_delete', 'Delete', 'WorkspaceUser', NULL, NULL),
+(26, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_team_management_read', 'Read', 'WorkspaceTeam', NULL, NULL),
+(27, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_team_management_create', 'Create', 'WorkspaceTeam', NULL, NULL),
+(28, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_team_management_update', 'Update', 'WorkspaceTeam', NULL, NULL),
+(29, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_team_management_show', 'Show', 'WorkspaceTeam', NULL, NULL),
+(30, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_team_management_delete', 'Delete', 'WorkspaceTeam', NULL, NULL),
+(31, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_channel_management_read', 'Read', 'WorkspaceChannel', NULL, NULL),
+(32, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_channel_management_create', 'Create', 'WorkspaceChannel', NULL, NULL),
+(33, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_channel_management_update', 'Update', 'WorkspaceChannel', NULL, NULL),
+(34, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_channel_management_show', 'Show', 'WorkspaceChannel', NULL, NULL),
+(35, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_channel_management_delete', 'Delete', 'WorkspaceChannel', NULL, NULL),
+(36, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_snippet_management_read', 'Read', 'WorkspaceSnippet', NULL, NULL),
+(37, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_snippet_management_create', 'Create', 'WorkspaceSnippet', NULL, NULL),
+(38, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_snippet_management_update', 'Update', 'WorkspaceSnippet', NULL, NULL),
+(39, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_snippet_management_show', 'Show', 'WorkspaceSnippet', NULL, NULL),
+(40, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_snippet_management_delete', 'Delete', 'WorkspaceSnippet', NULL, NULL),
+(41, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_file_management_read', 'Read', 'WorkspaceFile', NULL, NULL),
+(42, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_file_management_create', 'Create', 'WorkspaceFile', NULL, NULL),
+(43, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_file_management_update', 'Update', 'WorkspaceFile', NULL, NULL),
+(44, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_file_management_show', 'Show', 'WorkspaceFile', NULL, NULL),
+(45, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_file_management_delete', 'Delete', 'WorkspaceFile', NULL, NULL),
+(46, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_contact_management_read', 'Read', 'WorkspaceContact', NULL, NULL),
+(47, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_contact_management_create', 'Create', 'WorkspaceContact', NULL, NULL),
+(48, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_contact_management_update', 'Update', 'WorkspaceContact', NULL, NULL),
+(49, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_contact_management_show', 'Show', 'WorkspaceContact', NULL, NULL),
+(50, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_contact_management_delete', 'Delete', 'WorkspaceContact', NULL, NULL),
+(51, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_broadcast_management_read', 'Read', 'WorkspaceBroadcast', NULL, NULL),
+(52, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_broadcast_management_create', 'Create', 'WorkspaceBroadcast', NULL, NULL),
+(53, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_broadcast_management_update', 'Update', 'WorkspaceBroadcast', NULL, NULL),
+(54, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_broadcast_management_show', 'Show', 'WorkspaceBroadcast', NULL, NULL),
+(55, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_broadcast_management_delete', 'Delete', 'WorkspaceBroadcast', NULL, NULL),
+(56, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_workflow_management_read', 'Read', 'WorkspaceWorkflow', NULL, NULL),
+(57, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_workflow_management_create', 'Create', 'WorkspaceWorkflow', NULL, NULL),
+(58, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_workflow_management_update', 'Update', 'WorkspaceWorkflow', NULL, NULL),
+(59, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_workflow_management_show', 'Show', 'WorkspaceWorkflow', NULL, NULL),
+(60, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_workflow_management_delete', 'Delete', 'WorkspaceWorkflow', NULL, NULL),
+(61, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_report_management_read', 'Read', 'WorkspaceReport', NULL, NULL),
+(62, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_report_management_show', 'Show', 'WorkspaceReport', NULL, NULL),
+(63, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_data_backup_management_read', 'Read', 'WorkspaceDataBackup', NULL, NULL),
+(64, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'workspace_data_backup_management_create', 'Create', 'WorkspaceDataBackup', NULL, NULL),
+(65, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'organization_management_show', 'Show', 'Organization', NULL, NULL),
+(66, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'organization_management_update', 'Update', 'Organization', NULL, NULL),
+(67, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'organization_user_management_read', 'Read', 'OrganizationUser', NULL, NULL),
+(68, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'organization_user_management_create', 'Create', 'OrganizationUser', NULL, NULL),
+(69, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'organization_user_management_update', 'Update', 'OrganizationUser', NULL, NULL),
+(70, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'organization_user_management_show', 'Show', 'OrganizationUser', NULL, NULL),
+(71, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'organization_user_management_delete', 'Delete', 'OrganizationUser', NULL, NULL),
+(72, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'organization_billing_management_read', 'Read', 'OrganizationBilling', NULL, NULL),
+(73, '2022-12-09 14:53:39.781', '2022-12-09 14:53:39.781', NULL, 1, 'organization_billing_management_create', 'Create', 'OrganizationBilling', NULL, NULL);
+
+--
+-- Dumping data for table `permission_roles`
+--
+
+INSERT INTO `permission_roles` (`created_at`, `updated_at`, `permission_id`, `role_id`) VALUES
+('2022-12-13 17:27:25.755', '2022-12-13 17:27:25.755', 1, 1),
+('2022-12-13 17:27:25.755', '2022-12-13 17:27:25.755', 2, 1),
+('2022-12-13 17:27:25.755', '2022-12-13 17:27:25.755', 3, 1),
+('2022-12-13 17:27:25.755', '2022-12-13 17:27:25.755', 4, 1),
+('2022-12-13 17:27:25.755', '2022-12-13 17:27:25.755', 5, 1),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 6, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 7, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 8, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 9, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 10, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 11, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 12, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 13, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 14, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 15, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 16, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 17, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 18, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 19, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 20, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 21, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 22, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 23, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 24, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 25, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 26, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 27, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 28, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 29, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 30, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 31, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 32, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 33, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 34, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 35, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 36, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 37, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 38, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 39, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 40, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 41, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 42, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 43, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 44, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 45, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 46, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 47, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 48, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 49, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 50, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 51, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 52, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 53, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 54, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 55, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 56, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 57, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 58, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 59, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 60, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 61, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 62, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 63, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 64, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 65, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 66, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 67, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 68, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 69, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 70, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 71, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 72, 2),
+('2022-12-13 17:27:25.923', '2022-12-13 17:27:25.923', 73, 2);
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `title`, `name`, `tenant_id`) VALUES
+(1, '2022-12-09 14:53:39.607', '2022-12-09 14:53:39.607', NULL, 1, 'Super Admin', 'su-admin', NULL),
+(2, '2022-12-09 14:53:39.607', '2022-12-09 14:53:39.607', NULL, 1, 'Admin', 'admin', NULL),
+(3, '2022-12-09 14:53:39.607', '2022-12-09 14:53:39.607', NULL, 1, 'Billing Admin', 'billing-admin', NULL),
+(4, '2022-12-09 14:53:39.607', '2022-12-09 14:53:39.607', NULL, 1, 'User Admin', 'user-admin', NULL),
+(5, '2022-12-09 14:53:39.607', '2022-12-09 14:53:39.607', NULL, 1, 'Member', 'member', NULL),
+(6, '2022-12-09 14:53:39.607', '2022-12-09 14:53:39.607', NULL, 1, 'Owner', 'owner', NULL),
+(7, '2022-12-09 14:53:39.607', '2022-12-09 14:53:39.607', NULL, 1, 'Manager', 'manager', NULL),
+(8, '2022-12-09 14:53:39.607', '2022-12-09 14:53:39.607', NULL, 1, 'Agent', 'agent', NULL);
+
+--
+-- Dumping data for table `role_users`
+--
+
+INSERT INTO `role_users` (`created_at`, `updated_at`, `role_id`, `user_id`) VALUES
+('2022-12-09 14:53:40.446', '2022-12-09 14:53:40.446', 1, 1),
+('2022-12-09 15:07:09.030', '2022-12-09 15:07:09.030', 2, 4);
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `availability`, `email`, `username`, `fname`, `lname`, `password`, `domain`, `tenant_id`) VALUES
+(1, '2022-12-09 14:53:39.960', '2022-12-09 14:53:39.960', NULL, 1, NULL, 'admin@example.com', 'admin', NULL, NULL, '$2b$10$eNazw3ABj0PyzDrVcuyYveVQrUshjCPojmqDrc7jfwVIxHqQNf9Pm', NULL, NULL),
+(4, '2022-12-09 15:07:08.961', '2022-12-09 15:07:08.961', NULL, 1, NULL, 'sojebsikder@gmail.com', NULL, 'Sojeb', 'Sikder', '$2b$10$Kcr0rsw2dPrmGY3w6Y2Olecp0ulSV.mVpEx4y1EMB/uktnQV/QlbS', NULL, 3);
+
+--
+-- Dumping data for table `whatsapp_channels`
+--
+
+INSERT INTO `whatsapp_channels` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `channel_type`, `avatar`, `address`, `description`, `email`, `vertical`, `website_1`, `website_2`, `channel_name`, `whatsapp_phone_number`, `whatsapp_business_account_name`, `whatsapp_verified_name`, `webhook_key`, `verify_token`, `access_token`, `account_id`, `phone_number_id`, `verified`, `channel_id`, `workspace_id`, `tenant_id`) VALUES
+(2, '2022-12-09 17:53:52.308', '2022-12-09 17:53:52.308', NULL, 1, 'whatsapp', NULL, NULL, NULL, NULL, 'UNDEFINED', NULL, NULL, 'whatsapp channel', NULL, NULL, NULL, '1670608432299.96', 'sojeb_webhook_token', 'EAAMBZBUByhEEBAD0YRaV4AB0qH5jbtNYOxjDCtn1546GH3etWVVG5UN055rETeJZB0LQBmkHSsUYIcJYKnZCyKi2TwZCT19ZAuwsyv9LXZAjJB9W43MNxnUL40hH1hslQ3ArxN9ePZC6trxXbNnvd9JaHB0G6ySZC7ZAUyJF1AJXljw1ChPaR3sil', '105708749047752', '111404165137829', 1, NULL, 3, 3);
+
+--
+-- Dumping data for table `workspaces`
+--
+
+INSERT INTO `workspaces` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `name`, `timezone`, `tenant_id`) VALUES
+(3, '2022-12-09 15:07:09.089', '2022-12-09 15:07:09.089', NULL, 1, 'My New Workspace', NULL, 3);
+
+--
+-- Dumping data for table `workspace_users`
+--
+
+INSERT INTO `workspace_users` (`created_at`, `updated_at`, `workspace_id`, `user_id`, `tenant_id`) VALUES
+('2022-12-09 15:07:09.139', '2022-12-09 15:07:09.139', 3, 4, 3);
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
