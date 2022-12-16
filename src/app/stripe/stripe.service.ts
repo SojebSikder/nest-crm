@@ -19,23 +19,8 @@ export class StripeService extends PrismaClient {
     return `This action returns a #${id} stripe`;
   }
 
-  async update(id: number, { trial_end_at }) {
-    // await this.prisma.user.update({
-    //   where: {
-    //     id: id,
-    //   },
-    //   data: {
-
-    //   },
-    // });
-    await this.prisma.organization.update({
-      where: {
-        id: id,
-      },
-      data: {
-        trial_end_at: trial_end_at,
-      },
-    });
+  async update(id: number, {}) {
+    //
   }
 
   remove(id: number) {
