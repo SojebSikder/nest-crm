@@ -18,10 +18,11 @@ import { AbilitiesGuard } from 'src/ability/abilities.guard';
 import { CheckAbilities } from 'src/ability/abilities.decorator';
 import { Action } from 'src/ability/ability.factory';
 import appConfig from 'src/config/app.config';
+import { HasPlanGuard } from 'src/common/guard/has-plan/has-plan.guard';
 
 @ApiBearerAuth()
 @ApiTags('Workspace channel')
-@UseGuards(JwtAuthGuard, AbilitiesGuard)
+@UseGuards(JwtAuthGuard, AbilitiesGuard, HasPlanGuard)
 @Controller('space/:workspace_id/channel')
 export class WorkspaceChannelController {
   constructor(

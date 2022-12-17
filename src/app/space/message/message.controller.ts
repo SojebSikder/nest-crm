@@ -17,10 +17,11 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AbilitiesGuard } from 'src/ability/abilities.guard';
 import { CheckAbilities } from 'src/ability/abilities.decorator';
 import { Action } from 'src/ability/ability.factory';
+import { HasPlanGuard } from 'src/common/guard/has-plan/has-plan.guard';
 
 @ApiBearerAuth()
 @ApiTags('Message')
-@UseGuards(JwtAuthGuard, AbilitiesGuard)
+@UseGuards(JwtAuthGuard, AbilitiesGuard, HasPlanGuard)
 @Controller('space/:workspace_id/message/:conversation_id')
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}

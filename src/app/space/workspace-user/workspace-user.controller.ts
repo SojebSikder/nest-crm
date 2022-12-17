@@ -17,10 +17,11 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { AbilitiesGuard } from 'src/ability/abilities.guard';
 import { CheckAbilities } from 'src/ability/abilities.decorator';
 import { Action } from 'src/ability/ability.factory';
+import { HasPlanGuard } from 'src/common/guard/has-plan/has-plan.guard';
 
 @ApiBearerAuth()
 @ApiTags('workspace-user')
-@UseGuards(JwtAuthGuard, AbilitiesGuard)
+@UseGuards(JwtAuthGuard, AbilitiesGuard, HasPlanGuard)
 @Controller('space/:workspace_id/workspace-user')
 export class WorkspaceUserController {
   constructor(private readonly workspaceUserService: WorkspaceUserService) {}

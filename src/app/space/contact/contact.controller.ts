@@ -25,13 +25,14 @@ import { CheckAbilities } from 'src/ability/abilities.decorator';
 import { AbilitiesGuard } from 'src/ability/abilities.guard';
 import { Action } from 'src/ability/ability.factory';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { HasPlanGuard } from 'src/common/guard/has-plan/has-plan.guard';
 import { ContactService } from './contact.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 
 @ApiBearerAuth()
 @ApiTags('contact')
-@UseGuards(JwtAuthGuard, AbilitiesGuard)
+@UseGuards(JwtAuthGuard, AbilitiesGuard, HasPlanGuard)
 @Controller('space/:workspace_id/contact')
 export class ContactController {
   constructor(private readonly contactService: ContactService) {}
