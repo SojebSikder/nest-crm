@@ -76,6 +76,48 @@ export class WhatsappService extends PrismaClient {
       }
     }
   }
+  async findMessage({ phone_number_id, from, conversation_id }) {
+    const whatsappChannel = await this.prisma.workspaceChannel.findFirst({
+      where: {
+        phone_number_id: phone_number_id,
+      },
+    });
+    if (whatsappChannel) {
+      // check the contact existence
+      const contact = await this.prisma.contact.findFirst({
+        where: {
+          AND: [
+            {
+              phone_number: from,
+            },
+            {
+              workspace_id: whatsappChannel.workspace_id,
+            },
+            {
+              tenant_id: whatsappChannel.tenant_id,
+            },
+          ],
+        },
+      });
+      if (contact) {
+        const message = await this.prisma.message.findFirst({
+          where: {
+            AND: [
+              {
+                contact_id: contact.id,
+              },
+              {
+                conversation_id: conversation_id,
+              },
+            ],
+          },
+        });
+        return message;
+      } else {
+        return false;
+      }
+    }
+  }
 
   async verify_whatsapp(webhook_key: string) {
     const workspaceChannel = await this.prisma.workspaceChannel.updateMany({

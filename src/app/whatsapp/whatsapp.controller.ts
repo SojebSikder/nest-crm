@@ -172,9 +172,10 @@ export class WhatsappController {
 
       // Check the Incoming webhook message
       // console.log(JSON.stringify(req.body, null, 2));
+      console.log(JSON.stringify(req.body, null, 2));
 
       // info on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
-      if (req.body.object) {
+      if (req.body && req.body.object) {
         if (
           req.body.entry &&
           req.body.entry[0].changes &&
@@ -211,16 +212,24 @@ export class WhatsappController {
               if (conversation) {
                 const conversation_id = conversation.id;
                 // emit message
+                const message = await this.whatsappService.findMessage({
+                  conversation_id: conversation.id,
+                  phone_number_id,
+                  from,
+                });
 
-                const data = {
-                  message: {
-                    message_id: message_id,
-                    body_text: msg_body,
-                    from: from,
-                    conversation_id: conversation_id,
-                  },
-                };
-                this.socketGateway.server.emit('message', data);
+                if (message) {
+                  const data = {
+                    message: {
+                      message_id: message_id,
+                      body_text: msg_body,
+                      from: from,
+                      conversation_id: conversation_id,
+                      created_at: message.created_at,
+                    },
+                  };
+                  this.socketGateway.server.emit('message', data);
+                }
               }
             }
           }

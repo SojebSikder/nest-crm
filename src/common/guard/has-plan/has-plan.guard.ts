@@ -19,8 +19,6 @@ export class HasPlanGuard implements CanActivate {
       });
 
       // check if trial has expired
-      console.log(userDetails.tenant.trial_end_at, DateHelper.now());
-
       if (userDetails.tenant.trial_end_at < DateHelper.now()) {
         const tenantSubscriptionDetails =
           await UserRepository.getSubscriptionDetails(user_id);
