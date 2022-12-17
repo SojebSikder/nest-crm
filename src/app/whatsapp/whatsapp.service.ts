@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { SocketGateway } from 'src/socket/socket.gateway';
 import { WhatsappApi } from '../../common/lib/whatsapp/Whatsapp';
 import { MessageRepository } from '../../common/repository/message/workspace-message.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class WhatsappService extends PrismaClient {
-  constructor(private readonly prisma: PrismaService) {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly socketGateway: SocketGateway,
+  ) {
     super();
   }
 
@@ -140,6 +144,18 @@ export class WhatsappService extends PrismaClient {
           workspace_id: contact.workspace_id,
           tenant_id: contact.tenant_id,
           workspace_channel_id: whatsappChannel.id,
+          conversationCreated: (conversationData) => {
+            const data = {
+              conversation: {
+                id: conversationData.id,
+                contact: contact,
+              },
+              workspace: {
+                id: contact.workspace_id,
+              },
+            };
+            this.socketGateway.server.emit('conversation', data);
+          },
         });
       } else {
         // create contact
@@ -173,6 +189,18 @@ export class WhatsappService extends PrismaClient {
                 workspace_id: createContact.workspace_id,
                 tenant_id: createContact.tenant_id,
                 workspace_channel_id: whatsappChannel.id,
+                conversationCreated: (conversationData) => {
+                  const data = {
+                    conversation: {
+                      id: conversationData.id,
+                      contact: contact,
+                    },
+                    workspace: {
+                      id: contact.workspace_id,
+                    },
+                  };
+                  this.socketGateway.server.emit('conversation', data);
+                },
               });
             } else {
               return false;

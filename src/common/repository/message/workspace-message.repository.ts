@@ -3,7 +3,11 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export class MessageRepository {
-  // store message
+  /**
+   * store message
+   * @param param0
+   * @returns
+   */
   static async storeMessage({
     message_id,
     body_text,
@@ -11,6 +15,7 @@ export class MessageRepository {
     workspace_id,
     tenant_id,
     workspace_channel_id,
+    conversationCreated = null,
   }) {
     return await prisma.$transaction(async () => {
       // save message
@@ -52,6 +57,10 @@ export class MessageRepository {
             tenant_id: tenant_id,
           },
         });
+        // callbak after conversation created
+        if (conversationCreated) {
+          conversationCreated(createConversation);
+        }
         // save message
         const saveMessage = await this.saveMessage({
           type: 'text',
@@ -65,6 +74,12 @@ export class MessageRepository {
       }
     });
   }
+
+  /**
+   * Save messages to database
+   * @param param0
+   * @returns
+   */
   static async saveMessage({
     message_id,
     body_text,
