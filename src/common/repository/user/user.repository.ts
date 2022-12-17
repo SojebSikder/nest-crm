@@ -1,7 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
 import appConfig from '../../../config/app.config';
-import { DateHelper } from 'src/common/helper/date.helper';
+import { DateHelper } from '../../../common/helper/date.helper';
 
 const prisma = new PrismaClient();
 

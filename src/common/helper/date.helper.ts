@@ -24,6 +24,11 @@ export class DateHelper {
 
   static now() {
     const date = new Date();
+    return date;
+  }
+
+  static nowString() {
+    const date = new Date();
     return date.toISOString();
   }
 
