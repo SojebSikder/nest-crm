@@ -14,13 +14,14 @@ import { CheckAbilities } from 'src/ability/abilities.decorator';
 import { AbilitiesGuard } from 'src/ability/abilities.guard';
 import { Action } from 'src/ability/ability.factory';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { HasPlanGuard } from 'src/common/guard/has-plan/has-plan.guard';
 import { ConversationService } from './conversation.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';
 
 @ApiBearerAuth()
 @ApiTags('Conversation')
-@UseGuards(JwtAuthGuard, AbilitiesGuard)
+@UseGuards(JwtAuthGuard, AbilitiesGuard, HasPlanGuard)
 @Controller('space/:workspace_id/conversation')
 export class ConversationController {
   constructor(private readonly conversationService: ConversationService) {}

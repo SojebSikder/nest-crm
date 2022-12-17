@@ -277,4 +277,22 @@ export class UserRepository {
       throw error;
     }
   }
+
+  /**
+   * Get subscription details
+   * @param userId
+   * @returns
+   */
+  static async getSubscriptionDetails(userId: number) {
+    const tenant_id = await this.getTenantId({ userId });
+    const subscription = await prisma.subscription.findFirst({
+      where: {
+        tenant_id: tenant_id,
+      },
+      include: {
+        plan: true,
+      },
+    });
+    return subscription;
+  }
 }
