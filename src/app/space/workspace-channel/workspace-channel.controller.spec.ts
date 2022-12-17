@@ -11,7 +11,9 @@ describe('WorkspaceChannelController', () => {
       providers: [WorkspaceChannelService],
     }).compile();
 
-    controller = module.get<WorkspaceChannelController>(WorkspaceChannelController);
+    controller = module.get<WorkspaceChannelController>(
+      WorkspaceChannelController,
+    );
   });
 
   it('should be defined', () => {

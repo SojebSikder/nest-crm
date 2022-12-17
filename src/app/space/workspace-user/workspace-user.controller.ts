@@ -13,11 +13,11 @@ import { WorkspaceUserService } from './workspace-user.service';
 import { CreateWorkspaceUserDto } from './dto/create-workspace-user.dto';
 import { UpdateWorkspaceUserDto } from './dto/update-workspace-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { AbilitiesGuard } from 'src/ability/abilities.guard';
-import { CheckAbilities } from 'src/ability/abilities.decorator';
-import { Action } from 'src/ability/ability.factory';
-import { HasPlanGuard } from 'src/common/guard/has-plan/has-plan.guard';
+import { JwtAuthGuard } from '../../../auth/guards/jwt-auth.guard';
+import { AbilitiesGuard } from '../../../ability/abilities.guard';
+import { CheckAbilities } from '../../../ability/abilities.decorator';
+import { Action } from '../../../ability/ability.factory';
+import { HasPlanGuard } from '../../../common/guard/has-plan/has-plan.guard';
 
 @ApiBearerAuth()
 @ApiTags('workspace-user')

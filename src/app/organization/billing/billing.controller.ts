@@ -16,11 +16,11 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CheckAbilities } from 'src/ability/abilities.decorator';
-import { AbilitiesGuard } from 'src/ability/abilities.guard';
-import { Action } from 'src/ability/ability.factory';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { StripeMethod } from 'src/common/lib/Payment/stripe/Stripe';
+import { CheckAbilities } from '../../../ability/abilities.decorator';
+import { AbilitiesGuard } from '../../../ability/abilities.guard';
+import { Action } from '../../../ability/ability.factory';
+import { JwtAuthGuard } from '../../../auth/guards/jwt-auth.guard';
+import { StripeMethod } from '../../../common/lib/Payment/stripe/Stripe';
 import { BillingService } from './billing.service';
 import { CreateBillingDto } from './dto/create-billing.dto';
 import { UpdateBillingDto } from './dto/update-billing.dto';

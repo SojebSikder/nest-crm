@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { WhatsappApi } from 'src/common/lib/whatsapp/Whatsapp';
-import { MessageRepository } from 'src/common/repository/message/workspace-message.repository';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { WhatsappApi } from '../../common/lib/whatsapp/Whatsapp';
+import { MessageRepository } from '../../common/repository/message/workspace-message.repository';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class WhatsappService extends PrismaClient {

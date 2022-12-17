@@ -13,12 +13,12 @@ import { WorkspaceChannelService } from './workspace-channel.service';
 import { CreateWorkspaceChannelDto } from './dto/create-workspace-channel.dto';
 import { UpdateWorkspaceChannelDto } from './dto/update-workspace-channel.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { AbilitiesGuard } from 'src/ability/abilities.guard';
-import { CheckAbilities } from 'src/ability/abilities.decorator';
-import { Action } from 'src/ability/ability.factory';
-import appConfig from 'src/config/app.config';
-import { HasPlanGuard } from 'src/common/guard/has-plan/has-plan.guard';
+import { JwtAuthGuard } from '../../../auth/guards/jwt-auth.guard';
+import { AbilitiesGuard } from '../../../ability/abilities.guard';
+import { CheckAbilities } from '../../../ability/abilities.decorator';
+import { Action } from '../../../ability/ability.factory';
+import appConfig from '../../../config/app.config';
+import { HasPlanGuard } from '../../../common/guard/has-plan/has-plan.guard';
 
 @ApiBearerAuth()
 @ApiTags('Workspace channel')

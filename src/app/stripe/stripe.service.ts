@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { DateHelper } from 'src/common/helper/date.helper';
-import { UserRepository } from 'src/common/repository/user/user.repository';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { DateHelper } from '../../common/helper/date.helper';
+import { UserRepository } from '../../common/repository/user/user.repository';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class StripeService extends PrismaClient {

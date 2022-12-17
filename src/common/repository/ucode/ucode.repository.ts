@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { DateHelper } from 'src/common/helper/date.helper';
+import { DateHelper } from '../../../common/helper/date.helper';
 import { v4 as uuid } from 'uuid';
 import { UserRepository } from '../user/user.repository';
 

@@ -6,7 +6,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { UserRepository } from 'src/common/repository/user/user.repository';
+import { UserRepository } from '../common/repository/user/user.repository';
 import { CHECK_ABILITY, RequiredRule } from './abilities.decorator';
 import { AbilityFactory } from './ability.factory';
 

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { UserRepository } from 'src/common/repository/user/user.repository';
-import appConfig from 'src/config/app.config';
-import { PrismaHelper } from 'src/prisma/helper/exclude';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { UserRepository } from '../../common/repository/user/user.repository';
+import appConfig from '../../config/app.config';
+import { PrismaHelper } from '../../prisma/helper/exclude';
+import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 

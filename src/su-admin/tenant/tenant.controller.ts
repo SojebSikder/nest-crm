@@ -13,13 +13,13 @@ import { UrlGeneratorService } from 'nestjs-url-generator';
 import { TenantService } from './tenant.service';
 import { CreateTenantDto } from './dto/create-tenant.dto';
 import { UpdateTenantDto } from './dto/update-tenant.dto';
-import { MailService } from 'src/mail/mail.service';
-import { DateHelper } from 'src/common/helper/date.helper';
-import { UcodeRepository } from 'src/common/repository/ucode/ucode.repository';
-import { CheckAbilities } from 'src/ability/abilities.decorator';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { AbilitiesGuard } from 'src/ability/abilities.guard';
-import { Action } from 'src/ability/ability.factory';
+import { MailService } from '../../mail/mail.service';
+import { DateHelper } from '../../common/helper/date.helper';
+import { UcodeRepository } from '../../common/repository/ucode/ucode.repository';
+import { CheckAbilities } from '../../ability/abilities.decorator';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { AbilitiesGuard } from '../../ability/abilities.guard';
+import { Action } from '../../ability/ability.factory';
 
 @Controller('tenant')
 export class TenantController {

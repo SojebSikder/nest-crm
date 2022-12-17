@@ -12,18 +12,18 @@ import {
   Request,
   ForbiddenException,
 } from '@nestjs/common';
-import appConfig from 'src/config/app.config';
+import appConfig from '../../config/app.config';
 import { SignedUrlGuard } from 'nestjs-url-generator';
-import { UcodeRepository } from 'src/common/repository/ucode/ucode.repository';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { UcodeRepository } from '../../common/repository/ucode/ucode.repository';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AbilityFactory, Action } from 'src/ability/ability.factory';
-import { UserRepository } from 'src/common/repository/user/user.repository';
+import { AbilityFactory, Action } from '../../ability/ability.factory';
+import { UserRepository } from '../../common/repository/user/user.repository';
 import { ForbiddenError } from '@casl/ability';
-import { CheckAbilities } from 'src/ability/abilities.decorator';
-import { AbilitiesGuard } from 'src/ability/abilities.guard';
+import { CheckAbilities } from '../../ability/abilities.decorator';
+import { AbilitiesGuard } from '../../ability/abilities.guard';
 
 @Controller('user')
 export class UserController {

@@ -4,7 +4,7 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
-import { DateHelper } from 'src/common/helper/date.helper';
+import { DateHelper } from '../../../common/helper/date.helper';
 import { UserRepository } from '../../repository/user/user.repository';
 
 @Injectable()

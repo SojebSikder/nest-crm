@@ -10,11 +10,11 @@ import {
   Req,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CheckAbilities } from 'src/ability/abilities.decorator';
-import { AbilitiesGuard } from 'src/ability/abilities.guard';
-import { Action } from 'src/ability/ability.factory';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { HasPlanGuard } from 'src/common/guard/has-plan/has-plan.guard';
+import { CheckAbilities } from '../../../ability/abilities.decorator';
+import { AbilitiesGuard } from '../../../ability/abilities.guard';
+import { Action } from '../../../ability/ability.factory';
+import { JwtAuthGuard } from '../../../auth/guards/jwt-auth.guard';
+import { HasPlanGuard } from '../../../common/guard/has-plan/has-plan.guard';
 import { ConversationService } from './conversation.service';
 import { CreateConversationDto } from './dto/create-conversation.dto';
 import { UpdateConversationDto } from './dto/update-conversation.dto';

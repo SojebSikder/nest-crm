@@ -1,5 +1,5 @@
 import stripe from 'stripe';
-import appConfig from 'src/config/app.config';
+import appConfig from '../../../../config/app.config';
 
 const STRIPE_SECRET_KEY = appConfig().payment.stripe.secret_key;
 const Stripe = new stripe(STRIPE_SECRET_KEY, {

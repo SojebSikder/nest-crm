@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { WhatsappService } from './whatsapp.service';
-import { SocketGateway } from 'src/socket/socket.gateway';
-import { WhatsappApi } from 'src/common/lib/whatsapp/Whatsapp';
+import { SocketGateway } from '../../socket/socket.gateway';
+import { WhatsappApi } from '../../common/lib/whatsapp/Whatsapp';
 
 @Controller('whatsapp')
 export class WhatsappController {
