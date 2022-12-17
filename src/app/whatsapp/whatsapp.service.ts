@@ -144,7 +144,7 @@ export class WhatsappService extends PrismaClient {
           workspace_id: contact.workspace_id,
           tenant_id: contact.tenant_id,
           workspace_channel_id: whatsappChannel.id,
-          conversationCreated: (conversationData) => {
+          conversationCreatedOrOpen: (conversationData) => {
             const data = {
               conversation: {
                 id: conversationData.id,
@@ -189,7 +189,7 @@ export class WhatsappService extends PrismaClient {
                 workspace_id: createContact.workspace_id,
                 tenant_id: createContact.tenant_id,
                 workspace_channel_id: whatsappChannel.id,
-                conversationCreated: (conversationData) => {
+                conversationCreatedOrOpen: (conversationData) => {
                   const data = {
                     conversation: {
                       id: conversationData.id,

@@ -15,7 +15,7 @@ export class MessageRepository {
     workspace_id,
     tenant_id,
     workspace_channel_id,
-    conversationCreated = null,
+    conversationCreatedOrOpen = null,
   }) {
     return await prisma.$transaction(async () => {
       // save message
@@ -36,17 +36,44 @@ export class MessageRepository {
         },
       });
       if (isConversationExist) {
-        // save message
-        // if message type is text
-        const saveMessage = await this.saveMessage({
-          type: 'text',
-          message_id: message_id,
-          body_text: body_text,
-          contact_id: contact_id,
-          workspace_channel_id: isConversationExist.workspace_channel_id,
-          conversation_id: isConversationExist.id,
-        });
-        return saveMessage;
+        if (isConversationExist.is_open == true) {
+          // save message
+          // if message type is text
+          const saveMessage = await this.saveMessage({
+            type: 'text',
+            message_id: message_id,
+            body_text: body_text,
+            contact_id: contact_id,
+            workspace_channel_id: isConversationExist.workspace_channel_id,
+            conversation_id: isConversationExist.id,
+          });
+          return saveMessage;
+        } else {
+          // update conversation
+          const updateConversation = await prisma.conversation.update({
+            where: {
+              id: isConversationExist.id,
+            },
+            data: {
+              is_open: true,
+            },
+          });
+          // callbak after conversation created
+          if (conversationCreatedOrOpen) {
+            conversationCreatedOrOpen(updateConversation);
+          }
+          // save message
+          // if message type is text
+          const saveMessage = await this.saveMessage({
+            type: 'text',
+            message_id: message_id,
+            body_text: body_text,
+            contact_id: contact_id,
+            workspace_channel_id: isConversationExist.workspace_channel_id,
+            conversation_id: isConversationExist.id,
+          });
+          return saveMessage;
+        }
       } else {
         // create conversation
         const createConversation = await prisma.conversation.create({
@@ -58,8 +85,8 @@ export class MessageRepository {
           },
         });
         // callbak after conversation created
-        if (conversationCreated) {
-          conversationCreated(createConversation);
+        if (conversationCreatedOrOpen) {
+          conversationCreatedOrOpen(createConversation);
         }
         // save message
         const saveMessage = await this.saveMessage({
