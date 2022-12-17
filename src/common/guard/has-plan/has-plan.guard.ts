@@ -4,6 +4,7 @@ import {
   ForbiddenException,
   Injectable,
 } from '@nestjs/common';
+import { DateHelper } from 'src/common/helper/date.helper';
 import { UserRepository } from '../../repository/user/user.repository';
 
 @Injectable()
@@ -12,13 +13,23 @@ export class HasPlanGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
 
     try {
-      const tenantSubscriptionDetails =
-        await UserRepository.getSubscriptionDetails(req.user.userId);
+      const user_id = req.user.userId;
+      const userDetails = await UserRepository.getUserDetails({
+        userId: user_id,
+      });
 
-      if (tenantSubscriptionDetails) {
-        return true;
+      // check if trial has expired
+      if (String(userDetails.tenant.trial_end_at) < DateHelper.now()) {
+        const tenantSubscriptionDetails =
+          await UserRepository.getSubscriptionDetails(user_id);
+
+        if (tenantSubscriptionDetails) {
+          return true;
+        } else {
+          throw new ForbiddenException('Access denied');
+        }
       } else {
-        throw new ForbiddenException('Access denied');
+        return true;
       }
     } catch (error) {
       throw new ForbiddenException(error.message);

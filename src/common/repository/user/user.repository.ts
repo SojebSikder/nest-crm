@@ -16,6 +16,7 @@ export class UserRepository {
         id: userId,
       },
       include: {
+        tenant: true,
         workspace_users: {
           include: {
             workspace: true,
