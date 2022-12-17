@@ -61,12 +61,33 @@ export class ConversationController {
     return { data: conversation };
   }
 
+  @ApiOperation({ summary: 'Update conversation' })
+  @CheckAbilities({ action: Action.Update, subject: 'WorkspaceConversation' })
   @Patch(':id')
-  update(
+  async update(
+    @Req() req,
     @Param('id') id: string,
     @Body() updateConversationDto: UpdateConversationDto,
   ) {
-    return this.conversationService.update(+id, updateConversationDto);
+    const workspace_id = req.params.workspace_id;
+    const user = req.user;
+
+    const conversation = await this.conversationService.update(+id, {
+      updateConversationDto,
+      workspace_id: workspace_id,
+      user_id: user.userId,
+    });
+
+    if (conversation) {
+      return {
+        success: true,
+      };
+    } else {
+      return {
+        error: true,
+        message: 'Conversation not updated',
+      };
+    }
   }
 
   @Delete(':id')

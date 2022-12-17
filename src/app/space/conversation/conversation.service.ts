@@ -80,8 +80,42 @@ export class ConversationService extends PrismaClient {
     return conversation;
   }
 
-  update(id: number, updateConversationDto: UpdateConversationDto) {
-    return `This action updates a #${id} conversation`;
+  async update(
+    id: number,
+    {
+      user_id,
+      workspace_id,
+      updateConversationDto,
+    }: {
+      user_id: number;
+      workspace_id: number;
+      updateConversationDto: UpdateConversationDto;
+    },
+  ) {
+    const is_open = updateConversationDto.is_open;
+
+    workspace_id = Number(workspace_id);
+    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+
+    const conversation = await this.prisma.conversation.updateMany({
+      where: {
+        AND: [
+          {
+            id: id,
+          },
+          {
+            workspace_id: workspace_id,
+          },
+          {
+            tenant_id: tenant_id,
+          },
+        ],
+      },
+      data: {
+        is_open: is_open,
+      },
+    });
+    return conversation;
   }
 
   remove(id: number) {
