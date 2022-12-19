@@ -10,13 +10,30 @@ export class WorkspaceUserService extends PrismaClient {
   constructor(private prisma: PrismaService) {
     super();
   }
-  create(createWorkspaceUserDto: CreateWorkspaceUserDto) {
-    return 'This action adds a new workspaceUser';
-  }
 
-  async findAll(user_id, workspace_id) {
+  async create(
+    user_id: number,
+    workspace_id: number,
+    createWorkspaceUserDto: CreateWorkspaceUserDto,
+  ) {
     workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const invited_user_id = createWorkspaceUserDto.user_id;
+
+    const workspaceUser = await this.prisma.workspaceUser.create({
+      data: {
+        user_id: invited_user_id,
+        tenant_id: tenant_id,
+        workspace_id: workspace_id,
+      },
+    });
+    return workspaceUser;
+  }
+
+  async findAll(user_id: number, workspace_id: number) {
+    workspace_id = Number(workspace_id);
+    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+
     const workspaceUsers = this.prisma.workspaceUser.findMany({
       include: {
         user: {
@@ -51,7 +68,16 @@ export class WorkspaceUserService extends PrismaClient {
     return `This action updates a #${id} workspaceUser`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} workspaceUser`;
+  async remove(id: number, user_id: number, workspace_id: number) {
+    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+
+    const workspaceUser = await this.prisma.workspaceUser.deleteMany({
+      where: {
+        user_id: id,
+        workspace_id: workspace_id,
+        tenant_id: tenant_id,
+      },
+    });
+    return workspaceUser;
   }
 }

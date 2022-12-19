@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
-  Request,
+  Req,
 } from '@nestjs/common';
 import { WorkspaceUserService } from './workspace-user.service';
 import { CreateWorkspaceUserDto } from './dto/create-workspace-user.dto';
@@ -26,20 +26,43 @@ import { HasPlanGuard } from '../../../common/guard/has-plan/has-plan.guard';
 export class WorkspaceUserController {
   constructor(private readonly workspaceUserService: WorkspaceUserService) {}
 
+  @ApiOperation({ summary: 'Create workspace user' })
+  @CheckAbilities({ action: Action.Create, subject: 'WorkspaceUser' })
   @Post()
-  create(@Body() createWorkspaceUserDto: CreateWorkspaceUserDto) {
-    return this.workspaceUserService.create(createWorkspaceUserDto);
+  async create(
+    @Req() req,
+    @Body() createWorkspaceUserDto: CreateWorkspaceUserDto,
+  ) {
+    const user_id = req.user.userId;
+    const workspace_id = req.params.workspace_id;
+
+    const workspaceUser = await this.workspaceUserService.create(
+      user_id,
+      workspace_id,
+      createWorkspaceUserDto,
+    );
+    if (workspaceUser) {
+      return {
+        success: true,
+        message: 'User invitation sent successfully',
+      };
+    } else {
+      return {
+        error: true,
+        message: 'User not created',
+      };
+    }
   }
 
   @ApiOperation({ summary: 'Find all workspace user' })
   @CheckAbilities({ action: Action.Read, subject: 'WorkspaceUser' })
   @Get()
-  async findAll(@Request() req) {
+  async findAll(@Req() req) {
     const workspace_id = req.params.workspace_id;
-    const user = req.user;
+    const user_id = req.user.userId;
 
     const workspaceUsers = await this.workspaceUserService.findAll(
-      user.userId,
+      user_id,
       workspace_id,
     );
     return { data: workspaceUsers };
@@ -58,8 +81,29 @@ export class WorkspaceUserController {
     return this.workspaceUserService.update(+id, updateWorkspaceUserDto);
   }
 
+  @ApiOperation({ summary: 'Remove workspace user' })
+  @CheckAbilities({ action: Action.Delete, subject: 'WorkspaceUser' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.workspaceUserService.remove(+id);
+  async remove(@Req() req, @Param('id') id: string) {
+    const user_id = req.user.userId;
+    const workspace_id = req.params.workspace_id;
+
+    const workspaceUser = await this.workspaceUserService.remove(
+      +id,
+      user_id,
+      workspace_id,
+    );
+
+    if (workspaceUser) {
+      return {
+        success: true,
+        message: 'User invitation sent successfully',
+      };
+    } else {
+      return {
+        error: true,
+        message: 'User not created',
+      };
+    }
   }
 }
