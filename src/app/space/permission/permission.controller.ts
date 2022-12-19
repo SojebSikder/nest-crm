@@ -16,7 +16,7 @@ export class PermissionController {
   async findAll() {
     const permissions = await this.permissionService.findAll();
     return {
-      data: permissions,
+      data: permissions.permission_roles,
     };
   }
 }
