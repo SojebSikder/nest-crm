@@ -26,7 +26,7 @@ import { Action } from 'src/ability/ability.factory';
 export class SpaceRoleController {
   constructor(private readonly spaceRoleService: SpaceRoleService) {}
 
-  @ApiOperation({ summary: 'Create workspace user' })
+  @ApiOperation({ summary: 'Create workspace role' })
   @CheckAbilities({ action: Action.Create, subject: 'Role' })
   @Post()
   async create(@Req() req, @Body() createSpaceRoleDto: CreateSpaceRoleDto) {
@@ -51,9 +51,15 @@ export class SpaceRoleController {
     }
   }
 
+  @ApiOperation({ summary: 'Read workspace roles' })
+  @CheckAbilities({ action: Action.Read, subject: 'Role' })
   @Get()
-  findAll() {
-    return this.spaceRoleService.findAll();
+  async findAll(@Req() req) {
+    const user_id = req.user.userId;
+    const workspace_id = req.params.workspace_id;
+
+    const roles = await this.spaceRoleService.findAll(user_id, workspace_id);
+    return { data: roles };
   }
 
   @Get(':id')
