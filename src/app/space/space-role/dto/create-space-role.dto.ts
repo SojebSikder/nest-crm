@@ -5,5 +5,5 @@ export class CreateSpaceRoleDto {
   title: string;
 
   @ApiProperty()
-  permissions: number[];
+  permission_ids: number[];
 }

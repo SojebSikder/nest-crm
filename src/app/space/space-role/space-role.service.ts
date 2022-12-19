@@ -19,7 +19,7 @@ export class SpaceRoleService extends PrismaClient {
     workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
     const title = createSpaceRoleDto.title;
-    const permissions = createSpaceRoleDto.permissions;
+    const permissions = createSpaceRoleDto.permission_ids;
 
     return await this.prisma.$transaction(async () => {
       // create role
