@@ -129,7 +129,7 @@ model Role {
   tenant_id Int?
   tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
-  workspace_id Int
+  workspace_id Int?
   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
   permission_roles PermissionRole[]

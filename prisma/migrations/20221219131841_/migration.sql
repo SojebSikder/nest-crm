@@ -8,6 +8,7 @@ CREATE TABLE `organizations` (
     `name` VARCHAR(191) NULL,
     `phone_number` VARCHAR(191) NULL,
     `website` VARCHAR(191) NULL,
+    `trial_end_at` DATETIME(3) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -41,6 +42,7 @@ CREATE TABLE `users` (
     `lname` VARCHAR(255) NULL,
     `password` VARCHAR(255) NULL,
     `domain` VARCHAR(191) NULL,
+    `billing_id` VARCHAR(191) NULL,
     `tenant_id` INTEGER NULL,
 
     UNIQUE INDEX `users_email_key`(`email`),
@@ -73,6 +75,7 @@ CREATE TABLE `roles` (
     `title` VARCHAR(191) NULL,
     `name` VARCHAR(191) NULL,
     `tenant_id` INTEGER NULL,
+    `workspace_id` INTEGER NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -292,13 +295,11 @@ CREATE TABLE `conversations` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
-    `messaging_product` VARCHAR(191) NULL DEFAULT 'whatsapp',
     `is_open` BOOLEAN NULL DEFAULT true,
-    `creator_id` INTEGER NULL,
-    `creator_type` VARCHAR(191) NULL,
-    `participant_id` INTEGER NULL,
-    `participant_type` VARCHAR(191) NULL,
+    `contact_id` INTEGER NULL,
+    `workspace_channel_id` INTEGER NULL,
     `workspace_id` INTEGER NOT NULL,
+    `tenant_id` INTEGER NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -309,12 +310,14 @@ CREATE TABLE `messages` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `read_at` DATETIME(3) NULL,
-    `text` VARCHAR(191) NULL,
-    `sender_id` INTEGER NULL,
-    `sender_type` VARCHAR(191) NULL,
-    `receiver_id` INTEGER NULL,
-    `receiver_type` VARCHAR(191) NULL,
-    `conversation_id` INTEGER NOT NULL,
+    `message_from_workspace` BOOLEAN NULL DEFAULT false,
+    `messaging_product` VARCHAR(191) NULL DEFAULT 'whatsapp',
+    `message_id` VARCHAR(191) NULL,
+    `type` VARCHAR(191) NULL DEFAULT 'text',
+    `body_text` VARCHAR(191) NULL,
+    `contact_id` INTEGER NULL,
+    `workspace_channel_id` INTEGER NULL,
+    `conversation_id` INTEGER NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -349,6 +352,35 @@ CREATE TABLE `countries` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `plans` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `status` INTEGER NULL DEFAULT 1,
+    `name` VARCHAR(191) NOT NULL,
+    `plan_price_id` VARCHAR(191) NULL,
+    `price_per_month` DECIMAL(65, 30) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `subscriptions` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `status` INTEGER NULL DEFAULT 1,
+    `tenant_id` INTEGER NOT NULL,
+    `plan_id` INTEGER NOT NULL,
+    `start_at` DATETIME(3) NOT NULL,
+    `end_at` DATETIME(3) NOT NULL,
+    `payment_method` VARCHAR(191) NULL,
+    `userId` INTEGER NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `_PermissionToRole` (
     `A` INTEGER NOT NULL,
     `B` INTEGER NOT NULL,
@@ -368,6 +400,9 @@ ALTER TABLE `ucodes` ADD CONSTRAINT `ucodes_user_id_fkey` FOREIGN KEY (`user_id`
 
 -- AddForeignKey
 ALTER TABLE `roles` ADD CONSTRAINT `roles_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `roles` ADD CONSTRAINT `roles_workspace_id_fkey` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `permission_roles` ADD CONSTRAINT `permission_roles_permission_id_fkey` FOREIGN KEY (`permission_id`) REFERENCES `permissions`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -463,7 +498,34 @@ ALTER TABLE `contact_workspace_channels` ADD CONSTRAINT `contact_workspace_chann
 ALTER TABLE `contact_workspace_channels` ADD CONSTRAINT `contact_workspace_channels_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `conversations` ADD CONSTRAINT `conversations_contact_id_fkey` FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `conversations` ADD CONSTRAINT `conversations_workspace_channel_id_fkey` FOREIGN KEY (`workspace_channel_id`) REFERENCES `whatsapp_channels`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `conversations` ADD CONSTRAINT `conversations_workspace_id_fkey` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `conversations` ADD CONSTRAINT `conversations_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `messages` ADD CONSTRAINT `messages_contact_id_fkey` FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `messages` ADD CONSTRAINT `messages_workspace_channel_id_fkey` FOREIGN KEY (`workspace_channel_id`) REFERENCES `whatsapp_channels`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `messages` ADD CONSTRAINT `messages_conversation_id_fkey` FOREIGN KEY (`conversation_id`) REFERENCES `conversations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `subscriptions` ADD CONSTRAINT `subscriptions_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `subscriptions` ADD CONSTRAINT `subscriptions_plan_id_fkey` FOREIGN KEY (`plan_id`) REFERENCES `plans`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `subscriptions` ADD CONSTRAINT `subscriptions_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_PermissionToRole` ADD CONSTRAINT `_PermissionToRole_A_fkey` FOREIGN KEY (`A`) REFERENCES `permissions`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
