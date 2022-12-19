@@ -67,16 +67,54 @@ export class SpaceRoleController {
     return this.spaceRoleService.findOne(+id);
   }
 
+  @ApiOperation({ summary: 'Update workspace role' })
+  @CheckAbilities({ action: Action.Update, subject: 'Role' })
   @Patch(':id')
-  update(
+  async update(
+    @Req() req,
     @Param('id') id: string,
     @Body() updateSpaceRoleDto: UpdateSpaceRoleDto,
   ) {
-    return this.spaceRoleService.update(+id, updateSpaceRoleDto);
+    const user_id = req.user.userId;
+    const workspace_id = req.params.workspace_id;
+
+    const role = await this.spaceRoleService.update(
+      +id,
+      user_id,
+      workspace_id,
+      updateSpaceRoleDto,
+    );
+    if (role) {
+      return {
+        success: true,
+        message: 'Updated successfully',
+      };
+    } else {
+      return {
+        error: true,
+        message: 'Not updated',
+      };
+    }
   }
 
+  @ApiOperation({ summary: 'Delete workspace role' })
+  @CheckAbilities({ action: Action.Delete, subject: 'Role' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.spaceRoleService.remove(+id);
+  async remove(@Req() req, @Param('id') id: string) {
+    const user_id = req.user.userId;
+    const workspace_id = req.params.workspace_id;
+
+    const role = await this.spaceRoleService.remove(+id, user_id, workspace_id);
+    if (role) {
+      return {
+        success: true,
+        message: 'Deleted successfully',
+      };
+    } else {
+      return {
+        error: true,
+        message: 'Not deleted',
+      };
+    }
   }
 }
