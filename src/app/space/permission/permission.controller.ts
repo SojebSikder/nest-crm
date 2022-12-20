@@ -18,12 +18,8 @@ export class PermissionController {
   @Get()
   async findAll(@Req() req) {
     const user_id = req.user.userId;
-    const workspace_id = req.params.workspace_id;
 
-    const permissions = await this.permissionService.findAll(
-      user_id,
-      workspace_id,
-    );
+    const permissions = await this.permissionService.findAll(user_id);
     return {
       data: permissions.permission_roles,
     };
