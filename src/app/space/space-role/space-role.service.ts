@@ -136,7 +136,7 @@ export class SpaceRoleService extends PrismaClient {
       // map role and permissions
       const rolePermissions = permissions.map((per) => {
         return {
-          role_id: role[0].id,
+          role_id: id,
           permission_id: Number(per),
         };
       });
@@ -145,7 +145,7 @@ export class SpaceRoleService extends PrismaClient {
         // remove all permissions
         await this.prisma.permissionRole.deleteMany({
           where: {
-            role_id: role[0].id,
+            role_id: id,
           },
         });
         // create role permission relationship
