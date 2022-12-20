@@ -75,7 +75,7 @@ export class SpaceRoleController {
       workspace_id,
     );
 
-    return role;
+    return { data: role };
   }
 
   @ApiOperation({ summary: 'Update workspace role' })

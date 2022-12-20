@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { UserRepository } from 'src/common/repository/user/user.repository';
 import { PrismaService } from '../../../prisma/prisma.service';
 
 @Injectable()
@@ -8,11 +9,28 @@ export class PermissionService extends PrismaClient {
     super();
   }
 
-  async findAll() {
-    const role_id = 2; // admin role
+  async findAll(user_id: number, workspace_id: number) {
+    workspace_id = Number(workspace_id);
+    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const userDetails = await UserRepository.getUserDetails({
+      userId: user_id,
+    });
+
+    // const role_id = 2; // admin role
+    const role_id = userDetails.role_users[0].role_id;
     const permissions = await this.prisma.role.findFirst({
       where: {
-        id: role_id,
+        AND: [
+          {
+            id: role_id,
+          },
+          {
+            workspace_id: workspace_id,
+          },
+          {
+            tenant_id: tenant_id,
+          },
+        ],
       },
       include: {
         permission_roles: {
