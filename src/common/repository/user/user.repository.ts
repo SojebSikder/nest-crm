@@ -206,11 +206,6 @@ export class UserRepository {
             },
           });
           if (user) {
-            // attach role
-            const role = await this.attachRole({
-              user_id: user.id,
-              role_id: role_id,
-            });
             // create a workspace
             const workspace = await prisma.workspace.create({
               data: {
@@ -225,6 +220,11 @@ export class UserRepository {
                 user_id: user.id,
                 tenant_id: organization.id,
               },
+            });
+            // attach role
+            const role = await this.attachRole({
+              user_id: user.id,
+              role_id: role_id,
             });
             return user;
           } else {
