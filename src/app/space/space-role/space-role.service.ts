@@ -72,7 +72,7 @@ export class SpaceRoleService extends PrismaClient {
     workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
 
-    const roles = await this.prisma.role.findMany({
+    const roles = await this.prisma.role.findFirst({
       where: {
         AND: [
           {
