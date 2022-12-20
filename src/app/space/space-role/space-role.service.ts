@@ -68,8 +68,38 @@ export class SpaceRoleService extends PrismaClient {
     return roles;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} spaceRole`;
+  async findOne(id: number, user_id: number, workspace_id: number) {
+    workspace_id = Number(workspace_id);
+    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+
+    const roles = await this.prisma.role.findMany({
+      where: {
+        AND: [
+          {
+            id: id,
+          },
+          {
+            workspace_id: workspace_id,
+          },
+          {
+            tenant_id: tenant_id,
+          },
+        ],
+      },
+      include: {
+        permission_roles: {
+          select: {
+            permission: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return roles;
   }
 
   async update(
@@ -112,7 +142,13 @@ export class SpaceRoleService extends PrismaClient {
       });
 
       if (role) {
-        // TODO update role permission relationship
+        // remove all permissions
+        await this.prisma.permissionRole.deleteMany({
+          where: {
+            role_id: role[0].id,
+          },
+        });
+        // create role permission relationship
         await this.prisma.permissionRole.createMany({
           data: rolePermissions,
         });

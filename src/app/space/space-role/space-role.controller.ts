@@ -62,9 +62,20 @@ export class SpaceRoleController {
     return { data: roles };
   }
 
+  @ApiOperation({ summary: 'Show one workspace role' })
+  @CheckAbilities({ action: Action.Show, subject: 'Role' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.spaceRoleService.findOne(+id);
+  async findOne(@Req() req, @Param('id') id: string) {
+    const user_id = req.user.userId;
+    const workspace_id = req.params.workspace_id;
+
+    const role = await this.spaceRoleService.findOne(
+      +id,
+      user_id,
+      workspace_id,
+    );
+
+    return role;
   }
 
   @ApiOperation({ summary: 'Update workspace role' })
