@@ -46,20 +46,22 @@ export class WorkspaceChannelController {
         createWorkspaceChannelDto,
       );
 
-      if (channel) {
+      if (!channel.error) {
         const webhook_url = `${appConfig().app.url}/api/whatsapp/webhook/${
-          channel.webhook_key
+          channel.data.webhook_key
         }`;
         return {
           success: true,
+          message: 'Whatsapp channel added successfully',
           data: {
             webhook_url: webhook_url,
-            verify_token: channel.verify_token,
+            verify_token: channel.data.verify_token,
           },
         };
       } else {
         return {
-          success: false,
+          error: channel.error,
+          message: channel.message,
         };
       }
     } catch (error) {

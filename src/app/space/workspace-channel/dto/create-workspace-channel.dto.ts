@@ -6,4 +6,7 @@ export class CreateWorkspaceChannelDto {
 
   @ApiProperty()
   account_id: string;
+
+  @ApiProperty()
+  phone_number: string;
 }
