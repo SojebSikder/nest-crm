@@ -27,6 +27,11 @@ export class UserService extends PrismaClient {
         avatar: true,
         availability: true,
         tenant_id: true,
+        workspace_users: {
+          select: {
+            workspace_id: true,
+          },
+        },
         role_users: {
           select: {
             role: {
