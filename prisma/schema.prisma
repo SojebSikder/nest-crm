@@ -43,22 +43,6 @@ model Organization {
   @@map("organizations")
 }
 
-// User profile
-model Profile {
-  id         Int      @id @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-
-  fname    String?
-  lname    String?
-  bio      String?
-  language String?
-  user     User    @relation(fields: [user_id], references: [id])
-  user_id  Int     @unique
-
-  @@map("profiles")
-}
-
 // User table
 model User {
   id         Int       @id @default(autoincrement())
@@ -71,13 +55,13 @@ model User {
   // online, busy, offline
   availability String?
 
-  email    String?  @unique
-  username String?  @unique
-  fname    String?  @db.VarChar(255)
-  lname    String?  @db.VarChar(255)
-  password String?  @db.VarChar(255)
-  domain   String?  @unique
-  profile  Profile?
+  email    String? @unique
+  username String? @unique
+  fname    String? @db.VarChar(255)
+  lname    String? @db.VarChar(255)
+  password String? @db.VarChar(255)
+  domain   String? @unique
+  avatar   String?
 
   // billing id. e.g. stripe customer id
   billing_id String?

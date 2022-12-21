@@ -14,21 +14,6 @@ CREATE TABLE `organizations` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `profiles` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `fname` VARCHAR(191) NULL,
-    `lname` VARCHAR(191) NULL,
-    `bio` VARCHAR(191) NULL,
-    `language` VARCHAR(191) NULL,
-    `user_id` INTEGER NOT NULL,
-
-    UNIQUE INDEX `profiles_user_id_key`(`user_id`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `users` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -42,6 +27,7 @@ CREATE TABLE `users` (
     `lname` VARCHAR(255) NULL,
     `password` VARCHAR(255) NULL,
     `domain` VARCHAR(191) NULL,
+    `avatar` VARCHAR(191) NULL,
     `billing_id` VARCHAR(191) NULL,
     `tenant_id` INTEGER NULL,
 
@@ -388,9 +374,6 @@ CREATE TABLE `_PermissionToRole` (
     UNIQUE INDEX `_PermissionToRole_AB_unique`(`A`, `B`),
     INDEX `_PermissionToRole_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `profiles` ADD CONSTRAINT `profiles_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `users` ADD CONSTRAINT `users_tenant_id_fkey` FOREIGN KEY (`tenant_id`) REFERENCES `organizations`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
