@@ -160,6 +160,7 @@ export class WorkspaceChannelService extends PrismaClient {
         website_2: updateWorkspaceChannelDto.website_2,
       },
     });
+
     // update whatsapp profile
     WhatsappApi.config({
       token: workspaceChannel[0].access_token,

@@ -114,18 +114,21 @@ export class WorkspaceChannelController {
   ) {
     const workspace_id = req.params.workspace_id;
     const user = req.user;
+
     const workspaceChannel = await this.workspaceChannelService.update(
       user.userId,
       workspace_id,
       +id,
       updateWorkspaceChannelDto,
     );
+
     if (workspaceChannel) {
       return {
         success: true,
+        message: 'Updated successfully',
       };
     } else {
-      return { success: false };
+      return { error: true, message: 'Not updated' };
     }
   }
 
@@ -145,7 +148,7 @@ export class WorkspaceChannelController {
     if (workspaceChannel) {
       return {
         success: true,
-        message: 'Workspace channel not deleted',
+        message: 'Workspace channel deleted successfully',
       };
     } else {
       return {
