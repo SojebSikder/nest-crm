@@ -9,8 +9,7 @@ import {
   UseGuards,
   HttpStatus,
   HttpException,
-  Request,
-  ForbiddenException,
+  Req,
 } from '@nestjs/common';
 import appConfig from '../../config/app.config';
 import { SignedUrlGuard } from 'nestjs-url-generator';
@@ -21,10 +20,18 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AbilityFactory, Action } from '../../ability/ability.factory';
 import { UserRepository } from '../../common/repository/user/user.repository';
-import { ForbiddenError } from '@casl/ability';
 import { CheckAbilities } from '../../ability/abilities.decorator';
 import { AbilitiesGuard } from '../../ability/abilities.guard';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { UserEnum } from './entities/user.entity';
 
+@ApiBearerAuth()
+@ApiTags('User')
 @Controller('user')
 export class UserController {
   constructor(
@@ -35,32 +42,42 @@ export class UserController {
   @UseGuards(JwtAuthGuard, AbilitiesGuard)
   @CheckAbilities({ action: Action.Create, subject: 'User' })
   @Post()
-  async create(@Request() req, @Body() createUserDto: CreateUserDto) {
+  async create(@Req() req, @Body() createUserDto: CreateUserDto) {
     const user = await this.userService.create(createUserDto, req.user.userId);
     if (user) {
       return {
-        Message: 'User has been created successfully',
+        success: true,
+        message: 'User has been invited successfully',
       };
     } else {
       return {
-        Message: 'Something went wrong :(',
+        error: true,
+        message: 'Something went wrong :(',
       };
     }
   }
 
+  @ApiOperation({ summary: 'Get current user profile info' })
+  @ApiResponse({ schema: { enum: [UserEnum] } })
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  async me(@Request() req) {
+  async me(@Req() req) {
     const data = await this.userService.me({ userId: req.user.userId });
-    return {
-      data: data,
-    };
+    if (data) {
+      return {
+        data: data,
+      };
+    } else {
+      return {
+        error: true,
+      };
+    }
   }
 
   @UseGuards(JwtAuthGuard, AbilitiesGuard)
   @CheckAbilities({ action: Action.Read, subject: 'User' })
   @Get()
-  async findAll(@Request() req) {
+  async findAll(@Req() req) {
     const userId = req.user.userId;
     // const userDetails = await UserRepository.getUserDetails({
     //   userId: userId,
@@ -87,7 +104,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard, AbilitiesGuard)
   @CheckAbilities({ action: Action.Show, subject: 'User' })
   @Get(':id')
-  async findOne(@Request() req, @Param('id') id: string) {
+  async findOne(@Req() req, @Param('id') id: string) {
     return await this.userService.findOne(+id, req.user.userId);
   }
 
@@ -101,13 +118,13 @@ export class UserController {
   @UseGuards(JwtAuthGuard, AbilitiesGuard)
   @CheckAbilities({ action: Action.Delete, subject: 'User' })
   @Delete(':id')
-  async remove(@Request() req, @Param('id') id: string) {
+  async remove(@Req() req, @Param('id') id: string) {
     return await this.userService.remove(+id, req);
   }
 
   @Get('invitation/:id')
   @UseGuards(SignedUrlGuard)
-  async invitation(@Request() req, @Param('id') id: string) {
+  async invitation(@Req() req, @Param('id') id: string) {
     try {
       const user = await UserRepository.getUserDetails({ userId: id });
       // const user = await this.userService.me({ userId: id });
@@ -130,11 +147,7 @@ export class UserController {
 
   // set new password via tenant invitation link
   @Patch(':id/password')
-  async setPassword(
-    @Request() req,
-    @Param('id') id: string,
-    @Body() body: any,
-  ) {
+  async setPassword(@Req() req, @Param('id') id: string, @Body() body: any) {
     try {
       const token = req.query.token;
       const email = req.query.email;

@@ -15,10 +15,32 @@ export class UserService extends PrismaClient {
   }
 
   async me({ userId }) {
-    const user = await UserRepository.getUserDetails({ userId: userId });
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+      select: {
+        fname: true,
+        lname: true,
+        username: true,
+        email: true,
+        avatar: true,
+        availability: true,
+        tenant_id: true,
+        role_users: {
+          select: {
+            role: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
     if (user) {
-      const excludedData = PrismaHelper.exclude(user, ['password']);
-      return excludedData;
+      // const excludedData = PrismaHelper.exclude(user, ['password']);
+      return user;
     } else {
       return false;
     }
