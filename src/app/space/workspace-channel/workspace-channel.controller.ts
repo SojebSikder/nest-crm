@@ -66,7 +66,15 @@ export class WorkspaceChannelController {
       }
     } catch (error) {
       // console.log(error.response.data);
-      throw error;
+      // throw error;
+      if (error.response.data) {
+        return {
+          error: true,
+          message: error.response.data.error.message,
+        };
+      } else {
+        throw error;
+      }
     }
   }
 

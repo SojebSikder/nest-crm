@@ -19,13 +19,33 @@ export class WorkspaceChannelService extends PrismaClient {
   ) {
     workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
-    const phone_number = createWorkspaceChannelDto.phone_number;
+
+    const phone_number = createWorkspaceChannelDto.phone_number.replace(
+      '+',
+      '',
+    );
+
+    // check existing phone from workspace channel
+    const isExistWorkspaceChannel =
+      await this.prisma.workspaceChannel.findFirst({
+        where: {
+          whatsapp_phone_number: phone_number,
+        },
+      });
+
+    if (isExistWorkspaceChannel) {
+      return {
+        error: true,
+        message: 'Phone number already added on this platfrom',
+      };
+    }
 
     // get phone number id
     WhatsappApi.config({
       token: createWorkspaceChannelDto.access_token,
       accountId: createWorkspaceChannelDto.account_id,
     });
+
     let whatsapp_phone_number = null;
     const getPhoneNumberId = await WhatsappApi.getPhoneNumberIds();
     getPhoneNumberId.map((phoneInfo) => {
@@ -33,12 +53,18 @@ export class WorkspaceChannelService extends PrismaClient {
         whatsapp_phone_number = phoneInfo.display_phone_number;
       }
     });
+    const phoneNumberInfos = getPhoneNumberId.filter((phoneInfo) => {
+      return phoneInfo.display_phone_number == phone_number;
+    });
+    const phoneNumberInfo = phoneNumberInfos[0];
+
     if (!whatsapp_phone_number) {
       return {
         error: true,
-        message: 'Phone number not matched with you whatsapp business account',
+        message: 'Phone number not matched with your whatsapp business account',
       };
     }
+
     const phone_number_id = getPhoneNumberId[0].id;
     // set phone number, need for fetching profile info
     WhatsappApi.setPhoneNumberId(phone_number_id);
@@ -62,7 +88,8 @@ export class WorkspaceChannelService extends PrismaClient {
         // website_1: profileDetails.websites[0],
         // website_2: profileDetails.websites[1],
         //
-        whatsapp_phone_number: '',
+        quality_rating: phoneNumberInfo.quality_rating,
+        whatsapp_phone_number: whatsapp_phone_number,
         access_token: createWorkspaceChannelDto.access_token,
         account_id: createWorkspaceChannelDto.account_id,
         phone_number_id: phone_number_id,

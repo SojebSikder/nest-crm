@@ -207,6 +207,7 @@ CREATE TABLE `whatsapp_channels` (
     `account_id` TEXT NULL,
     `phone_number_id` VARCHAR(191) NULL,
     `verified` BOOLEAN NULL DEFAULT false,
+    `quality_rating` VARCHAR(191) NULL,
     `channel_id` INTEGER NULL,
     `workspace_id` INTEGER NOT NULL,
     `tenant_id` INTEGER NULL,

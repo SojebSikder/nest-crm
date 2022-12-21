@@ -363,6 +363,9 @@ model WorkspaceChannel {
   phone_number_id String?
 
   verified Boolean? @default(false)
+
+  // phone number quality rating info from whatsapp
+  quality_rating String?
   // ----end whatsapp section----
 
   // TODO currently not using, planning to remove
