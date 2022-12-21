@@ -65,7 +65,7 @@ export class WorkspaceChannelService extends PrismaClient {
       };
     }
 
-    const phone_number_id = getPhoneNumberId[0].id;
+    const phone_number_id = phoneNumberInfo.id;
     // set phone number, need for fetching profile info
     WhatsappApi.setPhoneNumberId(phone_number_id);
     // get business profile details
