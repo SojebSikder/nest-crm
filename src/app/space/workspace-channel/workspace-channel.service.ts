@@ -179,6 +179,7 @@ export class WorkspaceChannelService extends PrismaClient {
   async remove(user_id: number, workspace_id: number, id: number) {
     workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+
     const workspaceChannel = await this.prisma.workspaceChannel.deleteMany({
       where: {
         AND: [

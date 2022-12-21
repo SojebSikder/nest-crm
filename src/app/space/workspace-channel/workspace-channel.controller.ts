@@ -135,17 +135,23 @@ export class WorkspaceChannelController {
   async remove(@Req() req, @Param('id') id: string) {
     const workspace_id = req.params.workspace_id;
     const user = req.user;
+
     const workspaceChannel = await this.workspaceChannelService.remove(
       user.userId,
       workspace_id,
       +id,
     );
+
     if (workspaceChannel) {
       return {
         success: true,
+        message: 'Workspace channel not deleted',
       };
     } else {
-      return { success: false };
+      return {
+        error: true,
+        message: 'Workspace channel not deleted',
+      };
     }
   }
 }
