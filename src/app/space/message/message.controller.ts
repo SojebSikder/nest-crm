@@ -39,9 +39,13 @@ export class MessageController {
       createMessageDto,
     );
     if (message) {
+      const data = {
+        message: message,
+      };
+
       return {
         success: true,
-        data: message,
+        data: data,
       };
     } else {
       return {
