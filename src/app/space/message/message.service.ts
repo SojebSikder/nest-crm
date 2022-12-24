@@ -55,12 +55,13 @@ export class MessageService extends PrismaClient {
     });
 
     if (conversation) {
-      // send whatsapp message
+      // setup whatsapp credentials
       WhatsappApi.config({
         token: channelDetails.access_token,
         phoneNumberId: channelDetails.phone_number_id,
       });
 
+      // send whatsapp message
       const whatsappMessage = await WhatsappApi.sendText({
         to: conversation.contact.phone_number,
         message: createMessageDto.body_text,

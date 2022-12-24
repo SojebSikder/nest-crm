@@ -27,6 +27,13 @@ export class UserService extends PrismaClient {
         avatar: true,
         availability: true,
         tenant_id: true,
+        tenant: {
+          select: {
+            id: true,
+            name: true,
+            trial_end_at: true,
+          },
+        },
         workspace_users: {
           select: {
             workspace_id: true,
@@ -43,6 +50,7 @@ export class UserService extends PrismaClient {
         },
       },
     });
+
     if (user) {
       // const excludedData = PrismaHelper.exclude(user, ['password']);
       return user;

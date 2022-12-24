@@ -45,11 +45,13 @@ export class MessageController {
 
       return {
         success: true,
+        message: 'Message sent successfully.',
         data: data,
       };
     } else {
       return {
-        success: false,
+        error: true,
+        message: 'Message not sent.',
       };
     }
   }
