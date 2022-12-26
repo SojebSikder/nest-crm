@@ -1,4 +1,4 @@
-import { Controller, Request, Get, UseGuards } from '@nestjs/common';
+import { Controller, Req, Get, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { KvStore } from './common/lib/KvStore';
@@ -39,7 +39,7 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  getProfile(@Request() req) {
+  getProfile(@Req() req) {
     const user = req.user;
     return user;
   }

@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
-  Request,
+  Req,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { CreateProfileDto } from './dto/create-profile.dto';
@@ -26,7 +26,7 @@ export class ProfileController {
   }
 
   @Get()
-  findAll(@Request() req) {
+  findAll(@Req() req) {
     return this.profileService.findAll();
   }
 
@@ -37,7 +37,7 @@ export class ProfileController {
 
   @Patch(':id')
   update(
-    @Request() req,
+    @Req() req,
     @Param('id') id: string,
     @Body() updateProfileDto: UpdateProfileDto,
   ) {
