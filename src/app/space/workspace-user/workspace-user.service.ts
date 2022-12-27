@@ -36,6 +36,12 @@ export class WorkspaceUserService extends PrismaClient {
 
     const workspaceUsers = this.prisma.workspaceUser.findMany({
       include: {
+        workspace: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         user: {
           select: {
             id: true,
