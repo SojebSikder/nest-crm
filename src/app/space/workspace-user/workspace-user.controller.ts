@@ -65,7 +65,12 @@ export class WorkspaceUserController {
       user_id,
       workspace_id,
     );
-    return { data: workspaceUsers };
+
+    if (workspaceUsers) {
+      return { data: workspaceUsers };
+    } else {
+      return { data: [] };
+    }
   }
 
   @Get(':id')
