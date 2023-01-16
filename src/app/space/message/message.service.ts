@@ -73,7 +73,6 @@ export class MessageService extends PrismaClient {
         'system.current_time': DateHelper.now().toTimeString(),
       });
       // contact variables
-
       Sojebvar.addVariable({
         'contact.name': `${conversation.contact.fname} ${conversation.contact.lname}`,
         'contact.fname': `${conversation.contact.fname}`,

@@ -30,12 +30,20 @@ import { StripeModule } from './app/stripe/stripe.module';
 import { BillingModule } from './app/organization/billing/billing.module';
 import { SpaceRoleModule } from './app/space/space-role/space-role.module';
 import { ExampleModule } from './example/example.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [appConfig],
+    }),
+    BullModule.forRoot({
+      redis: {
+        host: appConfig().redis.host,
+        password: appConfig().redis.password,
+        port: +appConfig().redis.port,
+      },
     }),
     ThrottlerModule.forRoot({
       ttl: 60,

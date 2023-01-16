@@ -2,14 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { CreateExampleDto } from './dto/create-example.dto';
 import { UpdateExampleDto } from './dto/update-example.dto';
 
+import { InjectQueue } from '@nestjs/bull/dist/decorators';
+import { Queue } from 'bull';
 @Injectable()
 export class ExampleService {
+  constructor(@InjectQueue('message-queue') private queue: Queue) {}
   create(createExampleDto: CreateExampleDto) {
     return 'This action adds a new example';
   }
 
-  findAll() {
-    return `This action returns all example`;
+  async findAll() {
+    // TODO add queue
+    const job = await this.queue.add('sendMessage', {
+      message: 'hello sojeb',
+    });
+    return job.data;
+
+    // end testing
+    // return `This action returns all example`;
   }
 
   findOne(id: number) {

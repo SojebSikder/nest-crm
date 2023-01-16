@@ -22,15 +22,15 @@ export class ExampleController {
   }
 
   @Get()
-  findAll() {
-    const text = 'my name is ${name} and I am ${age} years old';
-    Sojebvar.addVariable({
-      name: 'sojeb',
-      age: 20,
-    });
-    const data = Sojebvar.parse(text);
-    return { test: data };
-    // return this.exampleService.findAll();
+  async findAll() {
+    // const text = 'my name is ${name} and I am ${age} years old';
+    // Sojebvar.addVariable({
+    //   name: 'sojeb',
+    //   age: 20,
+    // });
+    // const data = Sojebvar.parse(text);
+    // return { test: data };
+    return await this.exampleService.findAll();
   }
 
   @Get(':id')
