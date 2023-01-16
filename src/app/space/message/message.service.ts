@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { DateHelper } from 'src/common/helper/date.helper';
+import { Sojebvar } from 'src/common/lib/Sojebvar/Sojebvar';
 import { WhatsappApi } from '../../../common/lib/whatsapp/Whatsapp';
 import { UserRepository } from '../../../common/repository/user/user.repository';
 import { WorkspaceChannelRepository } from '../../../common/repository/workspace-channel/workspace-channel.repository';
@@ -35,7 +37,15 @@ export class MessageService extends PrismaClient {
       include: {
         contact: {
           select: {
+            fname: true,
+            lname: true,
             phone_number: true,
+            email: true,
+            country: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },
@@ -55,6 +65,30 @@ export class MessageService extends PrismaClient {
     });
 
     if (conversation) {
+      // parse the message
+      // system variables
+      Sojebvar.addVariable({
+        'system.current_datetime': DateHelper.now().toISOString(),
+        'system.current_date': DateHelper.now().toDateString(),
+        'system.current_time': DateHelper.now().toTimeString(),
+      });
+      // contact variables
+
+      Sojebvar.addVariable({
+        'contact.name': `${conversation.contact.fname} ${conversation.contact.lname}`,
+        'contact.fname': `${conversation.contact.fname}`,
+        'contact.lname': `${conversation.contact.lname}`,
+        'contact.email': `${conversation.contact.email}`,
+        'contact.country':
+          conversation.contact.country != null
+            ? conversation.contact.country.name
+            : '',
+        'contact.phone_number': `${conversation.contact.phone_number}`,
+      });
+
+      createMessageDto.body_text = Sojebvar.parse(createMessageDto.body_text);
+      // end parsing
+
       // setup whatsapp credentials
       WhatsappApi.config({
         token: channelDetails.access_token,
