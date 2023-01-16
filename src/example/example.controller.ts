@@ -10,7 +10,6 @@ import {
 import { ExampleService } from './example.service';
 import { CreateExampleDto } from './dto/create-example.dto';
 import { UpdateExampleDto } from './dto/update-example.dto';
-import { Sojebvar } from 'src/common/lib/Sojebvar/Sojebvar';
 
 @Controller('example')
 export class ExampleController {
@@ -23,13 +22,6 @@ export class ExampleController {
 
   @Get()
   async findAll() {
-    // const text = 'my name is ${name} and I am ${age} years old';
-    // Sojebvar.addVariable({
-    //   name: 'sojeb',
-    //   age: 20,
-    // });
-    // const data = Sojebvar.parse(text);
-    // return { test: data };
     return await this.exampleService.findAll();
   }
 

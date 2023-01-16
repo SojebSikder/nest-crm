@@ -103,7 +103,7 @@ export class MessageService extends PrismaClient {
       // message id
       const message_id = whatsappMessage.messages[0].id;
       // save message to db
-      const message = this.prisma.message.create({
+      const message = await this.prisma.message.create({
         data: {
           type: 'text',
           message_from_workspace: true,

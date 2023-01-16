@@ -4,6 +4,7 @@ import { UpdateExampleDto } from './dto/update-example.dto';
 
 import { InjectQueue } from '@nestjs/bull/dist/decorators';
 import { Queue } from 'bull';
+import { Sojebvar } from 'src/common/lib/Sojebvar/Sojebvar';
 @Injectable()
 export class ExampleService {
   constructor(@InjectQueue('message-queue') private queue: Queue) {}
@@ -12,14 +13,19 @@ export class ExampleService {
   }
 
   async findAll() {
-    // TODO add queue
+    // add queue example
     const job = await this.queue.add('sendMessage', {
       message: 'hello sojeb',
     });
-    return job.data;
 
     // end testing
-    // return `This action returns all example`;
+    const text = 'my name is ${name} and I am ${age} years old';
+    Sojebvar.addVariable({
+      name: 'sojeb',
+      age: 20,
+    });
+    const data = Sojebvar.parse(text);
+    return { test: data };
   }
 
   findOne(id: number) {
