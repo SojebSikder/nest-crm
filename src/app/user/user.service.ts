@@ -41,6 +41,19 @@ export class UserService extends PrismaClient {
               select: {
                 id: true,
                 name: true,
+                conversations: {
+                  include: {
+                    contact: {
+                      select: {
+                        id: true,
+                        fname: true,
+                        lname: true,
+                        email: true,
+                        assignee_id: true,
+                      },
+                    },
+                  },
+                },
               },
             },
           },
