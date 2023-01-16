@@ -29,6 +29,7 @@ import { PermissionModule } from './app/space/permission/permission.module';
 import { StripeModule } from './app/stripe/stripe.module';
 import { BillingModule } from './app/organization/billing/billing.module';
 import { SpaceRoleModule } from './app/space/space-role/space-role.module';
+import { ExampleModule } from './example/example.module';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { SpaceRoleModule } from './app/space/space-role/space-role.module';
     StripeModule,
     BillingModule,
     SpaceRoleModule,
+    ExampleModule,
   ],
   controllers: [AppController],
   providers: [
