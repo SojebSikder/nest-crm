@@ -187,7 +187,7 @@ export class UserService extends PrismaClient {
       password,
       appConfig().security.salt,
     );
-    const user = await UserRepository.getUserDetails({ userId: userId });
+    const user = await UserRepository.getUserDetails(userId);
     if (user) {
       await this.prisma.user.update({
         where: {

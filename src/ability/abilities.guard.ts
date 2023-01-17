@@ -23,9 +23,7 @@ export class AbilitiesGuard implements CanActivate {
       [];
 
     const req = context.switchToHttp().getRequest();
-    const userDetails = await UserRepository.getUserDetails({
-      userId: req.user.userId,
-    });
+    const userDetails = await UserRepository.getUserDetails(req.user.userId);
 
     const ability = this.abilityFacory.defineAbility(userDetails);
 

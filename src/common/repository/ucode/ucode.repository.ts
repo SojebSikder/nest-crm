@@ -11,7 +11,7 @@ export class UcodeRepository {
    * @returns
    */
   static async createToken({ userId, expired_at = null }) {
-    const userDetails = await UserRepository.getUserDetails({ userId: userId });
+    const userDetails = await UserRepository.getUserDetails(userId);
     if (userDetails && userDetails.email) {
       const token = uuid();
       const data = await prisma.ucode.create({

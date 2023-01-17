@@ -14,9 +14,7 @@ export class HasPlanGuard implements CanActivate {
 
     try {
       const user_id = req.user.userId;
-      const userDetails = await UserRepository.getUserDetails({
-        userId: user_id,
-      });
+      const userDetails = await UserRepository.getUserDetails(user_id);
 
       // check if trial has expired
       if (userDetails.tenant.trial_end_at < DateHelper.now()) {

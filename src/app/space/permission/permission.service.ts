@@ -12,9 +12,7 @@ export class PermissionService extends PrismaClient {
   async findAll(user_id: number, workspace_id: number) {
     workspace_id = Number(workspace_id);
     // const tenant_id = await UserRepository.getTenantId(user_id);
-    const userDetails = await UserRepository.getUserDetails({
-      userId: user_id,
-    });
+    const userDetails = await UserRepository.getUserDetails(user_id);
 
     // const role_id = 2; // admin role
 

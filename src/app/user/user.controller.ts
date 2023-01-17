@@ -85,9 +85,7 @@ export class UserController {
   @Get()
   async findAll(@Req() req) {
     const userId = req.user.userId;
-    // const userDetails = await UserRepository.getUserDetails({
-    //   userId: userId,
-    // });
+    // const userDetails = await UserRepository.getUserDetails(userId);
     // const ability = this.abilityFactory.defineAbility(userDetails);
     // if (!ability.can(Action.Read, 'User')) {
     //   throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
@@ -130,9 +128,9 @@ export class UserController {
 
   @Get('invitation/:id')
   @UseGuards(SignedUrlGuard)
-  async invitation(@Req() req, @Param('id') id: string) {
+  async invitation(@Req() req, @Param('id') id: number) {
     try {
-      const user = await UserRepository.getUserDetails({ userId: id });
+      const user = await UserRepository.getUserDetails(Number(id));
       // const user = await this.userService.me({ userId: id });
       if (user.password) {
         throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);

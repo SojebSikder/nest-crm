@@ -10,10 +10,10 @@ export class UserRepository {
    * get user details
    * @returns
    */
-  static async getUserDetails({ userId }) {
+  static async getUserDetails(userId: number) {
     const user = await prisma.user.findFirst({
       where: {
-        id: userId,
+        id: Number(userId),
       },
       include: {
         tenant: true,
@@ -62,7 +62,7 @@ export class UserRepository {
    * @returns
    */
   static async getTenantId(userId: number) {
-    const userDetails = await this.getUserDetails({ userId: userId });
+    const userDetails = await this.getUserDetails(userId);
     const tenant_id = userDetails.tenant_id ?? userDetails.id;
 
     return tenant_id;
@@ -73,7 +73,7 @@ export class UserRepository {
    * @returns
    */
   static async checkTenant({ model, userId }) {
-    const userDetails = await this.getUserDetails({ userId: userId });
+    const userDetails = await this.getUserDetails(userId);
     const tenant_id = userDetails.tenant_id ?? userDetails.id;
 
     const check = await model.findFirst({
