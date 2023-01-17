@@ -141,7 +141,7 @@ export class UserController {
           message: 'Set new password',
           url: `${
             appConfig().app.client_app_url
-          }/user/${id}/set-password?token=${token}?email=${email}`,
+          }/user/${id}/invitation/confirm?token=${token}&email=${email}`,
         };
       }
     } catch (error) {
@@ -150,6 +150,7 @@ export class UserController {
   }
 
   // set new password via tenant invitation link
+  @ApiOperation({ summary: 'Set new password' })
   @Patch(':id/password')
   async setPassword(@Req() req, @Param('id') id: string, @Body() body: any) {
     try {

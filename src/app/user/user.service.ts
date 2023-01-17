@@ -7,7 +7,6 @@ import { UcodeRepository } from 'src/common/repository/ucode/ucode.repository';
 import { MailService } from 'src/mail/mail.service';
 import { UserRepository } from '../../common/repository/user/user.repository';
 import appConfig from '../../config/app.config';
-import { PrismaHelper } from '../../prisma/helper/exclude';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
