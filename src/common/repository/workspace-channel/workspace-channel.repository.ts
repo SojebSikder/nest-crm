@@ -18,7 +18,7 @@ export class WorkspaceChannelRepository {
     workspace_id: number;
   }) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
 
     const workspaceChannel = await prisma.workspaceChannel.findFirst({
       where: {

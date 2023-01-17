@@ -45,6 +45,12 @@ export class UserController {
   async create(@Req() req, @Body() createUserDto: CreateUserDto) {
     const user = await this.userService.create(createUserDto, req.user.userId);
     if (user) {
+      if (user.error) {
+        return {
+          error: user.error,
+          message: user.message,
+        };
+      }
       return {
         success: true,
         message: 'User has been invited successfully',

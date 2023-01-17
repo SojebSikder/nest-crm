@@ -47,7 +47,7 @@ export class AuthService extends PrismaClient {
     };
   }
 
-  async register({ fname, lname, email, password }) {
+  async register({ fname, lname, username, email, password }) {
     // Check if email and username is exists
     const userEmailExist = await UserRepository.exist({
       field: 'email',
@@ -61,10 +61,23 @@ export class AuthService extends PrismaClient {
       };
     }
 
+    const userUserExist = await UserRepository.exist({
+      field: 'username',
+      value: String(username),
+    });
+
+    if (userUserExist) {
+      return {
+        statusCode: 401,
+        message: 'Username already exist',
+      };
+    }
+
     // create a tenant admin (main subscriber)
     const user = await UserRepository.createTenantAdminUser({
       fname: fname,
       lname: lname,
+      username: username,
       email: email,
       password: password,
       role_id: 2, // tenant admin

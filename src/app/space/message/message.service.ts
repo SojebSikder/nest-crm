@@ -23,7 +23,7 @@ export class MessageService extends PrismaClient {
     workspace_id = Number(workspace_id);
 
     // get tenant id
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
 
     // get workspace channel details
     const channelDetails = await WorkspaceChannelRepository.getDetails({
@@ -128,7 +128,7 @@ export class MessageService extends PrismaClient {
     conversation_id = Number(conversation_id);
     workspace_id = Number(workspace_id);
     // get tenant id
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
     // check conversation is exist
     const conversation = await this.prisma.conversation.findFirst({
       include: {

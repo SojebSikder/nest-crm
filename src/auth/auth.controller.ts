@@ -23,6 +23,7 @@ export class AuthController {
   create(@Body() data) {
     const fname = data.fname;
     const lname = data.lname;
+    const username = data.username;
     const email = data.email;
     const password = data.password;
 
@@ -48,6 +49,7 @@ export class AuthController {
     return this.authService.register({
       fname: fname,
       lname: lname,
+      username: username,
       email: email,
       password: password,
     });

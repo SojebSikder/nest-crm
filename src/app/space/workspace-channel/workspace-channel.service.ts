@@ -18,7 +18,7 @@ export class WorkspaceChannelService extends PrismaClient {
     createWorkspaceChannelDto: CreateWorkspaceChannelDto,
   ) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
 
     const phone_number = createWorkspaceChannelDto.phone_number.replace(
       '+',
@@ -106,7 +106,7 @@ export class WorkspaceChannelService extends PrismaClient {
 
   async findAll(user_id: number, workspace_id: number) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
 
     const workspaceChannels = await this.prisma.workspaceChannel.findMany({
       where: {
@@ -134,7 +134,7 @@ export class WorkspaceChannelService extends PrismaClient {
     updateWorkspaceChannelDto: UpdateWorkspaceChannelDto,
   ) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
 
     const workspaceChannel = await this.prisma.workspaceChannel.updateMany({
       where: {
@@ -179,7 +179,7 @@ export class WorkspaceChannelService extends PrismaClient {
 
   async remove(user_id: number, workspace_id: number, id: number) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
 
     const workspaceChannel = await this.prisma.workspaceChannel.deleteMany({
       where: {

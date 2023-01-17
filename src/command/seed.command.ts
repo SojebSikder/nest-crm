@@ -67,6 +67,7 @@ export class SeedCommand extends CommandRunner {
     await UserRepository.createTenantAdminUser({
       fname: 'sojeb',
       lname: 'sikder',
+      username: 'sojebsikder',
       email: 'sojebsikder@gmail.com',
       password: '123',
       role_id: 2,

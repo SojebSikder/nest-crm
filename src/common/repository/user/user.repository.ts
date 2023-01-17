@@ -61,7 +61,7 @@ export class UserRepository {
    * get user tenant id
    * @returns
    */
-  static async getTenantId({ userId }: { userId: number }) {
+  static async getTenantId(userId: number) {
     const userDetails = await this.getUserDetails({ userId: userId });
     const tenant_id = userDetails.tenant_id ?? userDetails.id;
 
@@ -175,6 +175,7 @@ export class UserRepository {
   static async createTenantAdminUser({
     fname,
     lname,
+    username,
     email,
     password,
     role_id,
@@ -199,7 +200,7 @@ export class UserRepository {
             data: {
               fname: fname,
               lname: lname,
-              // username: username,
+              username: username,
               email: email,
               password: password,
               tenant_id: organization.id,
@@ -285,7 +286,7 @@ export class UserRepository {
    * @returns
    */
   static async getSubscriptionDetails(userId: number) {
-    const tenant_id = await this.getTenantId({ userId });
+    const tenant_id = await this.getTenantId(userId);
     const subscription = await prisma.subscription.findFirst({
       where: {
         tenant_id: tenant_id,

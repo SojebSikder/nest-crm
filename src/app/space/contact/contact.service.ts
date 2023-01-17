@@ -18,7 +18,7 @@ export class ContactService extends PrismaClient {
   ) {
     try {
       workspace_id = Number(workspace_id);
-      const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+      const tenant_id = await UserRepository.getTenantId(user_id);
 
       await this.prisma.contact.create({
         data: {
@@ -42,7 +42,7 @@ export class ContactService extends PrismaClient {
 
   async findAll(user_id: number, workspace_id: number) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
     const contacts = await this.prisma.contact.findMany({
       include: {
         assignee: {

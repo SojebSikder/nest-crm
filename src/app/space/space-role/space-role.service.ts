@@ -17,7 +17,7 @@ export class SpaceRoleService extends PrismaClient {
     createSpaceRoleDto: CreateSpaceRoleDto,
   ) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
     const title = createSpaceRoleDto.title;
     const permissions = createSpaceRoleDto.permission_ids;
 
@@ -51,7 +51,7 @@ export class SpaceRoleService extends PrismaClient {
 
   async findAll(user_id: number, workspace_id: number) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
 
     const roles = await this.prisma.role.findMany({
       where: {
@@ -70,7 +70,7 @@ export class SpaceRoleService extends PrismaClient {
 
   async findOne(id: number, user_id: number, workspace_id: number) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
 
     const roles = await this.prisma.role.findFirst({
       where: {
@@ -109,7 +109,7 @@ export class SpaceRoleService extends PrismaClient {
     updateSpaceRoleDto: UpdateSpaceRoleDto,
   ) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
 
     const title = updateSpaceRoleDto.title;
     const permissions = updateSpaceRoleDto.permission_ids;
@@ -159,7 +159,7 @@ export class SpaceRoleService extends PrismaClient {
 
   async remove(id: number, user_id: number, workspace_id: number) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
 
     const role = await this.prisma.role.deleteMany({
       where: {

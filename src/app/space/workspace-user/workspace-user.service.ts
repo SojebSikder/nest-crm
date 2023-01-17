@@ -17,7 +17,7 @@ export class WorkspaceUserService extends PrismaClient {
     createWorkspaceUserDto: CreateWorkspaceUserDto,
   ) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
     const invited_user_id = createWorkspaceUserDto.user_id;
 
     const workspaceUser = await this.prisma.workspaceUser.create({
@@ -32,7 +32,7 @@ export class WorkspaceUserService extends PrismaClient {
 
   async findAll(user_id: number, workspace_id: number) {
     workspace_id = Number(workspace_id);
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
 
     const workspaceUsers = this.prisma.workspaceUser.findMany({
       include: {
@@ -88,7 +88,7 @@ export class WorkspaceUserService extends PrismaClient {
   }
 
   async remove(id: number, user_id: number, workspace_id: number) {
-    const tenant_id = await UserRepository.getTenantId({ userId: user_id });
+    const tenant_id = await UserRepository.getTenantId(user_id);
 
     const workspaceUser = await this.prisma.workspaceUser.deleteMany({
       where: {

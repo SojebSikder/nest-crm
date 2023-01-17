@@ -78,18 +78,48 @@ export class UserService extends PrismaClient {
     }
   }
 
-  async create(createUserDto: CreateUserDto, tenant_id) {
+  async create(createUserDto: CreateUserDto, user_id) {
+    const tenant_id = await UserRepository.getTenantId(user_id);
+    // Check if email and username is exists
+    const userEmailExist = await UserRepository.exist({
+      field: 'email',
+      value: String(createUserDto.email),
+    });
+
+    if (userEmailExist) {
+      return {
+        error: true,
+        statusCode: 401,
+        message: 'Email already exist',
+      };
+    }
+
+    const userUserExist = await UserRepository.exist({
+      field: 'username',
+      value: String(createUserDto.username),
+    });
+
+    if (userUserExist) {
+      return {
+        statusCode: 401,
+        message: 'Username already exist',
+      };
+    }
+
     const user = await UserRepository.inviteUser({
       username: createUserDto.username,
       email: createUserDto.email,
       role_id: createUserDto.role_id,
       tenant_id: tenant_id,
     });
-    return user;
+    return {
+      data: user,
+      success: true,
+    };
   }
 
   async findAll(userId) {
-    const tenant_id = await UserRepository.getTenantId({ userId: userId });
+    const tenant_id = await UserRepository.getTenantId(userId);
     const user = await this.prisma.user.findMany({
       where: {
         tenant_id: tenant_id,
@@ -99,7 +129,7 @@ export class UserService extends PrismaClient {
   }
 
   async findOne(id: number, userId) {
-    const tenant_id = await UserRepository.getTenantId({ userId: userId });
+    const tenant_id = await UserRepository.getTenantId(userId);
     const user = await this.prisma.user.findFirst({
       where: {
         tenant_id: tenant_id,
