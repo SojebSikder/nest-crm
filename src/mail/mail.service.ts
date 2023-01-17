@@ -21,16 +21,18 @@ export class MailService {
     });
   }
 
-  async sendMemberInvitation({ user, url }) {
+  async sendMemberInvitation({ user, member, url }) {
     const from = `${process.env.APP_NAME} <${appConfig().mail.from}>`;
-    const subject = 'Member Invitation';
+    const subject = `${user.fname} is inviting you to ${appConfig().app.name}`;
 
     await this.mailerService.sendMail({
-      to: user.email,
+      to: member.email,
       from: from,
       subject: subject,
       template: 'member-invitation',
       context: {
+        user: user,
+        member: member,
         url: url,
       },
     });

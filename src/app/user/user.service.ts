@@ -87,7 +87,8 @@ export class UserService extends PrismaClient {
   }
 
   async create(createUserDto: CreateUserDto, user_id) {
-    const tenant_id = await UserRepository.getTenantId(user_id);
+    const userDetails = await UserRepository.getUserDetails(user_id);
+    const tenant_id = userDetails.tenant_id;
     // Check if email and username is exists
     const userEmailExist = await UserRepository.exist({
       field: 'email',
@@ -114,35 +115,38 @@ export class UserService extends PrismaClient {
       };
     }
 
-    const user = await UserRepository.inviteUser({
+    const member = await UserRepository.inviteUser({
+      fname: createUserDto.fname,
+      lname: createUserDto.lname,
       username: createUserDto.username,
       email: createUserDto.email,
       role_id: createUserDto.role_id,
       tenant_id: tenant_id,
     });
 
-    if (user) {
+    if (member) {
       // send invitation mail to user
       const expired_at = DateHelper.add(7, 'days').toDate();
       const ucode = await UcodeRepository.createToken({
-        userId: user.id,
+        userId: member.id,
         expired_at: expired_at,
       });
       const signed_url = this.urlGeneratorService.signUrl({
-        relativePath: `user/invitation/${user.id}`,
+        relativePath: `user/invitation/${member.id}`,
         query: {
           token: ucode,
-          email: user.email,
+          email: member.email,
         },
         expirationDate: expired_at,
       });
       await this.mailService.sendMemberInvitation({
-        user: user,
+        user: userDetails,
+        member: member,
         url: signed_url,
       });
 
       return {
-        data: user,
+        data: member,
         success: true,
         message: 'User has been invited successfully',
       };

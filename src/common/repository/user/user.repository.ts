@@ -128,10 +128,19 @@ export class UserRepository {
    * @param param0
    * @returns
    */
-  static async inviteUser({ username, email, tenant_id, role_id }) {
+  static async inviteUser({
+    fname,
+    lname,
+    username,
+    email,
+    tenant_id,
+    role_id,
+  }) {
     try {
       const user = await prisma.user.create({
         data: {
+          fname: fname,
+          lname: lname,
           username: username,
           email: email,
           tenant_id: tenant_id,
