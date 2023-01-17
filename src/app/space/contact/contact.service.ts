@@ -20,14 +20,41 @@ export class ContactService extends PrismaClient {
       workspace_id = Number(workspace_id);
       const tenant_id = await UserRepository.getTenantId(user_id);
 
+      const data = {};
+      if (createContactDto.fname) {
+        Object.assign(data, {
+          fname: createContactDto.fname,
+        });
+      }
+      if (createContactDto.lname) {
+        Object.assign(data, {
+          lname: createContactDto.lname,
+        });
+      }
+      if (createContactDto.email) {
+        Object.assign(data, {
+          email: createContactDto.email,
+        });
+      }
+      if (createContactDto.phone_number) {
+        Object.assign(data, {
+          phone_number: createContactDto.phone_number,
+        });
+      }
+      if (Number(createContactDto.country_id)) {
+        Object.assign(data, {
+          country_id: Number(createContactDto.country_id),
+        });
+      }
+      if (Number(createContactDto.assignee_id)) {
+        Object.assign(data, {
+          assignee_id: Number(createContactDto.assignee_id),
+        });
+      }
+
       await this.prisma.contact.create({
         data: {
-          fname: createContactDto.fname,
-          lname: createContactDto.lname,
-          email: createContactDto.email,
-          phone_number: createContactDto.phone_number,
-          country_id: Number(createContactDto.country_id),
-          assignee_id: Number(createContactDto.assignee_id),
+          ...data,
           workspace_id: workspace_id,
           tenant_id: tenant_id,
         },

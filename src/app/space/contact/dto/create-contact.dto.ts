@@ -2,20 +2,20 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateContactDto {
   @ApiProperty()
-  fname: string;
+  fname?: string;
 
   @ApiProperty()
-  lname: string;
+  lname?: string;
 
   @ApiProperty()
-  email: string;
+  email?: string;
 
   @ApiProperty()
-  phone_number: string;
+  phone_number?: string;
 
   @ApiProperty()
-  country_id: number;
+  country_id?: number;
 
   @ApiProperty()
-  assignee_id: number;
+  assignee_id?: number;
 }
