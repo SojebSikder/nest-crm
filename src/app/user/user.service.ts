@@ -186,6 +186,7 @@ export class UserService extends PrismaClient {
   }
 
   async setPassword({ userId, password }) {
+    userId = Number(userId);
     const hashedPasssword = await bcrypt.hash(
       password,
       appConfig().security.salt,

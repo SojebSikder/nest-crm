@@ -16,6 +16,7 @@ export class UcodeRepository {
       const token = uuid();
       const data = await prisma.ucode.create({
         data: {
+          user_id: userId,
           token: token,
           email: userDetails.email,
           expired_at: expired_at,
@@ -37,7 +38,7 @@ export class UcodeRepository {
       value: email,
     });
     if (userDetails && userDetails.email) {
-      const date = DateHelper.nowDate();
+      const date = DateHelper.now().toISOString();
       const existToken = await prisma.ucode.findFirst({
         where: {
           AND: {
@@ -46,34 +47,46 @@ export class UcodeRepository {
           },
         },
       });
-      if (existToken.expired_at) {
-        const data = await prisma.ucode.findFirst({
-          where: {
-            AND: {
-              token: token,
-              email: email,
-              expired_at: {
-                gte: date,
-              },
+      if (existToken) {
+        if (existToken.expired_at) {
+          const data = await prisma.ucode.findFirst({
+            where: {
+              AND: [
+                {
+                  token: token,
+                },
+                {
+                  email: email,
+                },
+                {
+                  expired_at: {
+                    gte: date,
+                  },
+                },
+              ],
             },
-          },
-        });
-        // delete this token
-        await prisma.ucode.delete({
-          where: {
-            id: data.id,
-          },
-        });
-        return true;
+          });
+          if (data) {
+            // delete this token
+            await prisma.ucode.delete({
+              where: {
+                id: data.id,
+              },
+            });
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          // delete this token
+          await prisma.ucode.delete({
+            where: {
+              id: existToken.id,
+            },
+          });
+          return true;
+        }
       }
-
-      // delete this token
-      await prisma.ucode.delete({
-        where: {
-          id: existToken.id,
-        },
-      });
-      return true;
     } else {
       return false;
     }

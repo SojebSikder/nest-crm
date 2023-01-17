@@ -152,33 +152,33 @@ export class UserController {
   // set new password via tenant invitation link
   @ApiOperation({ summary: 'Set new password' })
   @Patch(':id/password')
-  async setPassword(@Req() req, @Param('id') id: string, @Body() body: any) {
+  async setPassword(@Req() req, @Param('id') id: number, @Body() body: any) {
     try {
-      const token = req.query.token;
-      const email = req.query.email;
+      const token = body.token;
+      const email = body.email;
       const password = body.password;
 
       if (!password) {
         if (password.length < 6) {
           return {
-            status: 'error',
+            error: true,
             message: 'Password must be at least 6 digit long!',
           };
         }
         return {
-          status: 'error',
+          error: true,
           message: 'Password not provided!',
         };
       }
       if (!email) {
         return {
-          status: 'error',
+          error: true,
           message: 'Email not provided!',
         };
       }
       if (!token) {
         return {
-          status: 'error',
+          error: true,
           message: 'Token not provided!',
         };
       }
@@ -200,21 +200,22 @@ export class UserController {
           };
         } else {
           return {
-            status: 'error',
-            message: 'Something went wrong :(',
+            error: true,
+            message: 'Password not changed',
           };
         }
       } else {
         return {
-          status: 'error',
+          error: true,
           message: 'Token invalid',
         };
       }
     } catch (error) {
-      return {
-        status: 'error',
-        message: 'Something went wrong :(',
-      };
+      throw error;
+      // return {
+      //   error: true,
+      //   message: 'Something went wrong :(',
+      // };
     }
   }
 }
