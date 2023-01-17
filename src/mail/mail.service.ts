@@ -20,4 +20,19 @@ export class MailService {
       },
     });
   }
+
+  async sendMemberInvitation({ user, url }) {
+    const from = `${process.env.APP_NAME} <${appConfig().mail.from}>`;
+    const subject = 'Member Invitation';
+
+    await this.mailerService.sendMail({
+      to: user.email,
+      from: from,
+      subject: subject,
+      template: 'member-invitation',
+      context: {
+        url: url,
+      },
+    });
+  }
 }

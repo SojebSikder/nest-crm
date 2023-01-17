@@ -47,18 +47,18 @@ export class UserController {
     if (user) {
       if (user.error) {
         return {
-          error: user.error,
+          error: true,
           message: user.message,
         };
       }
       return {
         success: true,
-        message: 'User has been invited successfully',
+        message: user.message,
       };
     } else {
       return {
         error: true,
-        message: 'Something went wrong :(',
+        message: user.message,
       };
     }
   }

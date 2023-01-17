@@ -44,12 +44,12 @@ export class WorkspaceUserController {
     if (workspaceUser) {
       return {
         success: true,
-        message: 'User invitation sent successfully',
+        message: 'User added successfully',
       };
     } else {
       return {
         error: true,
-        message: 'User not created',
+        message: 'User not added',
       };
     }
   }

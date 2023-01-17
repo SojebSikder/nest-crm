@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { UrlGeneratorService } from 'nestjs-url-generator';
+import { DateHelper } from 'src/common/helper/date.helper';
+import { UcodeRepository } from 'src/common/repository/ucode/ucode.repository';
+import { MailService } from 'src/mail/mail.service';
 import { UserRepository } from '../../common/repository/user/user.repository';
 import appConfig from '../../config/app.config';
 import { PrismaHelper } from '../../prisma/helper/exclude';
@@ -10,7 +14,11 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService extends PrismaClient {
-  constructor(private prisma: PrismaService) {
+  constructor(
+    private prisma: PrismaService,
+    private readonly mailService: MailService,
+    private readonly urlGeneratorService: UrlGeneratorService,
+  ) {
     super();
   }
 
@@ -112,10 +120,38 @@ export class UserService extends PrismaClient {
       role_id: createUserDto.role_id,
       tenant_id: tenant_id,
     });
-    return {
-      data: user,
-      success: true,
-    };
+
+    if (user) {
+      // send invitation mail to user
+      const expired_at = DateHelper.add(7, 'days').toDate();
+      const ucode = await UcodeRepository.createToken({
+        userId: user.id,
+        expired_at: expired_at,
+      });
+      const signed_url = this.urlGeneratorService.signUrl({
+        relativePath: `user/invitation/${user.id}`,
+        query: {
+          token: ucode,
+          email: user.email,
+        },
+        expirationDate: expired_at,
+      });
+      await this.mailService.sendMemberInvitation({
+        user: user,
+        url: signed_url,
+      });
+
+      return {
+        data: user,
+        success: true,
+        message: 'User has been invited successfully',
+      };
+    } else {
+      return {
+        error: true,
+        message: 'User not created. something went wrong',
+      };
+    }
   }
 
   async findAll(userId) {
