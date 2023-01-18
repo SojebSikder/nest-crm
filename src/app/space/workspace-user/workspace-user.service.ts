@@ -18,7 +18,7 @@ export class WorkspaceUserService extends PrismaClient {
   ) {
     workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId(user_id);
-    const invited_user_id = createWorkspaceUserDto.user_id;
+    const invited_user_id = Number(createWorkspaceUserDto.user_id);
 
     const workspaceUser = await this.prisma.workspaceUser.create({
       data: {
