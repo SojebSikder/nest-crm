@@ -157,7 +157,7 @@ export class UserService extends PrismaClient {
     }
   }
 
-  async findAll(userId) {
+  async findAll(userId: number) {
     const tenant_id = await UserRepository.getTenantId(userId);
     const user = await this.prisma.user.findMany({
       where: {

@@ -90,7 +90,10 @@ export class UserController {
     // if (!ability.can(Action.Read, 'User')) {
     //   throw new HttpException('Forbidden', HttpStatus.UNAUTHORIZED);
     // }
-    return await this.userService.findAll(userId);
+    const users = await this.userService.findAll(userId);
+    return {
+      data: users,
+    };
 
     // try {
     //   ForbiddenError.from(ability)
