@@ -182,7 +182,15 @@ export class UserService extends PrismaClient {
         ],
       },
       include: {
-        role_users: true,
+        role_users: {
+          include: {
+            role: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
     return user;
