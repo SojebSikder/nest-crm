@@ -224,7 +224,7 @@ export class UserRepository {
   }) {
     try {
       // begin transaction
-      return await prisma.$transaction(async (tx) => {
+      return await prisma.$transaction(async () => {
         // create a organization with 14 days trial period
         const end_date = DateHelper.add(14, 'days').toISOString();
         const organization = await prisma.organization.create({
@@ -249,27 +249,21 @@ export class UserRepository {
             },
           });
           if (user) {
-            // create a workspace
-            const workspace = await prisma.workspace.create({
-              data: {
-                name: 'My New Workspace',
-                tenant_id: organization.id,
-              },
-            });
-            // add this user to the workspace as an admin
-            await prisma.workspaceUser.create({
-              data: {
-                workspace_id: workspace.id,
-                user_id: user.id,
-                tenant_id: organization.id,
-              },
-            });
-            // attach role
-            const role = await this.attachRole({
+            // attach admin
+            await this.attachRole({
               user_id: user.id,
               role_id: role_id,
+              // role_id: 2, // admin
             });
-            return user;
+            // create a workspace
+            const workspace = await this.createWorkspace({
+              user_id: user.id,
+              workspace_name: 'My New Workspace',
+              organization_id: organization.id,
+            });
+            if (workspace) {
+              return user;
+            }
           } else {
             return false;
           }
@@ -280,6 +274,116 @@ export class UserRepository {
     } catch (error) {
       throw error;
     }
+  }
+
+  /**
+   * Create a new workspace
+   * @param param0
+   * @returns
+   */
+  static async createWorkspace({
+    user_id,
+    organization_id,
+    workspace_name = 'My New Workspace',
+  }: {
+    user_id: number;
+    organization_id: number;
+    workspace_name?: string;
+  }) {
+    return await prisma.$transaction(async () => {
+      // create a workspace
+      const workspace = await prisma.workspace.create({
+        data: {
+          name: workspace_name,
+          tenant_id: organization_id,
+        },
+      });
+      if (workspace) {
+        // add this user to the workspace as an admin
+        await prisma.workspaceUser.create({
+          data: {
+            workspace_id: workspace.id,
+            user_id: user_id,
+            tenant_id: organization_id,
+          },
+        });
+        // create role
+        const userAdminRole = await prisma.role.create({
+          data: {
+            title: 'user admin',
+            workspace_id: workspace.id,
+            tenant_id: organization_id,
+          },
+        });
+        const agentRole = await prisma.role.create({
+          data: {
+            title: 'agent',
+            workspace_id: workspace.id,
+            tenant_id: organization_id,
+          },
+        });
+        // attach user admin role to current user
+        await this.attachRole({
+          user_id: user_id,
+          role_id: userAdminRole.id, // admin
+        });
+        //
+        // create permissions for  workspace roles
+        const all_permissions = await prisma.permission.findMany();
+        // admin
+        const admin_permissions = all_permissions.filter(function (permission) {
+          return (
+            permission.title.substring(0, 21) == 'workspace_management_' ||
+            permission.title.substring(0, 26) == 'workspace_user_management_' ||
+            permission.title.substring(0, 34) ==
+              'workspace_conversation_management_' ||
+            permission.title.substring(0, 29) ==
+              'workspace_channel_management_' ||
+            permission.title.substring(0, 29) == 'workspace_contact_management_'
+          );
+        });
+
+        const adminPermissionRoleArray = [];
+        for (const user_permission of admin_permissions) {
+          adminPermissionRoleArray.push({
+            role_id: agentRole.id,
+            permission_id: user_permission.id,
+          });
+        }
+        await prisma.permissionRole.createMany({
+          data: adminPermissionRoleArray,
+        });
+        //
+        // agent
+        const agent_permissions = all_permissions.filter(function (permission) {
+          return (
+            permission.title == 'workspace_management_read' ||
+            permission.title == 'workspace_management_show' ||
+            permission.title == 'workspace_user_management_read' ||
+            permission.title.substring(0, 34) ==
+              'workspace_conversation_management_' ||
+            permission.title == 'workspace_channel_management_delete' ||
+            permission.title.substring(0, 29) == 'workspace_contact_management_'
+          );
+        });
+
+        const agentPermissionRoleArray = [];
+        for (const user_permission of agent_permissions) {
+          agentPermissionRoleArray.push({
+            role_id: agentRole.id,
+            permission_id: user_permission.id,
+          });
+        }
+        await prisma.permissionRole.createMany({
+          data: agentPermissionRoleArray,
+        });
+        //
+
+        return workspace;
+      } else {
+        return false;
+      }
+    });
   }
 
   /**
