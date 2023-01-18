@@ -169,9 +169,17 @@ export class UserService extends PrismaClient {
 
   async findOne(id: number, userId) {
     const tenant_id = await UserRepository.getTenantId(userId);
+
     const user = await this.prisma.user.findFirst({
       where: {
-        tenant_id: tenant_id,
+        AND: [
+          {
+            id: id,
+          },
+          {
+            tenant_id: tenant_id,
+          },
+        ],
       },
     });
     return user;

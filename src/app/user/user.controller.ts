@@ -105,11 +105,22 @@ export class UserController {
     // }
   }
 
+  @ApiOperation({ summary: 'Find single user' })
   @UseGuards(JwtAuthGuard, AbilitiesGuard)
   @CheckAbilities({ action: Action.Show, subject: 'User' })
   @Get(':id')
   async findOne(@Req() req, @Param('id') id: string) {
-    return await this.userService.findOne(+id, req.user.userId);
+    const user = await this.userService.findOne(+id, req.user.userId);
+    if (user) {
+      return {
+        data: user,
+      };
+    } else {
+      return {
+        error: true,
+        message: 'Uuer not found',
+      };
+    }
   }
 
   @UseGuards(JwtAuthGuard, AbilitiesGuard)
