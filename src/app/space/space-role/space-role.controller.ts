@@ -111,7 +111,7 @@ export class SpaceRoleController {
   @ApiOperation({ summary: 'Delete workspace role' })
   @CheckAbilities({ action: Action.Delete, subject: 'Role' })
   @Delete(':id')
-  async remove(@Req() req, @Param('id') id: string) {
+  async remove(@Req() req, @Param('id') id: number) {
     const user_id = req.user.userId;
     const workspace_id = req.params.workspace_id;
 

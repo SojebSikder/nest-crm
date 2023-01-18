@@ -117,7 +117,26 @@ export class ContactService extends PrismaClient {
     return `This action updates a #${id} contact`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} contact`;
+  async remove(id: number, user_id: number, workspace_id: number) {
+    workspace_id = Number(workspace_id);
+    const tenant_id = await UserRepository.getTenantId(user_id);
+
+    const contact = await this.prisma.contact.deleteMany({
+      where: {
+        AND: [
+          {
+            id: id,
+          },
+          {
+            workspace_id: workspace_id,
+          },
+          {
+            tenant_id: tenant_id,
+          },
+        ],
+      },
+    });
+
+    return contact;
   }
 }

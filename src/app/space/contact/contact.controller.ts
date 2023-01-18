@@ -179,9 +179,24 @@ export class ContactController {
     return this.contactService.update(+id, updateContactDto);
   }
 
+  @ApiOperation({ summary: 'Delete contact' })
   @CheckAbilities({ action: Action.Delete, subject: 'WorkspaceContact' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.contactService.remove(+id);
+  remove(@Req() req, @Param('id') id: number) {
+    const user_id = req.user.userId;
+    const workspace_id = req.params.workspace_id;
+
+    const contact = this.contactService.remove(+id, user_id, workspace_id);
+    if (contact) {
+      return {
+        success: true,
+        message: 'Deleted successfully',
+      };
+    } else {
+      return {
+        error: true,
+        message: 'Not deleted',
+      };
+    }
   }
 }
