@@ -6,13 +6,24 @@ import { Job } from 'bull';
 export class MailProcessor {
   constructor(private mailerService: MailerService) {}
 
+  @Process('sendTenantInvitation')
+  async sendTenantInvitation(job: Job<any>) {
+    await this.mailerService.sendMail({
+      to: job.data.to,
+      from: job.data.from,
+      subject: job.data.subject,
+      template: job.data.template,
+      context: job.data.context,
+    });
+  }
+
   /**
    * process job
    * @param job
    * @returns
    */
   @Process('sendMemberInvitation')
-  async handleSendMemberInvitation(job: Job<any>) {
+  async sendMemberInvitation(job: Job<any>) {
     await this.mailerService.sendMail({
       to: job.data.to,
       from: job.data.from,
