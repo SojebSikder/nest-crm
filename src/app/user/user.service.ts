@@ -184,11 +184,7 @@ export class UserService extends PrismaClient {
       include: {
         role_users: {
           include: {
-            role: {
-              select: {
-                name: true,
-              },
-            },
+            role: true,
           },
         },
       },
