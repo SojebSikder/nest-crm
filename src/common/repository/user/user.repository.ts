@@ -166,10 +166,46 @@ export class UserRepository {
    * @param param0
    * @returns
    */
-  static async attachRole({ user_id, role_id }) {
+  static async attachRole({
+    user_id,
+    role_id,
+  }: {
+    user_id: number;
+    role_id: number;
+  }) {
     const role = await prisma.roleUser.create({
       data: {
         user_id: user_id,
+        role_id: role_id,
+      },
+    });
+    return role;
+  }
+
+  /**
+   * update user role
+   * @param param0
+   * @returns
+   */
+  static async syncRole({
+    user_id,
+    role_id,
+  }: {
+    user_id: number;
+    role_id: number;
+  }) {
+    const role = await prisma.roleUser.updateMany({
+      where: {
+        AND: [
+          {
+            user_id: user_id,
+          },
+          {
+            role_id: role_id,
+          },
+        ],
+      },
+      data: {
         role_id: role_id,
       },
     });

@@ -110,7 +110,8 @@ export class UserController {
   @CheckAbilities({ action: Action.Show, subject: 'User' })
   @Get(':id')
   async findOne(@Req() req, @Param('id') id: string) {
-    const user = await this.userService.findOne(+id, req.user.userId);
+    const user_id = req.user.userId;
+    const user = await this.userService.findOne(+id, user_id);
     if (user) {
       return {
         data: user,
@@ -118,16 +119,33 @@ export class UserController {
     } else {
       return {
         error: true,
-        message: 'Uuer not found',
+        message: 'User not found',
       };
     }
   }
 
+  @ApiOperation({ summary: 'Update user' })
   @UseGuards(JwtAuthGuard, AbilitiesGuard)
   @CheckAbilities({ action: Action.Update, subject: 'User' })
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return await this.userService.update(+id, updateUserDto);
+  async update(
+    @Req() req,
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    const userId = req.user.userId;
+    const user = await this.userService.update(+id, userId, updateUserDto);
+    if (user) {
+      return {
+        success: true,
+        message: 'Updated successfully',
+      };
+    } else {
+      return {
+        error: true,
+        message: 'User not updated',
+      };
+    }
   }
 
   @UseGuards(JwtAuthGuard, AbilitiesGuard)

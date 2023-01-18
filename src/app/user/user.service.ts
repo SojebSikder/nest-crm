@@ -185,8 +185,35 @@ export class UserService extends PrismaClient {
     return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, userId: number, updateUserDto: UpdateUserDto) {
+    const tenant_id = await UserRepository.getTenantId(userId);
+    return this.prisma.$transaction(async () => {
+      const user = await this.prisma.user.updateMany({
+        where: {
+          AND: [
+            {
+              id: id,
+            },
+            {
+              tenant_id: tenant_id,
+            },
+          ],
+        },
+        data: {
+          fname: updateUserDto.fname,
+          lname: updateUserDto.lname,
+          username: updateUserDto.username,
+          email: updateUserDto.email,
+        },
+      });
+      if (user) {
+        await UserRepository.syncRole({
+          user_id: user[0].id,
+          role_id: updateUserDto.role_id,
+        });
+        return user;
+      }
+    });
   }
 
   async remove(id: number, userId) {
