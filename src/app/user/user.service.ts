@@ -85,6 +85,7 @@ export class UserService extends PrismaClient {
     }
   }
 
+  // invite a member
   async create(createUserDto: CreateUserDto, user_id) {
     const userDetails = await UserRepository.getUserDetails(user_id);
     const tenant_id = userDetails.tenant_id;

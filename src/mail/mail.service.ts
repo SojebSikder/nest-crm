@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
 import appConfig from '../config/app.config';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Injectable()
 export class MailService {
-  constructor(private mailerService: MailerService) {}
+  constructor(
+    private mailerService: MailerService,
+    @InjectQueue('mail-queue') private queue: Queue,
+  ) {}
 
   async sendTenantInvitation({ user, url }) {
     const from = `${process.env.APP_NAME} <${appConfig().mail.from}>`;
@@ -25,7 +30,8 @@ export class MailService {
     const from = `${process.env.APP_NAME} <${appConfig().mail.from}>`;
     const subject = `${user.fname} is inviting you to ${appConfig().app.name}`;
 
-    await this.mailerService.sendMail({
+    // add queue example
+    const job = await this.queue.add('sendMemberInvitation', {
       to: member.email,
       from: from,
       subject: subject,
@@ -36,5 +42,17 @@ export class MailService {
         url: url,
       },
     });
+
+    // await this.mailerService.sendMail({
+    //   to: member.email,
+    //   from: from,
+    //   subject: subject,
+    //   template: 'member-invitation',
+    //   context: {
+    //     user: user,
+    //     member: member,
+    //     url: url,
+    //   },
+    // });
   }
 }
