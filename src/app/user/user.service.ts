@@ -215,7 +215,7 @@ export class UserService extends PrismaClient {
       });
       if (user) {
         await UserRepository.syncRole({
-          user_id: user[0].id,
+          user_id: id,
           role_id: updateUserDto.role_id,
         });
         return user;

@@ -200,13 +200,10 @@ export class UserRepository {
           {
             user_id: user_id,
           },
-          {
-            role_id: role_id,
-          },
         ],
       },
       data: {
-        role_id: role_id,
+        role_id: Number(role_id),
       },
     });
     return role;
