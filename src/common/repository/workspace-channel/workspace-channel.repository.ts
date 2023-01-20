@@ -24,10 +24,10 @@ export class WorkspaceChannelRepository {
       where: {
         AND: [
           {
-            id: id,
+            id: Number(id),
           },
           {
-            workspace_id: workspace_id,
+            workspace_id: Number(workspace_id),
           },
           {
             tenant_id: tenant_id,

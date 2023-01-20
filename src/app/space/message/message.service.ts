@@ -21,6 +21,9 @@ export class MessageService extends PrismaClient {
   ) {
     conversation_id = Number(conversation_id);
     workspace_id = Number(workspace_id);
+    createMessageDto.workspace_channel_id = Number(
+      createMessageDto.workspace_channel_id,
+    );
 
     // get tenant id
     const tenant_id = await UserRepository.getTenantId(user_id);
