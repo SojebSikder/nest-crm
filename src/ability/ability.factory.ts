@@ -8,6 +8,7 @@ import {
   Conversation,
   Organization,
   Role,
+  Workspace,
 } from '@prisma/client';
 
 export enum Action {
@@ -23,6 +24,7 @@ export type AppSubjects = Subjects<{
   Tenant: User;
   User: User;
   Role: Role;
+  // Workspace: Workspace;
   WorkspaceUser: User;
   WorkspaceConversation: Conversation;
   WorkspaceContact: Contact;

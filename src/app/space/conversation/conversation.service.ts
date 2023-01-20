@@ -14,11 +14,32 @@ export class ConversationService extends PrismaClient {
     return 'This action adds a new conversation';
   }
 
-  async findAll(user_id, workspace_id) {
-    workspace_id = Number(workspace_id);
+  async findAll(
+    user_id: number,
+    workspace_channel_id: number,
+    // workspace_id: number,
+  ) {
+    // workspace_id = Number(workspace_id);
+    workspace_channel_id = Number(workspace_channel_id);
     const tenant_id = await UserRepository.getTenantId(user_id);
     // get all open conversations
     const conversations = await this.prisma.conversation.findMany({
+      where: {
+        AND: [
+          {
+            is_open: true,
+          },
+          // {
+          //   workspace_id: workspace_id,
+          // },
+          {
+            workspace_channel_id: workspace_channel_id,
+          },
+          {
+            tenant_id: tenant_id,
+          },
+        ],
+      },
       include: {
         contact: {
           select: {
@@ -29,19 +50,6 @@ export class ConversationService extends PrismaClient {
             assignee_id: true,
           },
         },
-      },
-      where: {
-        AND: [
-          {
-            is_open: true,
-          },
-          {
-            workspace_id: workspace_id,
-          },
-          {
-            tenant_id: tenant_id,
-          },
-        ],
       },
     });
     return conversations;

@@ -124,24 +124,26 @@ export class MessageService extends PrismaClient {
     }
   }
 
-  async findAll({ user_id, conversation_id, workspace_id }) {
+  async findAll({
+    user_id,
+    workspace_channel_id,
+    conversation_id,
+    workspace_id,
+  }) {
+    workspace_channel_id = Number(workspace_channel_id);
     conversation_id = Number(conversation_id);
     workspace_id = Number(workspace_id);
     // get tenant id
     const tenant_id = await UserRepository.getTenantId(user_id);
     // check conversation is exist
     const conversation = await this.prisma.conversation.findFirst({
-      include: {
-        contact: {
-          select: {
-            phone_number: true,
-          },
-        },
-      },
       where: {
         AND: [
           {
             id: conversation_id,
+          },
+          {
+            workspace_channel_id: workspace_channel_id,
           },
           {
             workspace_id: workspace_id,
@@ -150,6 +152,13 @@ export class MessageService extends PrismaClient {
             tenant_id: tenant_id,
           },
         ],
+      },
+      include: {
+        contact: {
+          select: {
+            phone_number: true,
+          },
+        },
       },
     });
 

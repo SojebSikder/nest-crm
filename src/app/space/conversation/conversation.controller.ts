@@ -35,12 +35,14 @@ export class ConversationController {
   @CheckAbilities({ action: Action.Read, subject: 'WorkspaceConversation' })
   @Get()
   async findAll(@Req() req) {
-    const workspace_id = req.params.workspace_id;
-    const user = req.user;
+    // const workspace_id = req.params.workspace_id;
+    const workspace_channel_id = req.query.workspace_channel_id;
+    const userId = req.user.userId;
 
     const conversations = await this.conversationService.findAll(
-      user.userId,
-      workspace_id,
+      userId,
+      workspace_channel_id,
+      // workspace_id,
     );
     return {
       data: conversations,

@@ -46,21 +46,15 @@ export class UserService extends PrismaClient {
             workspace_id: true,
             workspace: {
               select: {
-                id: true,
-                name: true,
-                conversations: {
-                  include: {
-                    contact: {
-                      select: {
-                        id: true,
-                        fname: true,
-                        lname: true,
-                        email: true,
-                        assignee_id: true,
-                      },
-                    },
+                workspace_channels: {
+                  select: {
+                    id: true,
+                    channel_name: true,
+                    channel_type: true,
                   },
                 },
+                id: true,
+                name: true,
               },
             },
           },
