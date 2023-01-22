@@ -37,7 +37,7 @@ export class WorkspaceService extends PrismaClient {
   async findOne(id: number, userId: number) {
     const tenantId = await UserRepository.getTenantId(userId);
 
-    const workspace = await this.prisma.workspace.findMany({
+    const workspace = await this.prisma.workspace.findFirst({
       where: {
         AND: [
           {
