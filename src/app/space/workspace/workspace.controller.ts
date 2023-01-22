@@ -85,8 +85,23 @@ export class WorkspaceController {
     return this.workspaceService.update(+id, updateWorkspaceDto);
   }
 
+  @ApiOperation({ summary: 'Delete workspace' })
+  @CheckAbilities({ action: Action.Delete, subject: 'Workspace' })
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.workspaceService.remove(+id);
+  async remove(@Req() req, @Param('id') id: string) {
+    const userId = req.user.userId;
+    const workspace = await this.workspaceService.remove(+id, userId);
+
+    if (workspace) {
+      return {
+        success: true,
+        message: 'Deleted successfully',
+      };
+    } else {
+      return {
+        success: true,
+        message: 'Not deleted',
+      };
+    }
   }
 }

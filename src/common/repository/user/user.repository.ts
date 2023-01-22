@@ -224,10 +224,10 @@ export class UserRepository {
   }) {
     try {
       // begin transaction
-      return await prisma.$transaction(async () => {
+      return await prisma.$transaction(async (tx) => {
         // create a organization with 14 days trial period
         const end_date = DateHelper.add(14, 'days').toISOString();
-        const organization = await prisma.organization.create({
+        const organization = await tx.organization.create({
           data: {
             name: 'organization_xyz',
             trial_end_at: end_date,
@@ -238,7 +238,7 @@ export class UserRepository {
           // create user
           password = await bcrypt.hash(password, appConfig().security.salt);
 
-          const user = await prisma.user.create({
+          const user = await tx.user.create({
             data: {
               fname: fname,
               lname: lname,
@@ -292,14 +292,14 @@ export class UserRepository {
     workspace_name?: string;
     timezone?: string;
   }) {
-    return await prisma.$transaction(async () => {
+    return await prisma.$transaction(async (tx) => {
       const data = {};
       if (timezone) {
         Object.assign(data, { timezone: timezone });
       }
 
       // create a workspace
-      const workspace = await prisma.workspace.create({
+      const workspace = await tx.workspace.create({
         data: {
           ...data,
           name: workspace_name,
@@ -308,7 +308,7 @@ export class UserRepository {
       });
       if (workspace) {
         // add this user to the workspace as an admin
-        await prisma.workspaceUser.create({
+        await tx.workspaceUser.create({
           data: {
             workspace_id: workspace.id,
             user_id: user_id,
@@ -316,14 +316,14 @@ export class UserRepository {
           },
         });
         // create role
-        const userAdminRole = await prisma.role.create({
+        const userAdminRole = await tx.role.create({
           data: {
             title: 'user admin',
             workspace_id: workspace.id,
             tenant_id: organization_id,
           },
         });
-        const agentRole = await prisma.role.create({
+        const agentRole = await tx.role.create({
           data: {
             title: 'agent',
             workspace_id: workspace.id,
@@ -331,13 +331,19 @@ export class UserRepository {
           },
         });
         // attach user admin role to current user
-        await this.attachRole({
-          user_id: user_id,
-          role_id: userAdminRole.id, // admin
+        // await this.attachRole({
+        //   user_id: user_id,
+        //   role_id: userAdminRole.id, // admin
+        // });
+        await tx.roleUser.create({
+          data: {
+            user_id: user_id,
+            role_id: userAdminRole.id, // admin
+          },
         });
         //
         // create permissions for  workspace roles
-        const all_permissions = await prisma.permission.findMany();
+        const all_permissions = await tx.permission.findMany();
         // admin
         const admin_permissions = all_permissions.filter(function (permission) {
           return (
@@ -354,11 +360,11 @@ export class UserRepository {
         const adminPermissionRoleArray = [];
         for (const user_permission of admin_permissions) {
           adminPermissionRoleArray.push({
-            role_id: agentRole.id,
+            role_id: userAdminRole.id,
             permission_id: user_permission.id,
           });
         }
-        await prisma.permissionRole.createMany({
+        await tx.permissionRole.createMany({
           data: adminPermissionRoleArray,
         });
         //
@@ -382,7 +388,7 @@ export class UserRepository {
             permission_id: user_permission.id,
           });
         }
-        await prisma.permissionRole.createMany({
+        await tx.permissionRole.createMany({
           data: agentPermissionRoleArray,
         });
         //

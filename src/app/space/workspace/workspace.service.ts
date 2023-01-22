@@ -56,7 +56,21 @@ export class WorkspaceService extends PrismaClient {
     return `This action updates a #${id} workspace`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} workspace`;
+  async remove(id: number, userId: number) {
+    const tenantId = await UserRepository.getTenantId(userId);
+
+    const workspace = await this.prisma.workspace.deleteMany({
+      where: {
+        AND: [
+          {
+            id: id,
+          },
+          {
+            tenant_id: tenantId,
+          },
+        ],
+      },
+    });
+    return workspace;
   }
 }
