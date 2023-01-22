@@ -52,8 +52,25 @@ export class WorkspaceService extends PrismaClient {
     return workspace;
   }
 
-  update(id: number, updateWorkspaceDto: UpdateWorkspaceDto) {
-    return `This action updates a #${id} workspace`;
+  async update(id: number, userId, updateWorkspaceDto: UpdateWorkspaceDto) {
+    const tenantId = await UserRepository.getTenantId(userId);
+
+    const workspace = await this.prisma.workspace.updateMany({
+      where: {
+        AND: [
+          {
+            id: id,
+          },
+          {
+            tenant_id: tenantId,
+          },
+        ],
+      },
+      data: {
+        name: updateWorkspaceDto.name,
+      },
+    });
+    return workspace;
   }
 
   async remove(id: number, userId: number) {

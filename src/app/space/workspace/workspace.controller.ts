@@ -61,6 +61,8 @@ export class WorkspaceController {
     };
   }
 
+  @ApiOperation({ summary: 'Find one workspace' })
+  @CheckAbilities({ action: Action.Show, subject: 'Workspace' })
   @Get(':id')
   async findOne(@Req() req, @Param('id') id: string) {
     const userId = req.user.userId;
@@ -77,12 +79,32 @@ export class WorkspaceController {
     }
   }
 
+  @ApiOperation({ summary: 'Update workspace' })
+  @CheckAbilities({ action: Action.Update, subject: 'Workspace' })
   @Patch(':id')
-  update(
+  async update(
+    @Req() req,
     @Param('id') id: string,
     @Body() updateWorkspaceDto: UpdateWorkspaceDto,
   ) {
-    return this.workspaceService.update(+id, updateWorkspaceDto);
+    const userId = req.user.userId;
+    const workspace = await this.workspaceService.update(
+      +id,
+      userId,
+      updateWorkspaceDto,
+    );
+
+    if (workspace) {
+      return {
+        success: true,
+        message: 'Updated successfully',
+      };
+    } else {
+      return {
+        error: true,
+        message: 'Not updated',
+      };
+    }
   }
 
   @ApiOperation({ summary: 'Delete workspace' })
