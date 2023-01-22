@@ -31,6 +31,8 @@ import { BillingModule } from './app/organization/billing/billing.module';
 import { SpaceRoleModule } from './app/space/space-role/space-role.module';
 import { ExampleModule } from './example/example.module';
 import { BullModule } from '@nestjs/bull';
+import { FileModule } from './app/space/file/file.module';
+import { WorkspaceModule } from './app/space/workspace/workspace.module';
 
 @Module({
   imports: [
@@ -76,6 +78,8 @@ import { BullModule } from '@nestjs/bull';
     BillingModule,
     SpaceRoleModule,
     ExampleModule,
+    FileModule,
+    WorkspaceModule,
   ],
   controllers: [AppController],
   providers: [

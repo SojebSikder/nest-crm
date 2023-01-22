@@ -285,15 +285,23 @@ export class UserRepository {
     user_id,
     organization_id,
     workspace_name = 'My New Workspace',
+    timezone,
   }: {
     user_id: number;
     organization_id: number;
     workspace_name?: string;
+    timezone?: string;
   }) {
     return await prisma.$transaction(async () => {
+      const data = {};
+      if (timezone) {
+        Object.assign(data, { timezone: timezone });
+      }
+
       // create a workspace
       const workspace = await prisma.workspace.create({
         data: {
+          ...data,
           name: workspace_name,
           tenant_id: organization_id,
         },

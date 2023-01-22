@@ -24,7 +24,7 @@ export type AppSubjects = Subjects<{
   Tenant: User;
   User: User;
   Role: Role;
-  // Workspace: Workspace;
+  Workspace: Workspace;
   WorkspaceUser: User;
   WorkspaceConversation: Conversation;
   WorkspaceContact: Contact;

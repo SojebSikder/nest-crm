@@ -73,7 +73,7 @@ export class ContactController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: './files',
+        destination: './storage/files',
       }),
     }),
   )
@@ -93,7 +93,7 @@ export class ContactController {
     try {
       // const workspace_id = req.params.workspace_id;
       // const user = req.user;
-      const csvFile = readFileSync(`files/${file.filename}`);
+      const csvFile = readFileSync(`storage/files/${file.filename}`);
       const csvData = csvFile.toString();
 
       const parsedCsv = Papa.parse(csvData, {
