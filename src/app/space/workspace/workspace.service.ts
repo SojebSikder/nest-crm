@@ -52,7 +52,11 @@ export class WorkspaceService extends PrismaClient {
     return workspace;
   }
 
-  async update(id: number, userId, updateWorkspaceDto: UpdateWorkspaceDto) {
+  async update(
+    id: number,
+    userId: number,
+    updateWorkspaceDto: UpdateWorkspaceDto,
+  ) {
     const tenantId = await UserRepository.getTenantId(userId);
 
     const workspace = await this.prisma.workspace.updateMany({
