@@ -23,12 +23,33 @@ export class WorkspaceService extends PrismaClient {
     return workspace;
   }
 
-  findAll() {
-    return `This action returns all workspace`;
+  async findAll(userId: number) {
+    const tenantId = await UserRepository.getTenantId(userId);
+
+    const workspaces = await this.prisma.workspace.findMany({
+      where: {
+        tenant_id: tenantId,
+      },
+    });
+    return workspaces;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} workspace`;
+  async findOne(id: number, userId: number) {
+    const tenantId = await UserRepository.getTenantId(userId);
+
+    const workspace = await this.prisma.workspace.findMany({
+      where: {
+        AND: [
+          {
+            id: id,
+          },
+          {
+            tenant_id: tenantId,
+          },
+        ],
+      },
+    });
+    return workspace;
   }
 
   update(id: number, updateWorkspaceDto: UpdateWorkspaceDto) {

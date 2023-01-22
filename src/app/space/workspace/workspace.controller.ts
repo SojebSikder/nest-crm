@@ -49,14 +49,32 @@ export class WorkspaceController {
     }
   }
 
+  @ApiOperation({ summary: 'Find all workspaces' })
+  @CheckAbilities({ action: Action.Read, subject: 'Workspace' })
   @Get()
-  findAll() {
-    return this.workspaceService.findAll();
+  async findAll(@Req() req) {
+    const userId = req.user.userId;
+    const workspaces = await this.workspaceService.findAll(userId);
+
+    return {
+      data: workspaces,
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.workspaceService.findOne(+id);
+  async findOne(@Req() req, @Param('id') id: string) {
+    const userId = req.user.userId;
+    const workspace = await this.workspaceService.findOne(+id, userId);
+    if (workspace) {
+      return {
+        data: workspace,
+      };
+    } else {
+      return {
+        error: true,
+        message: 'Workspace not exist',
+      };
+    }
   }
 
   @Patch(':id')
