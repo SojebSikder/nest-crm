@@ -33,7 +33,7 @@ export class ConversationService extends PrismaClient {
       where: {
         AND: [
           {
-            is_open: isOpen,
+            is_open: Boolean(isOpen),
           },
           {
             workspace_id: Number(workspace_id),
