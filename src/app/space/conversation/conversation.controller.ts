@@ -36,7 +36,7 @@ export class ConversationController {
   @Get()
   async findAll(@Req() req) {
     const workspace_id = req.params.workspace_id;
-    const open = req.query.open ? req.query.open : true;
+    const open: boolean = req.query.open == 'false' ? false : true;
     const workspace_channel_id = req.query.workspace_channel_id;
     const userId = req.user.userId;
 
