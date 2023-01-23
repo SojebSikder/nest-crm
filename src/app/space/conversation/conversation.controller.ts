@@ -35,15 +35,17 @@ export class ConversationController {
   @CheckAbilities({ action: Action.Read, subject: 'WorkspaceConversation' })
   @Get()
   async findAll(@Req() req) {
-    // const workspace_id = req.params.workspace_id;
+    const workspace_id = req.params.workspace_id;
+    const open = req.query.open ? req.query.open : true;
     const workspace_channel_id = req.query.workspace_channel_id;
     const userId = req.user.userId;
 
-    const conversations = await this.conversationService.findAll(
-      userId,
-      workspace_channel_id,
-      // workspace_id,
-    );
+    const conversations = await this.conversationService.findAll({
+      isOpen: open,
+      userId: userId,
+      workspace_id: workspace_id,
+      workspace_channel_id: workspace_channel_id,
+    });
     return {
       data: conversations,
     };

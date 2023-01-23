@@ -14,24 +14,30 @@ export class ConversationService extends PrismaClient {
     return 'This action adds a new conversation';
   }
 
-  async findAll(
-    user_id: number,
-    workspace_channel_id: number,
-    // workspace_id: number,
-  ) {
+  async findAll({
+    isOpen = true,
+    userId,
+    workspace_channel_id,
+    workspace_id,
+  }: {
+    isOpen: boolean;
+    userId: number;
+    workspace_channel_id: number;
+    workspace_id: number;
+  }) {
     // workspace_id = Number(workspace_id);
     workspace_channel_id = Number(workspace_channel_id);
-    const tenant_id = await UserRepository.getTenantId(user_id);
+    const tenant_id = await UserRepository.getTenantId(userId);
     // get all open conversations
     const conversations = await this.prisma.conversation.findMany({
       where: {
         AND: [
           {
-            is_open: true,
+            is_open: isOpen,
           },
-          // {
-          //   workspace_id: workspace_id,
-          // },
+          {
+            workspace_id: Number(workspace_id),
+          },
           {
             workspace_channel_id: workspace_channel_id,
           },
@@ -55,7 +61,7 @@ export class ConversationService extends PrismaClient {
     return conversations;
   }
 
-  async findOne(user_id, workspace_id, id: number) {
+  async findOne(user_id: number, workspace_id: number, id: number) {
     workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId(user_id);
     // get all open conversations
