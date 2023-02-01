@@ -47,6 +47,7 @@ export class ConversationService extends PrismaClient {
         ],
       },
       include: {
+        workspace_channel: true,
         contact: {
           select: {
             id: true,
