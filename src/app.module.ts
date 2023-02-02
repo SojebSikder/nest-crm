@@ -33,6 +33,8 @@ import { ExampleModule } from './example/example.module';
 import { BullModule } from '@nestjs/bull';
 import { FileModule } from './app/space/file/file.module';
 import { WorkspaceModule } from './app/space/workspace/workspace.module';
+import { SnippetModule } from './app/space/snippet/snippet.module';
+import { DynamicVariableModule } from './app/dynamic-variable/dynamic-variable.module';
 
 @Module({
   imports: [
@@ -80,6 +82,8 @@ import { WorkspaceModule } from './app/space/workspace/workspace.module';
     ExampleModule,
     FileModule,
     WorkspaceModule,
+    SnippetModule,
+    DynamicVariableModule,
   ],
   controllers: [AppController],
   providers: [
