@@ -119,7 +119,7 @@ export class SnippetController {
       const user_id = req.user.userId;
       const workspace_id = req.params.workspace_id;
 
-      const snippet = this.snippetService.update(
+      const snippet = await this.snippetService.update(
         +id,
         user_id,
         workspace_id,

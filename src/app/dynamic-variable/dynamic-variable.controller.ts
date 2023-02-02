@@ -19,7 +19,7 @@ import { CheckAbilities } from 'src/ability/abilities.decorator';
 import { Action } from 'src/ability/ability.factory';
 
 @ApiBearerAuth()
-@ApiTags('contact')
+@ApiTags('dynamic-variable')
 @UseGuards(JwtAuthGuard, AbilitiesGuard, HasPlanGuard)
 @Controller('dynamic-variable')
 export class DynamicVariableController {
@@ -32,7 +32,7 @@ export class DynamicVariableController {
     return this.dynamicVariableService.create(createDynamicVariableDto);
   }
 
-  @ApiOperation({ summary: 'Read messages' })
+  @ApiOperation({ summary: 'Read dynamic-variable' })
   @CheckAbilities({ action: Action.Read, subject: 'WorkspaceConversation' })
   @Get()
   findAll() {
