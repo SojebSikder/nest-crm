@@ -19,6 +19,10 @@ import { CheckAbilities } from '../../../ability/abilities.decorator';
 import { Action } from '../../../ability/ability.factory';
 import { HasPlanGuard } from '../../../common/guard/has-plan/has-plan.guard';
 
+// allow big integer type for return response
+BigInt.prototype['toJSON'] = function () {
+  return this.toString();
+};
 @ApiBearerAuth()
 @ApiTags('Message')
 @UseGuards(JwtAuthGuard, AbilitiesGuard, HasPlanGuard)
