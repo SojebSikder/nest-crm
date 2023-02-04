@@ -132,10 +132,18 @@ export class MessageService extends PrismaClient {
     workspace_channel_id,
     conversation_id,
     workspace_id,
+    last_message_id,
+  }: {
+    user_id: number;
+    workspace_channel_id: number;
+    conversation_id: number;
+    workspace_id: number;
+    last_message_id?: number;
   }) {
     workspace_channel_id = Number(workspace_channel_id);
     conversation_id = Number(conversation_id);
     workspace_id = Number(workspace_id);
+    last_message_id = Number(last_message_id);
     // get tenant id
     const tenant_id = await UserRepository.getTenantId(user_id);
     // check conversation is exist
@@ -169,9 +177,30 @@ export class MessageService extends PrismaClient {
       return false;
     }
 
+    const limit = 15;
+
+    const conditions = []; // for pagination, in efficient way
+    if (last_message_id) {
+      Object.assign(conditions, {
+        id: {
+          lt: last_message_id,
+        },
+      });
+    }
+
     const messages = await this.prisma.message.findMany({
+      take: limit,
+      orderBy: {
+        id: 'desc',
+      },
       where: {
         AND: [
+          // {
+          //   id: {
+          //     lt: last_message_id,
+          //   },
+          // },
+          ...conditions,
           {
             contact_id: conversation.contact_id,
           },
