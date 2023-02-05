@@ -220,6 +220,7 @@ export class WhatsappController {
                 if (message) {
                   const data = {
                     message: {
+                      id: message.id,
                       message_id: message_id,
                       body_text: msg_body,
                       from: from,

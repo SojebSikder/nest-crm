@@ -67,7 +67,7 @@ export class MessageController {
     const workspace_id = req.params.workspace_id;
     const workspace_channel_id = req.query.workspace_channel_id;
     const conversation_id = req.params.conversation_id;
-    const last_message_id = req.params.last_message_id;
+    const last_message_id = req.query.last_message_id;
     const user = req.user;
 
     const messages = await this.messageService.findAll({
