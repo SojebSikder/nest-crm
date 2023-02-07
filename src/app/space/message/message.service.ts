@@ -179,7 +179,7 @@ export class MessageService extends PrismaClient {
 
     const limit = 15;
 
-    const conditions = []; // for pagination, in efficient way
+    const conditions = {}; // for pagination, in efficient way
     if (last_message_id) {
       Object.assign(conditions, {
         id: {
@@ -200,7 +200,7 @@ export class MessageService extends PrismaClient {
           //     lt: last_message_id,
           //   },
           // },
-          ...conditions,
+          { ...conditions },
           {
             contact_id: conversation.contact_id,
           },
