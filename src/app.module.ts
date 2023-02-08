@@ -35,6 +35,7 @@ import { FileModule } from './app/space/file/file.module';
 import { WorkspaceModule } from './app/space/workspace/workspace.module';
 import { SnippetModule } from './app/space/snippet/snippet.module';
 import { DynamicVariableModule } from './app/dynamic-variable/dynamic-variable.module';
+import { ShopifyModule } from './app/shopify/shopify.module';
 
 @Module({
   imports: [
@@ -84,6 +85,7 @@ import { DynamicVariableModule } from './app/dynamic-variable/dynamic-variable.m
     WorkspaceModule,
     SnippetModule,
     DynamicVariableModule,
+    ShopifyModule,
   ],
   controllers: [AppController],
   providers: [

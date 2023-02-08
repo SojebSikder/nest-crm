@@ -47,6 +47,10 @@ export default () => ({
       app_secret: process.env.FACEBOOK_APP_SECRET,
       callback: process.env.FACEBOOK_CALLBACK_URL,
     },
+    shopify: {
+      app_id: process.env.SHOPIFY_APP_ID,
+      app_secret: process.env.SHOPIFY_APP_SECRET,
+    },
   },
 
   payment: {
