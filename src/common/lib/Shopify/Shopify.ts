@@ -1,5 +1,5 @@
 import * as url from 'url';
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 import { Fetch } from '../Fetch';
 /**
@@ -94,16 +94,14 @@ export class Shopify {
     // 2. Get the 'query string' portion
     const query = urlObj.search.slice(1);
     // TODO fix this
-    // if (this.verify(appSecret, query)) {
-    //   //get token
-    //   console.log('get token');
-    //   securityPass = true;
-    // } else {
-    //   //exit
-    //   securityPass = false;
-    // }
-    securityPass = true;
-    //
+    if (this.verify(appSecret, query)) {
+      //get token
+      console.log('get token');
+      securityPass = true;
+    } else {
+      //exit
+      securityPass = false;
+    }
 
     if (securityPass && regex) {
       //Exchange temporary code for a permanent access token
@@ -130,18 +128,23 @@ export class Shopify {
       //   });
 
       try {
+        const _header = {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept-Encoding': 'application/json',
+          },
+        };
         const request = await Fetch.post(
           accessTokenRequestUrl,
           accessTokenPayload,
+          _header,
         );
         if (request) {
-          console.log(request);
-
           const accessToken = request.data.access_token;
           console.log('shop token ' + accessToken);
 
           // res.redirect('/shopify/app?shop=' + shop);
-          return '/shopify/app?shop=' + shop;
+          return '/api/shopify?shop=' + shop;
         }
       } catch (error) {
         // res.status(error.statusCode).send(error.error.error_description);
