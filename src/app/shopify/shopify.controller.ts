@@ -40,7 +40,7 @@ export class ShopifyController {
     const shopify = await this.shopifyService.auth({
       shop,
       code,
-      address_url: url,
+      req_url: url,
     });
 
     return {

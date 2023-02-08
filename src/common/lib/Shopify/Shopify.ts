@@ -2,10 +2,11 @@ import * as url from 'url';
 import * as crypto from 'crypto';
 
 import { Fetch } from '../Fetch';
+
 /**
- * Shopify api
+ * Shopify auth api
  */
-export class Shopify {
+export class ShopifyAuth {
   private _appId: string;
   private _appSecret: string;
 
@@ -20,35 +21,34 @@ export class Shopify {
    * @param appStoreToken
    * @param redirect_url
    * @param shop
-   * @param appDomain
+   * @param redirectUrl
    * @returns
    */
   install({
     appScope,
     appStoreToken,
     shop,
-    appDomain,
+    redirectUrl,
   }: {
     appScope: string;
-    appStoreToken: string;
+    appStoreToken?: string;
     shop: string;
-    appDomain: string;
+    redirectUrl: string;
   }) {
     const appId = this._appId;
-    const appSecret = this._appSecret;
 
     shop = shop;
     appScope = appScope;
-    appDomain = appDomain;
+    redirectUrl = redirectUrl;
     appStoreToken = appStoreToken;
 
     //build the url
-    const installUrl = `https://${shop}/admin/oauth/authorize?client_id=${appId}&scope=${appScope}&redirect_uri=${appDomain}/api/shopify/auth`;
+    const installUrl = `https://${shop}/admin/oauth/authorize?client_id=${appId}&scope=${appScope}&redirect_uri=${redirectUrl}`;
 
     //Do I have the token already for this store?
     //Check database
     //For tutorial ONLY - check .env variable value
-    if (appStoreToken.length > 0) {
+    if (appStoreToken && appStoreToken.length > 0) {
       //   res.redirect('/shopify/app?shop=' + shop);
       return '/shopify/app?shop=' + shop;
     } else {
@@ -57,21 +57,22 @@ export class Shopify {
       return installUrl;
     }
   }
+
   /**
    * Authtenticate to shopify
    * @param shop
    * @param code
-   * @param address_url
+   * @param req_url
    * @returns
    */
   async auth({
     shop,
     code,
-    address_url,
+    req_url,
   }: {
     shop: string;
     code: string;
-    address_url: string;
+    req_url: string;
   }) {
     let securityPass = false;
     const appId = this._appId;
@@ -90,7 +91,7 @@ export class Shopify {
     }
 
     // 1. Parse the string URL to object
-    const urlObj = url.parse(address_url);
+    const urlObj = url.parse(req_url);
     // 2. Get the 'query string' portion
     const query = urlObj.search.slice(1);
     // TODO fix this
