@@ -1,4 +1,4 @@
-import { Fetch } from 'src/common/lib/Fetch';
+import { Fetch } from '../../../Fetch';
 
 export class ShopifyProduct {
   private _token: string;
