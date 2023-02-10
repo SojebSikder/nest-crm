@@ -24,7 +24,7 @@ export class ShopifyController {
       shop: 'sojebdemostore.myshopify.com',
     });
 
-    const data = await res.customer().findAll();
+    const data = await res.order().abandonedCheckout().count();
 
     console.log(data);
 
