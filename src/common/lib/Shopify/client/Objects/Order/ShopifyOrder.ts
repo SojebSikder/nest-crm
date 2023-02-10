@@ -1,6 +1,6 @@
-import { Fetch } from '../../../Fetch';
+import { Fetch } from '../../../../Fetch';
 
-export class ShopifyProduct {
+export class ShopifyOrder {
   private _token: string;
   private _shop: string;
 
@@ -13,7 +13,7 @@ export class ShopifyProduct {
     const _token = this._token;
     const _shop = this._shop;
 
-    const url = 'https://' + _shop + '/admin/products.json';
+    const url = 'https://' + _shop + '/admin/customers.json';
 
     const _header = {
       headers: {

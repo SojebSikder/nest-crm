@@ -1,5 +1,6 @@
-import { ShopifyCustomer } from './Objects/ShopifyCustomer';
-import { ShopifyProduct } from './Objects/ShopifyProduct';
+import { ShopifyCustomer } from './Objects/Customer/ShopifyCustomer';
+import { ShopifyOrder } from './Objects/Order/ShopifyOrder';
+import { ShopifyProduct } from './Objects/Product/ShopifyProduct';
 
 /**
  * Shopify client for api
@@ -13,6 +14,9 @@ export class ShopifyClient {
     this._shop = shop;
   }
 
+  order() {
+    return new ShopifyOrder({ token: this._token, shop: this._shop });
+  }
   product() {
     return new ShopifyProduct({ token: this._token, shop: this._shop });
   }
