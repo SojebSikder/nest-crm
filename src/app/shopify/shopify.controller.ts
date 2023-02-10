@@ -11,7 +11,7 @@ import {
 import { ShopifyService } from './shopify.service';
 import { CreateShopifyDto } from './dto/create-shopify.dto';
 import { UpdateShopifyDto } from './dto/update-shopify.dto';
-import { ShopifyClient } from 'src/common/lib/Shopify/ShopifyClient';
+import { ShopifyClient } from 'src/common/lib/Shopify/client/ShopifyClient';
 
 @Controller('shopify')
 export class ShopifyController {
@@ -24,7 +24,7 @@ export class ShopifyController {
       shop: 'sojebdemostore.myshopify.com',
     });
 
-    const data = await res.product().findAll();
+    const data = await res.customer().findAll();
 
     console.log(data);
 

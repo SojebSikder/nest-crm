@@ -1,9 +1,6 @@
-import { Fetch } from '../Fetch';
+import { Fetch } from 'src/common/lib/Fetch';
 
-/**
- * Shopify client for api
- */
-export class ShopifyClient {
+export class ShopifyProduct {
   private _token: string;
   private _shop: string;
 
@@ -12,28 +9,6 @@ export class ShopifyClient {
     this._shop = shop;
   }
 
-  /**
-   * product
-   * @returns
-   */
-  product() {
-    return new Product({ token: this._token, shop: this._shop });
-  }
-}
-
-class Product {
-  private _token: string;
-  private _shop: string;
-
-  constructor({ token, shop }: { token: string; shop: string }) {
-    this._token = token;
-    this._shop = shop;
-  }
-  /**
-   * Retrieve products
-   * @param shop
-   * @returns
-   */
   async findAll() {
     const _token = this._token;
     const _shop = this._shop;
@@ -44,7 +19,6 @@ class Product {
       headers: {
         'X-Shopify-Access-Token': _token,
         'Content-Type': 'application/json',
-        'Accept-Encoding': 'application/json',
       },
     };
 
