@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ShopifyAuth } from 'src/common/lib/Shopify/Shopify';
+import { ShopifyAuth } from 'src/common/lib/Shopify/ShopifyAuth';
 import appConfig from 'src/config/app.config';
 import { CreateShopifyDto } from './dto/create-shopify.dto';
 import { UpdateShopifyDto } from './dto/update-shopify.dto';

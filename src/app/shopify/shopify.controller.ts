@@ -11,10 +11,25 @@ import {
 import { ShopifyService } from './shopify.service';
 import { CreateShopifyDto } from './dto/create-shopify.dto';
 import { UpdateShopifyDto } from './dto/update-shopify.dto';
+import { ShopifyClient } from 'src/common/lib/Shopify/ShopifyClient';
 
 @Controller('shopify')
 export class ShopifyController {
   constructor(private readonly shopifyService: ShopifyService) {}
+
+  @Get('test')
+  async test() {
+    const res = new ShopifyClient({
+      token: 'shpua_d8d0fc123a9799a7614b38b8128e7dc1',
+      shop: 'sojebdemostore.myshopify.com',
+    });
+
+    const data = await res.product().findAll();
+
+    console.log(data);
+
+    return data;
+  }
 
   @Post()
   create(@Body() createShopifyDto: CreateShopifyDto) {
