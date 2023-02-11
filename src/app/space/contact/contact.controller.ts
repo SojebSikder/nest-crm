@@ -55,15 +55,50 @@ export class ContactController {
       if (contact) {
         return {
           success: true,
+          message: 'Contact created successfully',
         };
       } else {
         return {
-          success: false,
+          error: true,
+          message: 'Contact not created. Something went wrong',
         };
       }
     } catch (error) {
-      throw error;
+      // throw error;
+      return {
+        error: true,
+        message: 'Something went wrong',
+      };
     }
+  }
+
+  @ApiOperation({ summary: 'Read contacts' })
+  @CheckAbilities({ action: Action.Read, subject: 'WorkspaceContact' })
+  @Get()
+  async findAll(@Req() req) {
+    const workspace_id = req.params.workspace_id;
+    const user = req.user;
+
+    const contacts = await this.contactService.findAll(
+      user.userId,
+      workspace_id,
+    );
+
+    return {
+      data: contacts,
+    };
+  }
+
+  @CheckAbilities({ action: Action.Show, subject: 'WorkspaceContact' })
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.contactService.findOne(+id);
+  }
+
+  @CheckAbilities({ action: Action.Update, subject: 'WorkspaceContact' })
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateContactDto: UpdateContactDto) {
+    return this.contactService.update(+id, updateContactDto);
   }
 
   // import contact
@@ -151,32 +186,6 @@ export class ContactController {
     } catch (error) {
       throw error;
     }
-  }
-
-  @CheckAbilities({ action: Action.Read, subject: 'WorkspaceContact' })
-  @Get()
-  async findAll(@Req() req) {
-    const workspace_id = req.params.workspace_id;
-    const user = req.user;
-    const contacts = await this.contactService.findAll(
-      user.userId,
-      workspace_id,
-    );
-    return {
-      data: contacts,
-    };
-  }
-
-  @CheckAbilities({ action: Action.Show, subject: 'WorkspaceContact' })
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.contactService.findOne(+id);
-  }
-
-  @CheckAbilities({ action: Action.Update, subject: 'WorkspaceContact' })
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateContactDto: UpdateContactDto) {
-    return this.contactService.update(+id, updateContactDto);
   }
 
   @ApiOperation({ summary: 'Delete contact' })

@@ -19,6 +19,10 @@ import { CheckAbilities } from '../../../ability/abilities.decorator';
 import { Action } from '../../../ability/ability.factory';
 import { HasPlanGuard } from '../../../common/guard/has-plan/has-plan.guard';
 
+// allow big integer type for return response
+BigInt.prototype['toJSON'] = function () {
+  return this.toString();
+};
 @ApiBearerAuth()
 @ApiTags('Message')
 @UseGuards(JwtAuthGuard, AbilitiesGuard, HasPlanGuard)
@@ -63,6 +67,7 @@ export class MessageController {
     const workspace_id = req.params.workspace_id;
     const workspace_channel_id = req.query.workspace_channel_id;
     const conversation_id = req.params.conversation_id;
+    const last_message_id = req.query.last_message_id;
     const user = req.user;
 
     const messages = await this.messageService.findAll({
@@ -70,7 +75,9 @@ export class MessageController {
       workspace_channel_id: workspace_channel_id,
       conversation_id,
       workspace_id,
+      last_message_id,
     });
+
     if (messages) {
       return {
         data: messages,

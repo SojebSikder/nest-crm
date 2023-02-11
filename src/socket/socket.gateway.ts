@@ -3,7 +3,6 @@ import {
   SubscribeMessage,
   MessageBody,
   WebSocketServer,
-  ConnectedSocket,
   OnGatewayConnection,
   OnGatewayInit,
   OnGatewayDisconnect,
@@ -23,7 +22,9 @@ export class SocketGateway
 {
   @WebSocketServer()
   server: Server;
+
   constructor(private readonly socketService: SocketService) {}
+
   afterInit(server: Server) {
     console.log('Websocket server started');
   }
@@ -31,13 +32,20 @@ export class SocketGateway
   handleConnection(client: Socket, ...args: any[]) {
     console.log('new connection!', client.id);
   }
+
   handleDisconnect(client: any) {
     console.log('client disconnected!', client.id);
   }
 
-  @SubscribeMessage('send_message')
-  listenForMessages(@MessageBody() data: string) {
-    this.server.emit('message', data);
+  @SubscribeMessage('joinRoom')
+  handleRoomJoin(client: Socket, room: string) {
+    client.join(room);
+    client.emit('joinedRoom', room);
+  }
+
+  @SubscribeMessage('sendMessage')
+  listenForMessages(@MessageBody() body: { to; data }) {
+    this.server.to(body.to).emit('message', { from: body.to, data: body.data });
   }
 
   @SubscribeMessage('createSocket')

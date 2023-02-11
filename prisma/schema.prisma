@@ -511,7 +511,7 @@ model Conversation {
 
 // message
 model Message {
-  id         Int       @id @default(autoincrement())
+  id         BigInt    @id @default(autoincrement())
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   read_at    DateTime?

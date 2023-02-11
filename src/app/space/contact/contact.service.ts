@@ -70,7 +70,18 @@ export class ContactService extends PrismaClient {
   async findAll(user_id: number, workspace_id: number) {
     workspace_id = Number(workspace_id);
     const tenant_id = await UserRepository.getTenantId(user_id);
+
     const contacts = await this.prisma.contact.findMany({
+      where: {
+        AND: [
+          {
+            workspace_id: workspace_id,
+          },
+          {
+            tenant_id: tenant_id,
+          },
+        ],
+      },
       include: {
         assignee: {
           select: {
@@ -89,16 +100,6 @@ export class ContactService extends PrismaClient {
             country_code: true,
           },
         },
-      },
-      where: {
-        AND: [
-          {
-            workspace_id: workspace_id,
-          },
-          {
-            tenant_id: tenant_id,
-          },
-        ],
       },
     });
     // const conversation = await this.prisma.conversation.findFirst({

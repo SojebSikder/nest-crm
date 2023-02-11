@@ -3,6 +3,11 @@ import axios from 'axios';
 type Option = {
   host: string;
 };
+type DataOption = {
+  key?: string;
+  value?: string;
+  command?: string;
+};
 
 /**
  * Key value store
@@ -46,7 +51,7 @@ export class KvStore {
     return await this.request(data);
   }
 
-  private static async request(data) {
+  private static async request(data: DataOption) {
     const _config = {
       headers: {
         'Content-Type': 'application/json',

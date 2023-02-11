@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { DateHelper } from 'src/common/helper/date.helper';
 import { Sojebvar } from 'src/common/lib/Sojebvar/Sojebvar';
-import { WhatsappApi } from '../../../common/lib/whatsapp/Whatsapp';
+import { WhatsAppClient } from 'src/common/lib/whatsapp/client/WhatsAppClient';
 import { UserRepository } from '../../../common/repository/user/user.repository';
 import { WorkspaceChannelRepository } from '../../../common/repository/workspace-channel/workspace-channel.repository';
 import { PrismaService } from '../../../prisma/prisma.service';
@@ -92,13 +92,18 @@ export class MessageService extends PrismaClient {
       // end parsing
 
       // setup whatsapp credentials
-      WhatsappApi.config({
+      // WhatsappApi.config({
+      //   token: channelDetails.access_token,
+      //   phoneNumberId: channelDetails.phone_number_id,
+      // });
+      const whatsappClient = new WhatsAppClient({
         token: channelDetails.access_token,
         phoneNumberId: channelDetails.phone_number_id,
+        accountId: channelDetails.account_id,
       });
 
       // send whatsapp message
-      const whatsappMessage = await WhatsappApi.sendText({
+      const whatsappMessage = await whatsappClient.sendText({
         to: conversation.contact.phone_number,
         message: createMessageDto.body_text,
       });
@@ -132,10 +137,18 @@ export class MessageService extends PrismaClient {
     workspace_channel_id,
     conversation_id,
     workspace_id,
+    last_message_id,
+  }: {
+    user_id: number;
+    workspace_channel_id: number;
+    conversation_id: number;
+    workspace_id: number;
+    last_message_id?: number;
   }) {
     workspace_channel_id = Number(workspace_channel_id);
     conversation_id = Number(conversation_id);
     workspace_id = Number(workspace_id);
+    last_message_id = Number(last_message_id);
     // get tenant id
     const tenant_id = await UserRepository.getTenantId(user_id);
     // check conversation is exist
@@ -169,9 +182,30 @@ export class MessageService extends PrismaClient {
       return false;
     }
 
+    const limit = 15;
+
+    const conditions = {}; // for pagination, in efficient way
+    if (last_message_id) {
+      Object.assign(conditions, {
+        id: {
+          lt: last_message_id,
+        },
+      });
+    }
+
     const messages = await this.prisma.message.findMany({
+      take: limit,
+      orderBy: {
+        id: 'desc',
+      },
       where: {
         AND: [
+          // {
+          //   id: {
+          //     lt: last_message_id,
+          //   },
+          // },
+          { ...conditions },
           {
             contact_id: conversation.contact_id,
           },

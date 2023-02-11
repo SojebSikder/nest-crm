@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { SocketGateway } from 'src/socket/socket.gateway';
-import { WhatsappApi } from '../../common/lib/whatsapp/Whatsapp';
 import { MessageRepository } from '../../common/repository/message/workspace-message.repository';
 import { PrismaService } from '../../prisma/prisma.service';
 
@@ -144,10 +143,10 @@ export class WhatsappService extends PrismaClient {
     body_text,
   }) {
     // set whatsapp credentials
-    WhatsappApi.config({
-      phoneNumberId: phone_number_id,
-      token: token,
-    });
+    // WhatsappApi.config({
+    //   phoneNumberId: phone_number_id,
+    //   token: token,
+    // });
     // send message back to user
     // await WhatsappApi.sendText({
     //   to: from,
