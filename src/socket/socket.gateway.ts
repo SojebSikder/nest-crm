@@ -42,7 +42,7 @@ export class SocketGateway
     client.emit('joinedRoom', room);
   }
 
-  @SubscribeMessage('send_message')
+  @SubscribeMessage('sendMessage')
   listenForMessages(@MessageBody() body: { to; data }) {
     this.server.to(body.to).emit('message', { from: body.to, data: body.data });
   }
