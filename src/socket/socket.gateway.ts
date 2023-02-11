@@ -31,8 +31,15 @@ export class SocketGateway
   handleConnection(client: Socket, ...args: any[]) {
     console.log('new connection!', client.id);
   }
+
   handleDisconnect(client: any) {
     console.log('client disconnected!', client.id);
+  }
+
+  @SubscribeMessage('joinRoom')
+  handleRoomJoin(client: Socket, room: string) {
+    client.join(room);
+    client.emit('joinedRoom', room);
   }
 
   @SubscribeMessage('send_message')

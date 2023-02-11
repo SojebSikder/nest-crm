@@ -228,7 +228,12 @@ export class WhatsappController {
                         created_at: message.created_at,
                       },
                     };
-                    this.socketGateway.server.emit('message', data);
+                    this.socketGateway.server
+                      .to(workspaceChannel.workspace_id.toString())
+                      .emit('message', {
+                        from: workspaceChannel.workspace_id.toString(),
+                        data: data,
+                      });
                   }
                 }
               }
