@@ -43,8 +43,8 @@ export class SocketGateway
   }
 
   @SubscribeMessage('send_message')
-  listenForMessages(@MessageBody() data: string) {
-    this.server.emit('message', data);
+  listenForMessages(@MessageBody() body: { to; data }) {
+    this.server.to(body.to).emit('message', { from: body.to, data: body.data });
   }
 
   @SubscribeMessage('createSocket')
