@@ -3,7 +3,6 @@ import {
   SubscribeMessage,
   MessageBody,
   WebSocketServer,
-  ConnectedSocket,
   OnGatewayConnection,
   OnGatewayInit,
   OnGatewayDisconnect,
@@ -23,7 +22,9 @@ export class SocketGateway
 {
   @WebSocketServer()
   server: Server;
+
   constructor(private readonly socketService: SocketService) {}
+
   afterInit(server: Server) {
     console.log('Websocket server started');
   }

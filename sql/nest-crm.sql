@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 21, 2022 at 11:22 AM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Generation Time: Feb 11, 2023 at 05:38 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -27,21 +27,21 @@ SET time_zone = "+00:00";
 --
 
 INSERT INTO `contacts` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `fname`, `lname`, `email`, `phone_number`, `assignee_id`, `country_id`, `workspace_id`, `tenant_id`) VALUES
-(1, '2022-12-19 14:19:04.656', '2022-12-19 14:19:04.656', NULL, 1, 'sojebsikder', NULL, NULL, '8801833962595', NULL, NULL, 1, 1);
+(18, '2023-02-11 13:43:55.647', '2023-02-11 13:43:55.647', NULL, 1, 'sojebsikder', NULL, NULL, '8801833962595', NULL, NULL, 1, 1);
 
 --
 -- Dumping data for table `contact_workspace_channels`
 --
 
 INSERT INTO `contact_workspace_channels` (`created_at`, `updated_at`, `workspace_channel_id`, `contact_id`, `workspace_id`, `tenant_id`) VALUES
-('2022-12-19 14:19:05.684', '2022-12-19 14:19:05.684', 1, 1, 1, 1);
+('2023-02-11 13:43:55.759', '2023-02-11 13:43:55.759', 9, 18, 1, 1);
 
 --
 -- Dumping data for table `conversations`
 --
 
 INSERT INTO `conversations` (`id`, `created_at`, `updated_at`, `is_open`, `contact_id`, `workspace_channel_id`, `workspace_id`, `tenant_id`) VALUES
-(1, '2022-12-19 14:19:06.062', '2022-12-19 14:19:06.062', 1, 1, 1, 1, 1);
+(5, '2023-02-11 13:43:56.237', '2023-02-11 13:43:56.237', 1, 18, 9, 1, 1);
 
 --
 -- Dumping data for table `countries`
@@ -300,17 +300,49 @@ INSERT INTO `countries` (`id`, `created_at`, `updated_at`, `status`, `flag`, `na
 --
 
 INSERT INTO `messages` (`id`, `created_at`, `updated_at`, `read_at`, `message_from_workspace`, `messaging_product`, `message_id`, `type`, `body_text`, `contact_id`, `workspace_channel_id`, `conversation_id`) VALUES
-(1, '2022-12-19 14:19:08.707', '2022-12-19 14:19:08.707', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjA2NzYyMjFDODY1QjhCMkRBAA==', 'text', 'hi', 1, 1, 1),
-(2, '2022-12-19 14:19:20.326', '2022-12-19 14:19:20.326', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjA5NkJBNzZBQjQ0MzIyRjAxAA==', 'text', 'hi', 1, 1, 1),
-(3, '2022-12-19 14:19:28.956', '2022-12-19 14:19:28.956', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjk4RUREQ0E4RTM2OTU5N0Q3OAA=', 'text', 'hi', 1, 1, 1),
-(4, '2022-12-19 14:24:23.107', '2022-12-19 14:24:23.107', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjA0MEVGNDAwQzMzQzBDQTcxAA==', 'text', 'hi', 1, 1, 1);
+(151, '2023-02-11 13:45:17.121', '2023-02-11 13:45:17.121', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDQzODdFQUQyQTgyOENDQzBDRDZBQTI1ODc4N0MyQzYwAA==', 'text', 'hello', 18, 9, 5),
+(152, '2023-02-11 13:45:32.835', '2023-02-11 13:45:32.835', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkNFNEVCNUQzNTYzMjVEMkEyRgA=', 'text', 'hi sojeb', 18, 9, 5),
+(153, '2023-02-11 13:46:26.650', '2023-02-11 13:46:26.650', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIEY2NUFGRTUwOEQ5OTJBRDZEOTI1QTNBQzU0OTY3NjIyAA==', 'text', 'what\'s up', 18, 9, 5),
+(154, '2023-02-11 13:46:37.013', '2023-02-11 13:46:37.013', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjVDMzFCODcyRTVFOTA5NDA4NQA=', 'text', 'good, what about you', 18, 9, 5),
+(155, '2023-02-11 13:46:48.103', '2023-02-11 13:46:48.103', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkI5QzQxQjNGMkUxQjVEOTJDNAA=', 'text', 'Are you interested to buy some products from us?', 18, 9, 5),
+(156, '2023-02-11 13:46:54.409', '2023-02-11 13:46:54.409', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDFERkY2MTk5QkM4QTUxQkI5MjdGNjVBNjhEOTMwQTRDAA==', 'text', 'sure why not', 18, 9, 5),
+(157, '2023-02-11 13:47:06.406', '2023-02-11 13:47:06.406', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjU5OUY5OEFGRDgwNDIxRTg5OQA=', 'text', 'sojebsikder null,Welcome here.', 18, 9, 5),
+(158, '2023-02-11 13:47:19.561', '2023-02-11 13:47:19.561', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDlDM0ZGRkI4MzQ1NDlCQ0FFMjREMzg5NEZDRkI4ODY0AA==', 'text', 'thank you, can you now show me some products', 18, 9, 5),
+(159, '2023-02-11 13:47:32.829', '2023-02-11 13:47:32.829', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkUxMUY3REFGRkMwMkExQTJCNwA=', 'text', ' sojebsikder sure brother, I\'m on it.', 18, 9, 5),
+(160, '2023-02-11 13:48:00.249', '2023-02-11 13:48:00.249', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDk1NjNGNEM4OTQ3MUJCRTBBOUQ0QUQ5ODQ3NURGODc2AA==', 'text', 'by the way, this system is pretty cool', 18, 9, 5),
+(161, '2023-02-11 13:48:19.549', '2023-02-11 13:48:19.549', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjQ0RUFCNEZBMTRGM0RENDUzMAA=', 'text', 'thank you so much brother, I made it myself', 18, 9, 5),
+(162, '2023-02-11 13:48:25.019', '2023-02-11 13:48:25.019', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDZCRjQ0MTc0MTAxMkMzN0E5OTg1MzU4RUEzQjZFOTQ1AA==', 'text', 'ohh cool brother', 18, 9, 5),
+(163, '2023-02-11 13:48:35.430', '2023-02-11 13:48:35.430', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjMzMjA0QUUyREY4QUU2RjI4OQA=', 'text', 'Thank you  🙃', 18, 9, 5),
+(164, '2023-02-11 13:54:55.174', '2023-02-11 13:54:55.174', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIEQxQTgzODQyRjlGMEFCQzJDQkE5QTQ4NzMxRUNBNENGAA==', 'text', 'hey buddy', 18, 9, 5),
+(165, '2023-02-11 13:55:36.974', '2023-02-11 13:55:36.974', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkZDMUQ2RkExMjZCQ0YwMkJDNAA=', 'text', 'hey buddy', 18, 9, 5),
+(166, '2023-02-11 13:59:37.215', '2023-02-11 13:59:37.215', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIEE1MDZCMDg3QjU0MjRFMzFGOENEOUE4QUU5M0JGNUEyAA==', 'text', 'hey', 18, 9, 5),
+(167, '2023-02-11 14:00:48.831', '2023-02-11 14:00:48.831', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjhCRTBDOTM0NTAwNjRBRURCNgA=', 'text', 'hey buddy', 18, 9, 5),
+(168, '2023-02-11 14:01:36.233', '2023-02-11 14:01:36.233', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDY5MkFERTM4RjgwMUQ4NDQzNDgzODU5NEM1RkFCRDIzAA==', 'text', 'what message type currently this system support bro?', 18, 9, 5),
+(169, '2023-02-11 14:02:07.727', '2023-02-11 14:02:07.727', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkY5OTMxNjI1NkYzNEY2QUVFNQA=', 'text', 'Yeah now currently this support only text, but later we will support voice, template as well', 18, 9, 5),
+(170, '2023-02-11 15:30:40.912', '2023-02-11 15:30:40.912', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjM3NTc1NDY3OEEyMjE4QzhFRQA=', 'text', 'do you know what is snippet?', 18, 9, 5),
+(171, '2023-02-11 15:31:47.507', '2023-02-11 15:31:47.507', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkJGQzBCMzBFOEU4MUE1MzRCOQA=', 'text', 'do you know what is snippet 2?', 18, 9, 5),
+(172, '2023-02-11 15:53:45.324', '2023-02-11 15:53:45.324', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjNEMEEzQzY0OTg4QUEzMTY1OQA=', 'text', 'hey buddy', 18, 9, 5),
+(173, '2023-02-11 15:59:06.444', '2023-02-11 15:59:06.444', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjBFQ0FCQkZFQkZEQkVBMzNEAA==', 'text', 'hello buddy, I was offline', 18, 9, 5),
+(174, '2023-02-11 16:01:34.482', '2023-02-11 16:01:34.482', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjAxM0Q1QUZGQzkwRkQxNTczRgA=', 'text', 'ohh i see', 18, 9, 5),
+(175, '2023-02-11 16:02:28.972', '2023-02-11 16:02:28.972', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjA1QTNBQUEwOUI3QTc4QjM4AA==', 'text', 'yeah', 18, 9, 5),
+(176, '2023-02-11 16:02:36.502', '2023-02-11 16:02:36.502', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjY4Rjc3MzMyRTMyN0JBRUM1QwA=', 'text', 'ok', 18, 9, 5),
+(177, '2023-02-11 16:03:38.364', '2023-02-11 16:03:38.364', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjBCOTU1RDBEMEM1MUY0MjgwAA==', 'text', 'yeah', 18, 9, 5),
+(178, '2023-02-11 16:03:52.769', '2023-02-11 16:03:52.769', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjUyMkJEMjQzMjBFRTNCQUEyNgA=', 'text', 'okay cool, let\'s not go loop', 18, 9, 5),
+(179, '2023-02-11 16:05:53.536', '2023-02-11 16:05:53.536', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjc4N0ZBQTM4OEM5QjcyRUY4QwA=', 'text', 'send 1', 18, 9, 5),
+(180, '2023-02-11 16:07:33.102', '2023-02-11 16:07:33.102', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjJBRTU5NzE0NEE4QTFCNUNCNgA=', 'text', 'send 2', 18, 9, 5),
+(181, '2023-02-11 16:07:45.572', '2023-02-11 16:07:45.572', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjA1N0Y0MUM0MzgyMkY5NEFFAA==', 'text', 'send 3', 18, 9, 5),
+(182, '2023-02-11 16:08:24.531', '2023-02-11 16:08:24.531', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkRGQjI0MzVBMkQzMUJBN0MxQQA=', 'text', 'send 4', 18, 9, 5),
+(183, '2023-02-11 16:08:36.234', '2023-02-11 16:08:36.234', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjBCOTRGRkFBRjkzMEVBNUFBAA==', 'text', 'send 5', 18, 9, 5),
+(184, '2023-02-11 16:08:58.772', '2023-02-11 16:08:58.772', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjA5QkUyRjlFQUFDRTdFRDFBAA==', 'text', 'send 6', 18, 9, 5),
+(185, '2023-02-11 16:09:05.453', '2023-02-11 16:09:05.453', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjJFRTQ3NUExMEY1NUM2NTRGRgA=', 'text', 'send 7', 18, 9, 5),
+(186, '2023-02-11 16:09:09.810', '2023-02-11 16:09:09.810', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjAxN0U2QTY1OUE4MEJGRUVGAA==', 'text', 'send 8', 18, 9, 5);
 
 --
 -- Dumping data for table `organizations`
 --
 
 INSERT INTO `organizations` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `name`, `phone_number`, `website`, `trial_end_at`) VALUES
-(1, '2022-12-19 13:28:44.284', '2022-12-19 13:28:44.284', NULL, 1, 'organization_xyz', NULL, NULL, '2023-01-18 13:28:44.279');
+(1, '2022-12-19 13:28:44.284', '2022-12-19 13:28:44.284', NULL, 1, 'organization_xyz', NULL, NULL, '2024-01-10 13:28:44.279');
 
 --
 -- Dumping data for table `permissions`
@@ -417,35 +449,59 @@ INSERT INTO `permission_roles` (`created_at`, `updated_at`, `permission_id`, `ro
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 14, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 15, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 16, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 16, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 16, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 17, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 17, 27),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 18, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 18, 27),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 19, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 19, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 19, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 20, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 20, 27),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 21, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 21, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 21, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 22, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 22, 27),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 23, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 23, 27),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 24, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 24, 27),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 25, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 25, 27),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 26, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 27, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 28, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 29, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 30, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 31, 2),
-('2022-12-20 12:25:28.957', '2022-12-20 12:25:28.957', 31, 15),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 31, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 31, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 32, 2),
-('2022-12-20 12:25:28.957', '2022-12-20 12:25:28.957', 32, 15),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 32, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 32, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 33, 2),
-('2022-12-20 12:25:28.957', '2022-12-20 12:25:28.957', 33, 15),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 33, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 33, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 34, 2),
-('2022-12-20 12:25:28.957', '2022-12-20 12:25:28.957', 34, 15),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 34, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 34, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 35, 2),
-('2022-12-20 12:25:28.957', '2022-12-20 12:25:28.957', 35, 15),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 35, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 35, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 36, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 36, 27),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 37, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 37, 27),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 38, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 38, 27),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 39, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 39, 27),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 40, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 40, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 40, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 41, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 42, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 43, 2),
@@ -457,10 +513,20 @@ INSERT INTO `permission_roles` (`created_at`, `updated_at`, `permission_id`, `ro
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 49, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 50, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 51, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 51, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 51, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 52, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 52, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 52, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 53, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 53, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 53, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 54, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 54, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 54, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 55, 2),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 55, 27),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 55, 28),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 56, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 57, 2),
 ('2022-12-19 13:28:46.504', '2022-12-19 13:28:46.504', 58, 2),
@@ -506,7 +572,9 @@ INSERT INTO `roles` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `
 (6, '2022-12-19 13:28:43.513', '2022-12-19 13:28:43.513', NULL, 1, 'Owner', 'owner', NULL, NULL),
 (7, '2022-12-19 13:28:43.513', '2022-12-19 13:28:43.513', NULL, 1, 'Manager', 'manager', NULL, NULL),
 (8, '2022-12-19 13:28:43.513', '2022-12-19 13:28:43.513', NULL, 1, 'Agent', 'agent', NULL, NULL),
-(15, '2022-12-20 12:15:50.445', '2022-12-20 12:15:50.445', NULL, 1, 'agent', NULL, 1, 1);
+(15, '2022-12-20 12:15:50.445', '2022-12-20 12:15:50.445', NULL, 1, 'agent', NULL, 1, 1),
+(27, '2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', NULL, 1, 'user admin', NULL, 1, 7),
+(28, '2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', NULL, 1, 'agent', NULL, 1, 7);
 
 --
 -- Dumping data for table `role_users`
@@ -514,36 +582,59 @@ INSERT INTO `roles` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `
 
 INSERT INTO `role_users` (`created_at`, `updated_at`, `role_id`, `user_id`) VALUES
 ('2022-12-19 13:28:46.220', '2022-12-19 13:28:46.220', 1, 1),
-('2022-12-19 13:28:45.180', '2022-12-19 13:28:45.180', 2, 2);
+('2022-12-19 13:28:45.180', '2022-12-19 13:28:45.180', 2, 2),
+('2023-01-18 16:27:12.108', '2023-01-18 16:27:12.108', 15, 15),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 27, 2);
+
+--
+-- Dumping data for table `snippets`
+--
+
+INSERT INTO `snippets` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `name`, `message`, `workspace_id`, `tenant_id`) VALUES
+(1, '2023-02-04 11:39:42.514', '2023-02-04 11:39:42.514', NULL, 1, 'welcome', 'hi, ${contact.name},\nWelcome here.', 1, 1),
+(2, '2023-02-04 13:10:23.244', '2023-02-04 13:10:23.244', NULL, 1, 'good bye', 'Okay ${contact.fname}, if you have any problem, let us know.\nThank you.', 1, 1);
+
+--
+-- Dumping data for table `ucodes`
+--
+
+INSERT INTO `ucodes` (`id`, `created_at`, `updated_at`, `status`, `user_id`, `token`, `email`, `expired_at`) VALUES
+(5, '2023-01-18 16:19:48.104', '2023-01-18 16:19:48.104', 1, NULL, '2d95a654-4139-44d9-ab1b-fb48f43bea54', 'sojebsikder10@gmail.com', '2023-02-17 16:19:47.896'),
+(6, '2023-01-18 16:21:29.321', '2023-01-18 16:21:29.321', 1, NULL, '869fa4be-6e42-40df-9d17-f65fdaa4e9ee', 'sojebsikder10@gmail.com', '2023-02-17 16:21:29.217'),
+(7, '2023-01-18 16:23:28.693', '2023-01-18 16:23:28.693', 1, NULL, '0e79a927-be00-4bde-a190-6506f78047b4', 'sojebsikder10@gmail.com', '2023-02-17 16:23:28.599');
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `availability`, `email`, `username`, `fname`, `lname`, `password`, `domain`, `billing_id`, `tenant_id`) VALUES
-(1, '2022-12-19 13:28:44.145', '2022-12-19 13:28:44.145', NULL, 1, NULL, 'admin@example.com', 'admin', NULL, NULL, '$2b$10$kfkaE67LbTRZf2xP1zQTUe7DXd5vPFtoWGi7nrTJFeiZDMFXvsFpO', NULL, NULL, NULL),
-(2, '2022-12-19 13:28:44.736', '2022-12-19 13:28:44.736', NULL, 1, NULL, 'sojebsikder@gmail.com', NULL, 'sojeb', 'sikder', '$2b$10$NEAnTTQ80syyXv6I5rzpwub/z1ige.gykh1GHUK6YfLwFyvEUn6Fa', NULL, NULL, 1);
+INSERT INTO `users` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `availability`, `email`, `username`, `fname`, `lname`, `password`, `domain`, `avatar`, `billing_id`, `tenant_id`) VALUES
+(1, '2022-12-19 13:28:44.145', '2022-12-19 13:28:44.145', NULL, 1, NULL, 'admin@example.com', 'admin', NULL, NULL, '$2b$10$kfkaE67LbTRZf2xP1zQTUe7DXd5vPFtoWGi7nrTJFeiZDMFXvsFpO', NULL, NULL, NULL, NULL),
+(2, '2022-12-19 13:28:44.736', '2022-12-19 13:28:44.736', NULL, 1, NULL, 'sojebsikder@gmail.com', 'sojebsikder', 'sojeb', 'sikder', '$2b$10$NEAnTTQ80syyXv6I5rzpwub/z1ige.gykh1GHUK6YfLwFyvEUn6Fa', NULL, NULL, NULL, 1),
+(15, '2023-01-18 16:27:12.000', '2023-01-18 16:27:12.000', NULL, 1, NULL, 'sojebsikder10@gmail.com', 'sikdersojeb', 'Sikder', 'Sojeb', '$2b$10$dWR5LtigPlw5IHj8bAozfutbSlFQ0nCx41vY3oCIYTsMQVTo8yTfq', NULL, NULL, NULL, 1);
 
 --
 -- Dumping data for table `whatsapp_channels`
 --
 
-INSERT INTO `whatsapp_channels` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `channel_type`, `avatar`, `address`, `description`, `email`, `vertical`, `website_1`, `website_2`, `channel_name`, `whatsapp_phone_number`, `whatsapp_business_account_name`, `whatsapp_verified_name`, `webhook_key`, `verify_token`, `access_token`, `account_id`, `phone_number_id`, `verified`, `channel_id`, `workspace_id`, `tenant_id`) VALUES
-(1, '2022-12-19 14:17:58.845', '2022-12-19 14:17:58.845', NULL, 1, 'whatsapp', NULL, NULL, NULL, NULL, 'UNDEFINED', NULL, NULL, 'WhatsApp Cloud API', NULL, NULL, NULL, '1671459478838.6228', 'sojeb_webhook_token', 'EAAMBZBUByhEEBAD0YRaV4AB0qH5jbtNYOxjDCtn1546GH3etWVVG5UN055rETeJZB0LQBmkHSsUYIcJYKnZCyKi2TwZCT19ZAuwsyv9LXZAjJB9W43MNxnUL40hH1hslQ3ArxN9ePZC6trxXbNnvd9JaHB0G6ySZC7ZAUyJF1AJXljw1ChPaR3sil', '105708749047752', '111404165137829', 1, NULL, 1, 1);
+INSERT INTO `whatsapp_channels` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `channel_type`, `avatar`, `address`, `description`, `email`, `vertical`, `website_1`, `website_2`, `channel_name`, `whatsapp_phone_number`, `whatsapp_business_account_name`, `whatsapp_verified_name`, `webhook_key`, `verify_token`, `access_token`, `account_id`, `phone_number_id`, `verified`, `quality_rating`, `channel_id`, `workspace_id`, `tenant_id`) VALUES
+(9, '2023-02-11 13:43:10.573', '2023-02-11 13:43:10.573', NULL, 1, 'whatsapp', NULL, NULL, NULL, NULL, 'UNDEFINED', NULL, NULL, 'WhatsApp Cloud API', '15550153413', NULL, NULL, '1676122990563.4006', 'sojeb_webhook_token', 'EAAMBZBUByhEEBAD0YRaV4AB0qH5jbtNYOxjDCtn1546GH3etWVVG5UN055rETeJZB0LQBmkHSsUYIcJYKnZCyKi2TwZCT19ZAuwsyv9LXZAjJB9W43MNxnUL40hH1hslQ3ArxN9ePZC6trxXbNnvd9JaHB0G6ySZC7ZAUyJF1AJXljw1ChPaR3sil', '105708749047752', '111404165137829', 1, 'GREEN', NULL, 1, 1);
 
 --
 -- Dumping data for table `workspaces`
 --
 
 INSERT INTO `workspaces` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `name`, `timezone`, `tenant_id`) VALUES
-(1, '2022-12-19 13:28:45.282', '2022-12-19 13:28:45.282', NULL, 1, 'My New Workspace', NULL, 1);
+(1, '2022-12-19 13:28:45.282', '2022-12-19 13:28:45.282', NULL, 1, 'My New Workspace', NULL, 1),
+(7, '2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', NULL, 1, 'sojebstore', NULL, 1);
 
 --
 -- Dumping data for table `workspace_users`
 --
 
 INSERT INTO `workspace_users` (`created_at`, `updated_at`, `workspace_id`, `user_id`, `tenant_id`) VALUES
-('2022-12-19 13:28:45.633', '2022-12-19 13:28:45.633', 1, 2, 1);
+('2022-12-19 13:28:45.633', '2022-12-19 13:28:45.633', 1, 2, 1),
+('2023-01-18 16:28:10.994', '2023-01-18 16:28:10.994', 1, 15, 1),
+('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 7, 2, 1);
 SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
