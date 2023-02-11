@@ -68,6 +68,8 @@ export class WorkspaceChannelController {
       // console.log(error.response.data);
       // throw error;
       if (error.response.data) {
+        console.log(error.response);
+
         return {
           error: true,
           message: error.response.data.error.message,

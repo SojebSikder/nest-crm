@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { WhatsappService } from './whatsapp.service';
 import { SocketGateway } from '../../socket/socket.gateway';
-import { WhatsappApi } from '../../common/lib/whatsapp/Whatsapp';
 
 @Controller('whatsapp')
 export class WhatsappController {
@@ -12,11 +11,12 @@ export class WhatsappController {
 
   @Get('test')
   async test() {
-    WhatsappApi.config({
-      phoneNumberId: process.env.PHONE_NUMBER_ID,
-      accountId: process.env.ACCOUNT_ID,
-      token: process.env.TOKEN,
-    });
+    // const whatsAppClient = new WhatsAppClient({
+    //   phoneNumberId: process.env.PHONE_NUMBER_ID,
+    //   accountId: process.env.ACCOUNT_ID,
+    //   token: process.env.TOKEN,
+    // });
+
     try {
       // const send = await WhatsappApi.getPhoneNumberIds();
       // send single products
@@ -164,79 +164,82 @@ export class WhatsappController {
       // Parse the request body from the POST
       const workspaceChannel = await this.whatsappService.findOne(webhook_key);
       let token = null;
+
       if (workspaceChannel) {
         token = workspaceChannel.access_token;
-      } else {
-        res.sendStatus(404);
-      }
 
-      // Check the Incoming webhook message
-      // console.log(JSON.stringify(req.body, null, 2));
+        // Check the Incoming webhook message
+        // console.log(JSON.stringify(req.body, null, 2));
 
-      // info on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
-      if (req.body.object) {
-        if (
-          req.body.entry &&
-          req.body.entry[0].changes &&
-          req.body.entry[0].changes[0] &&
-          req.body.entry[0].changes[0].value.messages &&
-          req.body.entry[0].changes[0].value.messages[0]
-        ) {
-          const phone_number_id =
-            req.body.entry[0].changes[0].value.metadata.phone_number_id;
-          const from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
-          const message_id = req.body.entry[0].changes[0].value.messages[0].id; // extract the message id from the webhook payload
-          const msg_body =
-            req.body.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
+        // info on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
+        if (req.body.object) {
+          if (
+            req.body.entry &&
+            req.body.entry[0].changes &&
+            req.body.entry[0].changes[0] &&
+            req.body.entry[0].changes[0].value.messages &&
+            req.body.entry[0].changes[0].value.messages[0]
+          ) {
+            const phone_number_id =
+              req.body.entry[0].changes[0].value.metadata.phone_number_id;
+            const from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
+            const message_id =
+              req.body.entry[0].changes[0].value.messages[0].id; // extract the message id from the webhook payload
+            const msg_body =
+              req.body.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
 
-          const contactName =
-            req.body.entry[0].changes[0].value.contacts[0].profile.name; // extract the message text from the webhook payload
+            const contactName =
+              req.body.entry[0].changes[0].value.contacts[0].profile.name; // extract the message text from the webhook payload
 
-          if (message_id) {
-            // process whatsapp service
-            const isProcessed = await this.whatsappService.processWhatsapp({
-              message_id: message_id,
-              body_text: msg_body,
-              phone_number_id: phone_number_id,
-              token: token,
-              contactName: contactName,
-              from: from,
-            });
-
-            if (isProcessed) {
-              const conversation = await this.whatsappService.findConversation({
-                phone_number_id,
-                from,
+            if (message_id) {
+              // process whatsapp service
+              const isProcessed = await this.whatsappService.processWhatsapp({
+                message_id: message_id,
+                body_text: msg_body,
+                phone_number_id: phone_number_id,
+                token: token,
+                contactName: contactName,
+                from: from,
               });
-              if (conversation) {
-                const conversation_id = conversation.id;
-                // emit message
-                const message = await this.whatsappService.findMessage({
-                  conversation_id: conversation.id,
-                  phone_number_id,
-                  from,
-                });
 
-                if (message) {
-                  const data = {
-                    message: {
-                      id: message.id,
-                      message_id: message_id,
-                      body_text: msg_body,
-                      from: from,
-                      conversation_id: conversation_id,
-                      created_at: message.created_at,
-                    },
-                  };
-                  this.socketGateway.server.emit('message', data);
+              if (isProcessed) {
+                const conversation =
+                  await this.whatsappService.findConversation({
+                    phone_number_id,
+                    from,
+                  });
+                if (conversation) {
+                  const conversation_id = conversation.id;
+                  // emit message
+                  const message = await this.whatsappService.findMessage({
+                    conversation_id: conversation.id,
+                    phone_number_id,
+                    from,
+                  });
+
+                  if (message) {
+                    const data = {
+                      message: {
+                        id: message.id,
+                        message_id: message_id,
+                        body_text: msg_body,
+                        from: from,
+                        conversation_id: conversation_id,
+                        created_at: message.created_at,
+                      },
+                    };
+                    this.socketGateway.server.emit('message', data);
+                  }
                 }
               }
             }
           }
+          res.sendStatus(200);
+        } else {
+          // Return a '404 Not Found' if event is not from a WhatsApp API
+          res.sendStatus(404);
         }
-        res.sendStatus(200);
       } else {
-        // Return a '404 Not Found' if event is not from a WhatsApp API
         res.sendStatus(404);
       }
     } catch (error) {

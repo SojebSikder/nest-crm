@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { DateHelper } from 'src/common/helper/date.helper';
 import { Sojebvar } from 'src/common/lib/Sojebvar/Sojebvar';
-import { WhatsappApi } from '../../../common/lib/whatsapp/Whatsapp';
+import { WhatsAppClient } from 'src/common/lib/whatsapp/client/WhatsAppClient';
 import { UserRepository } from '../../../common/repository/user/user.repository';
 import { WorkspaceChannelRepository } from '../../../common/repository/workspace-channel/workspace-channel.repository';
 import { PrismaService } from '../../../prisma/prisma.service';
@@ -92,13 +92,18 @@ export class MessageService extends PrismaClient {
       // end parsing
 
       // setup whatsapp credentials
-      WhatsappApi.config({
+      // WhatsappApi.config({
+      //   token: channelDetails.access_token,
+      //   phoneNumberId: channelDetails.phone_number_id,
+      // });
+      const whatsappClient = new WhatsAppClient({
         token: channelDetails.access_token,
         phoneNumberId: channelDetails.phone_number_id,
+        accountId: channelDetails.account_id,
       });
 
       // send whatsapp message
-      const whatsappMessage = await WhatsappApi.sendText({
+      const whatsappMessage = await whatsappClient.sendText({
         to: conversation.contact.phone_number,
         message: createMessageDto.body_text,
       });

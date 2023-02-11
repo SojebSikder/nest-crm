@@ -1,9 +1,8 @@
-import { Fetch } from '../Fetch';
+import { Fetch } from '../../Fetch';
 import {
   ActionButton,
   BusinessProfile,
   CreateMessageTemplate,
-  GetPhoneNumberIdOption,
   MessageReponse,
   MessageTemplate,
   Section,
@@ -14,29 +13,24 @@ import {
 const api_Version = 'v15.0';
 
 /**
- * Whatsapp cloud api wrapper
+ * Whatsapp client wrapper for cloud api
  */
-export class WhatsappApi {
+export class WhatsAppClient {
   /**
    * Whatsapp cloud api version
    */
-  private static _api_version: string = api_Version;
-  private static _phone_number_id = '';
+  private _api_version: string = api_Version;
+  private _phone_number_id = '';
   /**
    * Whatsapp business account id
    */
-  private static _account_id = '';
+  private _account_id = '';
   /**
    * Access token
    */
-  private static _token = ``;
+  private _token = ``;
 
-  /**
-   * Set whatsapp api credentials
-   * @param param0
-   * @returns
-   */
-  static config({
+  constructor({
     apiVersion = api_Version,
     phoneNumberId,
     accountId,
@@ -63,17 +57,6 @@ export class WhatsappApi {
     this._phone_number_id = phoneNumberId;
     this._token = token;
     this._account_id = accountId;
-    return this;
-  }
-
-  /**
-   * Set phone number id credentials
-   * @param param0
-   * @returns
-   */
-  static setPhoneNumberId(phoneNumberId) {
-    this._phone_number_id = phoneNumberId;
-    return this;
   }
 
   /**
@@ -81,7 +64,7 @@ export class WhatsappApi {
    * @param param0
    * @returns
    */
-  static getConfig() {
+  getConfig() {
     return {
       apiVersion: this._api_version,
       phoneNumberId: this._phone_number_id,
@@ -94,7 +77,7 @@ export class WhatsappApi {
    * @param param0
    * @returns
    */
-  static async sendText({
+  async sendText({
     to,
     message,
   }: {
@@ -123,7 +106,7 @@ export class WhatsappApi {
    * @param param0
    * @returns
    */
-  static async sendTemplate({
+  async sendTemplate({
     to,
     templateName = 'hello_world',
     language = 'en_US',
@@ -158,7 +141,7 @@ export class WhatsappApi {
    * @param message_id
    * @returns
    */
-  static async markMessageAsRead(message_id: string) {
+  async markMessageAsRead(message_id: string) {
     const data = {
       messaging_product: 'whatsapp',
       status: 'read',
@@ -184,7 +167,7 @@ export class WhatsappApi {
    * @param {string} arg.body body text
    * @returns
    */
-  static async sendSingleProduct({
+  async sendSingleProduct({
     to,
     bodyText,
     footerText = null,
@@ -252,7 +235,7 @@ export class WhatsappApi {
   /**
    * Send multiple product message
    */
-  static async sendMultipleProduct({
+  async sendMultipleProduct({
     to,
     headerText,
     bodyText,
@@ -334,7 +317,7 @@ export class WhatsappApi {
    * Send interactive button message
    * @returns
    */
-  static async sendButtonMessage({
+  async sendButtonMessage({
     to,
     headerText = null,
     bodyText = null,
@@ -402,7 +385,7 @@ export class WhatsappApi {
    * Send interactive list message
    * @returns
    */
-  static async sendListMessage({
+  async sendListMessage({
     to,
     headerText,
     bodyText,
@@ -480,7 +463,7 @@ export class WhatsappApi {
    * Get whatsapp message templates
    * @returns
    */
-  static async getMessageTemplates(): Promise<MessageTemplate[]> {
+  async getMessageTemplates(): Promise<MessageTemplate[]> {
     const _header = {
       headers: {
         'Content-Type': 'application/json',
@@ -501,7 +484,7 @@ export class WhatsappApi {
    * Create whatsapp message template
    * @returns
    */
-  static async createMessageTemplate(templateData: CreateMessageTemplate) {
+  async createMessageTemplate(templateData: CreateMessageTemplate) {
     const data: CreateMessageTemplate = {
       name: templateData.name,
       category: templateData.category,
@@ -527,7 +510,7 @@ export class WhatsappApi {
    * Delete whatsapp message template
    * @returns
    */
-  static async deleteMessageTemplate(templateName: string): Promise<boolean> {
+  async deleteMessageTemplate(templateName: string): Promise<boolean> {
     const _header = {
       headers: {
         'Content-Type': 'application/json',
@@ -546,7 +529,7 @@ export class WhatsappApi {
    * Get whatsapp business profile details
    * @returns
    */
-  static async getBusinessProfileDeatils(): Promise<BusinessProfile> {
+  async getBusinessProfileDeatils(): Promise<BusinessProfile> {
     const _header = {
       headers: {
         'Content-Type': 'application/json',
@@ -564,7 +547,7 @@ export class WhatsappApi {
    * Update whatsapp business profile details
    * @returns
    */
-  static async updateBusinessProfileDeatils(
+  async updateBusinessProfileDeatils(
     profileDetails: BusinessProfile,
   ): Promise<boolean> {
     const _header = {
@@ -590,54 +573,5 @@ export class WhatsappApi {
       _header,
     );
     return response.data.success;
-  }
-
-  /**
-   * Get all phone number using Whatsapp business account id
-   * @returns
-   */
-  static async getPhoneNumberIds(): Promise<GetPhoneNumberIdOption[]> {
-    const _header = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this._token}`,
-      },
-    };
-    const response = await Fetch.get(
-      `https://graph.facebook.com/${this._api_version}/${this._account_id}/phone_numbers`,
-      _header,
-    );
-    return response.data.data;
-  }
-
-  /**
-   * Get Whatsapp business account ids
-   * @returns
-   */
-  static async getWabaIds() {
-    const wabaId = await this.getWabaData();
-    return wabaId.granular_scopes.find((data) => {
-      if (data.scope == 'whatsapp_business_management') {
-        return data.target_ids;
-      }
-    });
-  }
-
-  /**
-   * Get all Whatsapp business account data
-   * @returns
-   */
-  static async getWabaData() {
-    const _header = {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this._token}`,
-      },
-    };
-    const response = await Fetch.get(
-      `https://graph.facebook.com/${this._api_version}/debug_token?input_token=${this._token}`,
-      _header,
-    );
-    return response.data.data;
   }
 }

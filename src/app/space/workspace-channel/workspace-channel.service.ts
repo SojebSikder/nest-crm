@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { WhatsappApi } from '../../../common/lib/whatsapp/Whatsapp';
+import { WhatsAppAuth } from '../../../common/lib/whatsapp/auth/WhatsAppAuth';
+import { WhatsAppClient } from '../../../common/lib/whatsapp/client/WhatsAppClient';
 import { UserRepository } from '../../../common/repository/user/user.repository';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { CreateWorkspaceChannelDto } from './dto/create-workspace-channel.dto';
@@ -41,13 +42,14 @@ export class WorkspaceChannelService extends PrismaClient {
     }
 
     // get phone number id
-    WhatsappApi.config({
+    const whatsappAuth = new WhatsAppAuth({
       token: createWorkspaceChannelDto.access_token,
       accountId: createWorkspaceChannelDto.account_id,
     });
 
     let whatsapp_phone_number = null;
-    const getPhoneNumberId = await WhatsappApi.getPhoneNumberIds();
+    const getPhoneNumberId = await whatsappAuth.getPhoneNumberIds();
+
     getPhoneNumberId.map((phoneInfo) => {
       if (phoneInfo.display_phone_number == phone_number) {
         whatsapp_phone_number = phoneInfo.display_phone_number;
@@ -67,9 +69,13 @@ export class WorkspaceChannelService extends PrismaClient {
 
     const phone_number_id = phoneNumberInfo.id;
     // set phone number, need for fetching profile info
-    WhatsappApi.setPhoneNumberId(phone_number_id);
+    const whatsappClient = new WhatsAppClient({
+      token: createWorkspaceChannelDto.access_token,
+      accountId: createWorkspaceChannelDto.account_id,
+      phoneNumberId: phone_number_id,
+    });
     // get business profile details
-    const profileDetails = await WhatsappApi.getBusinessProfileDeatils();
+    const profileDetails = await whatsappClient.getBusinessProfileDeatils();
     //
     // webhook information
     // const webhook_key = String(new Date().valueOf());
@@ -162,12 +168,13 @@ export class WorkspaceChannelService extends PrismaClient {
     });
 
     // update whatsapp profile
-    WhatsappApi.config({
+    const whatsappClient = new WhatsAppClient({
       token: workspaceChannel[0].access_token,
       accountId: workspaceChannel[0].account_id,
       phoneNumberId: workspaceChannel[0].phone_number_id,
     });
-    await WhatsappApi.updateBusinessProfileDeatils({
+
+    await whatsappClient.updateBusinessProfileDeatils({
       address: workspaceChannel[0].address,
       description: workspaceChannel[0].description,
       email: workspaceChannel[0].email,
