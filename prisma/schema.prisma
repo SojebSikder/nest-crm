@@ -516,16 +516,35 @@ model Message {
   updated_at DateTime  @updatedAt
   read_at    DateTime?
 
+  parent_id              BigInt?
   // message sent from workspace
   message_from_workspace Boolean? @default(false)
 
   messaging_product String? @default("whatsapp")
   message_id        String?
 
-  type      String? @default("text")
+  // message data
+  type         String? @default("text")
   // type == text
-  body_text String?
+  body_text    String? @db.LongText
+  // store message data
+  message_data String? @db.LongText
+  // // type == reaction
+  // // {emoji:string, message_id:string}
+  // // reaction          Json?
+  // emoji             String?
+  // parent_message_id String?
+  // // type == sticker
+  // // {id:string, animated:boolean, mime_type:string,sha256:string}
+  // sticker           Json?
+  // // type == location
+  // // {latitude:string, longitude:string, name:string,address:string}
+  // location          Json?
+  // // type == unkown
+  // // {code:number, details:string, title:string}
+  // unknown           Json?
 
+  // meta data
   contact_id Int?
   contact    Contact? @relation(fields: [contact_id], references: [id], onDelete: Cascade)
 

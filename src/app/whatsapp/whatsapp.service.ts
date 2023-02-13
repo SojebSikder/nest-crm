@@ -135,6 +135,7 @@ export class WhatsappService extends PrismaClient {
   }
 
   async processWhatsapp({
+    message_data,
     phone_number_id,
     token,
     contactName,
@@ -179,6 +180,7 @@ export class WhatsappService extends PrismaClient {
       if (contact) {
         // save message
         return await MessageRepository.storeMessage({
+          message_data: message_data,
           message_id: message_id,
           body_text: body_text,
           contact_id: contact.id,
@@ -224,6 +226,7 @@ export class WhatsappService extends PrismaClient {
             if (createContactWorkspaceChannel) {
               // save message
               return await MessageRepository.storeMessage({
+                message_data: message_data,
                 message_id: message_id,
                 body_text: body_text,
                 contact_id: createContact.id,

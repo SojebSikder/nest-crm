@@ -9,6 +9,7 @@ export class MessageRepository {
    * @returns
    */
   static async storeMessage({
+    message_data,
     message_id,
     body_text,
     contact_id,
@@ -16,6 +17,7 @@ export class MessageRepository {
     tenant_id,
     workspace_channel_id,
     conversationCreatedOrOpen = null,
+    type = 'text',
   }) {
     return await prisma.$transaction(async () => {
       // save message
@@ -40,7 +42,8 @@ export class MessageRepository {
           // save message
           // if message type is text
           const saveMessage = await this.saveMessage({
-            type: 'text',
+            message_data: message_data,
+            type: type,
             message_id: message_id,
             body_text: body_text,
             contact_id: contact_id,
@@ -65,6 +68,7 @@ export class MessageRepository {
           // save message
           // if message type is text
           const saveMessage = await this.saveMessage({
+            message_data: message_data,
             type: 'text',
             message_id: message_id,
             body_text: body_text,
@@ -90,6 +94,7 @@ export class MessageRepository {
         }
         // save message
         const saveMessage = await this.saveMessage({
+          message_data: message_data,
           type: 'text',
           message_id: '',
           body_text: '',
@@ -108,16 +113,26 @@ export class MessageRepository {
    * @returns
    */
   static async saveMessage({
+    message_data,
     message_id,
     body_text,
     contact_id,
     workspace_channel_id,
     conversation_id,
     type = 'text',
+  }: {
+    message_data: string;
+    message_id: string;
+    body_text: string;
+    contact_id: number;
+    workspace_channel_id: number;
+    conversation_id: number;
+    type: string;
   }) {
     // if message type is text
     const saveMessage = await prisma.message.create({
       data: {
+        message_data: message_data,
         type: type,
         message_id: message_id,
         body_text: body_text,
