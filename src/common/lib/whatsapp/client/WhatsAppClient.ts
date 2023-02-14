@@ -8,6 +8,7 @@ import {
   Section,
   WhatsappTemplateComponent,
 } from './options';
+import { WhatsAppMedia } from './Media/WhatsAppMedia';
 
 // Whatsapp cloud api version
 const api_Version = 'v15.0';
@@ -70,6 +71,15 @@ export class WhatsAppClient {
       phoneNumberId: this._phone_number_id,
       token: this._token,
     };
+  }
+
+  media() {
+    return new WhatsAppMedia({
+      token: this._token,
+      accountId: this._account_id,
+      apiVersion: this._api_version,
+      phoneNumberId: this._phone_number_id,
+    });
   }
 
   /**
