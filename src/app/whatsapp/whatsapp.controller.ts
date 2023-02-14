@@ -194,7 +194,7 @@ export class WhatsappController {
             if (message_id) {
               // process whatsapp service
               const isProcessed = await this.whatsappService.processWhatsapp({
-                message_data: JSON.stringify(message_data),
+                message_data: message_data,
                 message_id: message_id,
                 body_text: msg_body,
                 phone_number_id: phone_number_id,

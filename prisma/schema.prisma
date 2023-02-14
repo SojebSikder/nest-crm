@@ -528,7 +528,8 @@ model Message {
   // type == text
   body_text    String? @db.LongText
   // store message data
-  message_data String? @db.LongText
+  // message_data String? @db.LongText
+  message_data Json?
   // // type == reaction
   // // {emoji:string, message_id:string}
   // // reaction          Json?

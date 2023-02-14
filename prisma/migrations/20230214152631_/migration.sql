@@ -293,15 +293,17 @@ CREATE TABLE `conversations` (
 
 -- CreateTable
 CREATE TABLE `messages` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `id` BIGINT NOT NULL AUTO_INCREMENT,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
     `read_at` DATETIME(3) NULL,
+    `parent_id` BIGINT NULL,
     `message_from_workspace` BOOLEAN NULL DEFAULT false,
     `messaging_product` VARCHAR(191) NULL DEFAULT 'whatsapp',
     `message_id` VARCHAR(191) NULL,
     `type` VARCHAR(191) NULL DEFAULT 'text',
-    `body_text` VARCHAR(191) NULL,
+    `body_text` LONGTEXT NULL,
+    `message_data` JSON NULL,
     `contact_id` INTEGER NULL,
     `workspace_channel_id` INTEGER NULL,
     `conversation_id` INTEGER NULL,

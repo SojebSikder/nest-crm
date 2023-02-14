@@ -121,7 +121,7 @@ export class MessageRepository {
     conversation_id,
     type = 'text',
   }: {
-    message_data: string;
+    message_data: any;
     message_id: string;
     body_text: string;
     contact_id: number;
