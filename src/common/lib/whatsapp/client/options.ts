@@ -24,11 +24,7 @@ export type MessageReponse = {
 };
 
 // ----------------message template-----------
-export type TemplateCategory =
-  | 'TRANSACTIONAL'
-  | 'MARKETING'
-  | 'OTP'
-  | (string & Record<string, unknown>);
+export type TemplateCategory = 'TRANSACTIONAL' | 'MARKETING' | 'OTP';
 export class MessageTemplate {
   name: string;
   category: TemplateCategory;
@@ -99,9 +95,7 @@ export class WhatsappTemplateComponent {
   }
 }
 
-export type TemplateButtonType =
-  | 'PHONE_NUMBER'
-  | (string & Record<string, unknown>);
+export type TemplateButtonType = 'PHONE_NUMBER';
 
 export type TemplateButtonOption = {
   type: TemplateButtonType;
@@ -130,8 +124,7 @@ export type TemplateComponentType =
   | 'BODY'
   | 'FOOTER'
   | 'BUTTONS'
-  | 'URL'
-  | (string & Record<string, unknown>);
+  | 'URL';
 export class CreateMessageTemplate extends MessageTemplate {
   components?: MessageTemplateComponent[];
 }
@@ -196,7 +189,7 @@ export type HeaderType = {
 };
 
 // ----------interactive message----------
-export type ButtonType = 'reply' | (string & Record<string, unknown>);
+export type ButtonType = 'reply';
 // action button
 export type ActionButton = {
   /**

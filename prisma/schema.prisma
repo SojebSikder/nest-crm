@@ -530,20 +530,6 @@ model Message {
   // store message data
   // message_data String? @db.LongText
   message_data Json?
-  // // type == reaction
-  // // {emoji:string, message_id:string}
-  // // reaction          Json?
-  // emoji             String?
-  // parent_message_id String?
-  // // type == sticker
-  // // {id:string, animated:boolean, mime_type:string,sha256:string}
-  // sticker           Json?
-  // // type == location
-  // // {latitude:string, longitude:string, name:string,address:string}
-  // location          Json?
-  // // type == unkown
-  // // {code:number, details:string, title:string}
-  // unknown           Json?
 
   // meta data
   contact_id Int?

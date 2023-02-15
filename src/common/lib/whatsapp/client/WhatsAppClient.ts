@@ -487,7 +487,7 @@ export class WhatsAppClient {
     return response.data.data;
   }
 
-  static component() {
+  component() {
     return { template: WhatsappTemplateComponent };
   }
   /**

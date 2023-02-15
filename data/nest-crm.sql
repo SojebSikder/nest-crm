@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 04, 2023 at 10:42 AM
--- Server version: 10.4.25-MariaDB
--- PHP Version: 8.1.10
+-- Generation Time: Feb 13, 2023 at 05:35 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -27,21 +27,21 @@ SET time_zone = "+00:00";
 --
 
 INSERT INTO `contacts` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `fname`, `lname`, `email`, `phone_number`, `assignee_id`, `country_id`, `workspace_id`, `tenant_id`) VALUES
-(17, '2023-01-19 04:31:47.587', '2023-01-19 04:31:47.587', NULL, 1, 'sojebsikder', NULL, NULL, '8801833962595', NULL, NULL, 1, 1);
+(18, '2023-02-11 13:43:55.647', '2023-02-11 13:43:55.647', NULL, 1, 'sojebsikder', NULL, NULL, '8801833962595', NULL, NULL, 1, 1);
 
 --
 -- Dumping data for table `contact_workspace_channels`
 --
 
 INSERT INTO `contact_workspace_channels` (`created_at`, `updated_at`, `workspace_channel_id`, `contact_id`, `workspace_id`, `tenant_id`) VALUES
-('2023-01-19 04:31:47.652', '2023-01-19 04:31:47.652', 8, 17, 1, 1);
+('2023-02-11 13:43:55.759', '2023-02-11 13:43:55.759', 9, 18, 1, 1);
 
 --
 -- Dumping data for table `conversations`
 --
 
 INSERT INTO `conversations` (`id`, `created_at`, `updated_at`, `is_open`, `contact_id`, `workspace_channel_id`, `workspace_id`, `tenant_id`) VALUES
-(4, '2023-01-19 04:31:47.706', '2023-01-28 13:55:47.753', 1, 17, 8, 1, 1);
+(5, '2023-02-11 13:43:56.237', '2023-02-11 13:43:56.237', 1, 18, 9, 1, 1);
 
 --
 -- Dumping data for table `countries`
@@ -300,44 +300,42 @@ INSERT INTO `countries` (`id`, `created_at`, `updated_at`, `status`, `flag`, `na
 --
 
 INSERT INTO `messages` (`id`, `created_at`, `updated_at`, `read_at`, `message_from_workspace`, `messaging_product`, `message_id`, `type`, `body_text`, `contact_id`, `workspace_channel_id`, `conversation_id`) VALUES
-(64, '2023-01-19 04:31:49.839', '2023-01-19 04:31:49.839', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIERFNjAzMDU2MDZGQzM5RDgxNDQ3QTIwOTJDMjBBOEZCAA==', 'text', 'hi', 17, 8, 4),
-(65, '2023-01-19 04:32:04.662', '2023-01-19 04:32:04.662', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkE5Q0U5RTlGRDY3N0IzRkY5OAA=', 'text', 'hello  sojebsikder', 17, 8, 4),
-(66, '2023-01-19 04:32:43.514', '2023-01-19 04:32:43.514', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDBDMzNFRjZBNDAyMEQzNUExMzlGRDA0NzY3NTk3QTI5AA==', 'text', 'Can you tell me your company information', 17, 8, 4),
-(67, '2023-01-19 04:33:31.968', '2023-01-19 04:33:31.968', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjg5OTg4NzQ0MEUyNEExMzRCMQA=', 'text', 'ofcourse sojebsikder, we are shared inbox company, let business to handle their customer at ease', 17, 8, 4),
-(68, '2023-01-19 04:34:08.890', '2023-01-19 04:34:08.890', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDg1Q0YxNjZGNEEwRjYyRTUxMDU0QUQ1QzVBRjA1OTJBAA==', 'text', 'thanks for the information', 17, 8, 4),
-(69, '2023-01-19 04:34:35.175', '2023-01-19 04:34:35.175', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkExNERCRjYxQUVDM0MwQUE0NQA=', 'text', 'thank you too sojebsikder', 17, 8, 4),
-(70, '2023-01-19 06:04:33.903', '2023-01-19 06:04:33.903', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjAxN0RENzc0RkQ5Qzk1NjU1AA==', 'text', 'hello jongon', 17, 8, 4),
-(71, '2023-01-19 06:04:48.844', '2023-01-19 06:04:48.844', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkE1QTMxMjY5RjkzOEY2MEZDMgA=', 'text', 'hi  sojebsikder', 17, 8, 4),
-(72, '2023-01-19 06:05:05.480', '2023-01-19 06:05:05.480', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjQxNUM4MkZFRUQ2NDkxMTlGMAA=', 'text', 'ki obostha', 17, 8, 4),
-(73, '2023-01-20 17:27:57.752', '2023-01-20 17:27:57.752', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIEY0NzhFNTdCMDNFNDJENzFENzU5RDMyRkY5QjZEMTgwAA==', 'text', 'test', 17, 8, 4),
-(74, '2023-01-20 17:28:52.268', '2023-01-20 17:28:52.268', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIEQ4NEQyQTFBOEQ3ODM2MzZBOEM1REUxMTFGMzlFOUU2AA==', 'text', 'de', 17, 8, 4),
-(75, '2023-01-20 17:29:02.650', '2023-01-20 17:29:02.650', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDA0Mjk1QURGQkU5Mzc4MDM2OUI2MDBBODRERUI5MkU5AA==', 'text', 'fff', 17, 8, 4),
-(76, '2023-01-20 17:29:28.039', '2023-01-20 17:29:28.039', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDg4NTc1RDZBRDEyOERENzdEMjMzMThCQzc2N0IwRTdGAA==', 'text', 'fyg', 17, 8, 4),
-(77, '2023-01-20 17:29:59.003', '2023-01-20 17:29:59.003', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIEY4RkM3MkY4NDI3QUM0OEExMTQyQjIxNEIwN0Q5NTlFAA==', 'text', 'rtgg', 17, 8, 4),
-(78, '2023-01-20 17:32:12.004', '2023-01-20 17:32:12.004', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDIwQkIwOTVDRTJFM0ZBRTYwREZENTEzNDZFNDc1OTAwAA==', 'text', 'fg', 17, 8, 4),
-(79, '2023-01-20 17:36:53.934', '2023-01-20 17:36:53.934', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDhFMzFGQUFBNDFDREE1MEM1QkI5MURCNjBEN0NEMjU5AA==', 'text', 'fft', 17, 8, 4),
-(80, '2023-01-20 17:39:32.132', '2023-01-20 17:39:32.132', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDcwNTE3QUREOEZCREYzMDk4QjMwOUVDNTJBM0Y4MDVBAA==', 'text', 'znzhd', 17, 8, 4),
-(81, '2023-01-20 17:45:34.213', '2023-01-20 17:45:34.213', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjFGNDY1QzlBNDE3ODY3MzVFMAA=', 'text', 'ass', 17, 8, 4),
-(82, '2023-01-20 17:45:41.304', '2023-01-20 17:45:41.304', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjU4OUZCNTAwN0QzOEEwQkZCNAA=', 'text', ' sojebsikder null', 17, 8, 4),
-(83, '2023-01-20 17:46:05.862', '2023-01-20 17:46:05.862', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIEU5NzY0OEREMzUxRTFFRjg3RThEOEVDMzZFNkE5MzY3AA==', 'text', 'hi', 17, 8, 4),
-(84, '2023-01-23 12:13:29.290', '2023-01-23 12:13:29.290', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkZGN0Y5NTZDRERFMEMwRkUzOQA=', 'text', 'as', 17, 8, 4),
-(85, '2023-01-23 12:33:25.436', '2023-01-23 12:33:25.436', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkQ3QjIyREI2NDg5NjkwNTNBMAA=', 'text', 'hi sojebsikder null', 17, 8, 4),
-(86, '2023-01-23 14:03:30.761', '2023-01-23 14:03:30.761', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjIyRTE5MkY2MDA4QzM2NUVDRQA=', 'text', 'asas', 17, 8, 4),
-(87, '2023-01-23 14:03:41.881', '2023-01-23 14:03:41.881', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjM3NzkzMDJDMUE5M0I1RDgwRAA=', 'text', 'my name sojebsikder', 17, 8, 4),
-(88, '2023-01-28 13:54:47.346', '2023-01-28 13:54:47.346', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjAwMUIzMTE2NDZDNTgzN0U5AA==', 'text', 'hi', 17, 8, 4),
-(89, '2023-01-28 13:55:18.982', '2023-01-28 13:55:18.982', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkY0QUJCMkNBMjE2QTc2QkYzMAA=', 'text', 'hello sojebsikder', 17, 8, 4),
-(90, '2023-01-28 14:05:10.323', '2023-01-28 14:05:10.323', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjBCNjhBNUExMjM5RkFCRkE0AA==', 'text', 'iji', 17, 8, 4),
-(91, '2023-02-01 11:32:58.265', '2023-02-01 11:32:58.265', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjk3OUNERjU2RTAzODU2Q0JGOAA=', 'text', 'hi sojebsikder null', 17, 8, 4),
-(92, '2023-02-01 11:33:18.343', '2023-02-01 11:33:18.343', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjA0ODdGQ0IxRDNERDZEQTA1NgA=', 'text', 'asas', 17, 8, 4),
-(93, '2023-02-01 11:33:48.620', '2023-02-01 11:33:48.620', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjAxMjE3QkEyRjVFNjgzRDUyNgA=', 'text', 'as', 17, 8, 4),
-(94, '2023-02-02 13:32:58.703', '2023-02-02 13:32:58.703', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkRBQ0I3QTBDRjAyOUZGNjlBMAA=', 'text', 'fgfg', 17, 8, 4),
-(95, '2023-02-02 13:33:06.486', '2023-02-02 13:33:06.486', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkVGMzdBMTU4OEJFMTRCQzYzRAA=', 'text', 'wewe', 17, 8, 4),
-(96, '2023-02-02 13:33:17.993', '2023-02-02 13:33:17.993', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjk0NDFERTVCREUwN0MzN0U1MQA=', 'text', 'as', 17, 8, 4),
-(97, '2023-02-02 13:33:51.155', '2023-02-02 13:33:51.155', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkMwNjA3NkM4N0MzREY5NkY2OQA=', 'text', 'b', 17, 8, 4),
-(98, '2023-02-02 13:35:30.188', '2023-02-02 13:35:30.188', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjVDQkQ4OTkxN0NDMjA0RkQwOAA=', 'text', 'c', 17, 8, 4),
-(99, '2023-02-02 13:36:34.387', '2023-02-02 13:36:34.387', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkEyNTU3QzAxNjBCQjdFNDcwNAA=', 'text', 'd', 17, 8, 4),
-(100, '2023-02-02 13:51:03.047', '2023-02-02 13:51:03.047', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjU4NzI2RkFDQUE4M0VGMzU2NgA=', 'text', 'ofcourse sojebsikder, we are shared inbox company, let business to handle their customer at ease', 17, 8, 4),
-(101, '2023-02-02 15:34:37.309', '2023-02-02 15:34:37.309', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkFEMDRGRDBEMzk2QTc4NDFDRQA=', 'text', ' 21:34:36 GMT+0600 (Bangladesh Standard Time)', 17, 8, 4);
+(151, '2023-02-11 13:45:17.121', '2023-02-11 13:45:17.121', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDQzODdFQUQyQTgyOENDQzBDRDZBQTI1ODc4N0MyQzYwAA==', 'text', 'hello', 18, 9, 5),
+(152, '2023-02-11 13:45:32.835', '2023-02-11 13:45:32.835', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkNFNEVCNUQzNTYzMjVEMkEyRgA=', 'text', 'hi sojeb', 18, 9, 5),
+(153, '2023-02-11 13:46:26.650', '2023-02-11 13:46:26.650', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIEY2NUFGRTUwOEQ5OTJBRDZEOTI1QTNBQzU0OTY3NjIyAA==', 'text', 'what\'s up', 18, 9, 5),
+(154, '2023-02-11 13:46:37.013', '2023-02-11 13:46:37.013', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjVDMzFCODcyRTVFOTA5NDA4NQA=', 'text', 'good, what about you', 18, 9, 5),
+(155, '2023-02-11 13:46:48.103', '2023-02-11 13:46:48.103', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkI5QzQxQjNGMkUxQjVEOTJDNAA=', 'text', 'Are you interested to buy some products from us?', 18, 9, 5),
+(156, '2023-02-11 13:46:54.409', '2023-02-11 13:46:54.409', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDFERkY2MTk5QkM4QTUxQkI5MjdGNjVBNjhEOTMwQTRDAA==', 'text', 'sure why not', 18, 9, 5),
+(157, '2023-02-11 13:47:06.406', '2023-02-11 13:47:06.406', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjU5OUY5OEFGRDgwNDIxRTg5OQA=', 'text', 'sojebsikder null,Welcome here.', 18, 9, 5),
+(158, '2023-02-11 13:47:19.561', '2023-02-11 13:47:19.561', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDlDM0ZGRkI4MzQ1NDlCQ0FFMjREMzg5NEZDRkI4ODY0AA==', 'text', 'thank you, can you now show me some products', 18, 9, 5),
+(159, '2023-02-11 13:47:32.829', '2023-02-11 13:47:32.829', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkUxMUY3REFGRkMwMkExQTJCNwA=', 'text', ' sojebsikder sure brother, I\'m on it.', 18, 9, 5),
+(160, '2023-02-11 13:48:00.249', '2023-02-11 13:48:00.249', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDk1NjNGNEM4OTQ3MUJCRTBBOUQ0QUQ5ODQ3NURGODc2AA==', 'text', 'by the way, this system is pretty cool', 18, 9, 5),
+(161, '2023-02-11 13:48:19.549', '2023-02-11 13:48:19.549', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjQ0RUFCNEZBMTRGM0RENDUzMAA=', 'text', 'thank you so much brother, I made it myself', 18, 9, 5),
+(162, '2023-02-11 13:48:25.019', '2023-02-11 13:48:25.019', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDZCRjQ0MTc0MTAxMkMzN0E5OTg1MzU4RUEzQjZFOTQ1AA==', 'text', 'ohh cool brother', 18, 9, 5),
+(163, '2023-02-11 13:48:35.430', '2023-02-11 13:48:35.430', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjMzMjA0QUUyREY4QUU2RjI4OQA=', 'text', 'Thank you  🙃', 18, 9, 5),
+(164, '2023-02-11 13:54:55.174', '2023-02-11 13:54:55.174', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIEQxQTgzODQyRjlGMEFCQzJDQkE5QTQ4NzMxRUNBNENGAA==', 'text', 'hey buddy', 18, 9, 5),
+(165, '2023-02-11 13:55:36.974', '2023-02-11 13:55:36.974', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkZDMUQ2RkExMjZCQ0YwMkJDNAA=', 'text', 'hey buddy', 18, 9, 5),
+(166, '2023-02-11 13:59:37.215', '2023-02-11 13:59:37.215', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIEE1MDZCMDg3QjU0MjRFMzFGOENEOUE4QUU5M0JGNUEyAA==', 'text', 'hey', 18, 9, 5),
+(167, '2023-02-11 14:00:48.831', '2023-02-11 14:00:48.831', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjhCRTBDOTM0NTAwNjRBRURCNgA=', 'text', 'hey buddy', 18, 9, 5),
+(168, '2023-02-11 14:01:36.233', '2023-02-11 14:01:36.233', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYIDY5MkFERTM4RjgwMUQ4NDQzNDgzODU5NEM1RkFCRDIzAA==', 'text', 'what message type currently this system support bro?', 18, 9, 5),
+(169, '2023-02-11 14:02:07.727', '2023-02-11 14:02:07.727', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkY5OTMxNjI1NkYzNEY2QUVFNQA=', 'text', 'Yeah now currently this support only text, but later we will support voice, template as well', 18, 9, 5),
+(170, '2023-02-11 15:30:40.912', '2023-02-11 15:30:40.912', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjM3NTc1NDY3OEEyMjE4QzhFRQA=', 'text', 'do you know what is snippet?', 18, 9, 5),
+(171, '2023-02-11 15:31:47.507', '2023-02-11 15:31:47.507', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkJGQzBCMzBFOEU4MUE1MzRCOQA=', 'text', 'do you know what is snippet 2?', 18, 9, 5),
+(172, '2023-02-11 15:53:45.324', '2023-02-11 15:53:45.324', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjNEMEEzQzY0OTg4QUEzMTY1OQA=', 'text', 'hey buddy', 18, 9, 5),
+(173, '2023-02-11 15:59:06.444', '2023-02-11 15:59:06.444', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjBFQ0FCQkZFQkZEQkVBMzNEAA==', 'text', 'hello buddy, I was offline', 18, 9, 5),
+(174, '2023-02-11 16:01:34.482', '2023-02-11 16:01:34.482', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjAxM0Q1QUZGQzkwRkQxNTczRgA=', 'text', 'ohh i see', 18, 9, 5),
+(175, '2023-02-11 16:02:28.972', '2023-02-11 16:02:28.972', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjA1QTNBQUEwOUI3QTc4QjM4AA==', 'text', 'yeah', 18, 9, 5),
+(176, '2023-02-11 16:02:36.502', '2023-02-11 16:02:36.502', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjY4Rjc3MzMyRTMyN0JBRUM1QwA=', 'text', 'ok', 18, 9, 5),
+(177, '2023-02-11 16:03:38.364', '2023-02-11 16:03:38.364', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjBCOTU1RDBEMEM1MUY0MjgwAA==', 'text', 'yeah', 18, 9, 5),
+(178, '2023-02-11 16:03:52.769', '2023-02-11 16:03:52.769', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjUyMkJEMjQzMjBFRTNCQUEyNgA=', 'text', 'okay cool, let\'s not go loop', 18, 9, 5),
+(179, '2023-02-11 16:05:53.536', '2023-02-11 16:05:53.536', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjc4N0ZBQTM4OEM5QjcyRUY4QwA=', 'text', 'send 1', 18, 9, 5),
+(180, '2023-02-11 16:07:33.102', '2023-02-11 16:07:33.102', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjJBRTU5NzE0NEE4QTFCNUNCNgA=', 'text', 'send 2', 18, 9, 5),
+(181, '2023-02-11 16:07:45.572', '2023-02-11 16:07:45.572', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjA1N0Y0MUM0MzgyMkY5NEFFAA==', 'text', 'send 3', 18, 9, 5),
+(182, '2023-02-11 16:08:24.531', '2023-02-11 16:08:24.531', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEkRGQjI0MzVBMkQzMUJBN0MxQQA=', 'text', 'send 4', 18, 9, 5),
+(183, '2023-02-11 16:08:36.234', '2023-02-11 16:08:36.234', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjBCOTRGRkFBRjkzMEVBNUFBAA==', 'text', 'send 5', 18, 9, 5),
+(184, '2023-02-11 16:08:58.772', '2023-02-11 16:08:58.772', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjA5QkUyRjlFQUFDRTdFRDFBAA==', 'text', 'send 6', 18, 9, 5),
+(185, '2023-02-11 16:09:05.453', '2023-02-11 16:09:05.453', NULL, 1, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABEYEjJFRTQ3NUExMEY1NUM2NTRGRgA=', 'text', 'send 7', 18, 9, 5),
+(186, '2023-02-11 16:09:09.810', '2023-02-11 16:09:09.810', NULL, 0, 'whatsapp', 'wamid.HBgNODgwMTgzMzk2MjU5NRUCABIYFDNFQjAxN0U2QTY1OUE4MEJGRUVGAA==', 'text', 'send 8', 18, 9, 5);
 
 --
 -- Dumping data for table `organizations`
@@ -589,6 +587,14 @@ INSERT INTO `role_users` (`created_at`, `updated_at`, `role_id`, `user_id`) VALU
 ('2023-01-22 11:03:06.801', '2023-01-22 11:03:06.801', 27, 2);
 
 --
+-- Dumping data for table `snippets`
+--
+
+INSERT INTO `snippets` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `name`, `message`, `workspace_id`, `tenant_id`) VALUES
+(1, '2023-02-04 11:39:42.514', '2023-02-04 11:39:42.514', NULL, 1, 'welcome', 'hi, ${contact.name},\nWelcome here.', 1, 1),
+(2, '2023-02-04 13:10:23.244', '2023-02-04 13:10:23.244', NULL, 1, 'good bye', 'Okay ${contact.fname}, if you have any problem, let us know.\nThank you.', 1, 1);
+
+--
 -- Dumping data for table `ucodes`
 --
 
@@ -611,7 +617,7 @@ INSERT INTO `users` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `
 --
 
 INSERT INTO `whatsapp_channels` (`id`, `created_at`, `updated_at`, `deleted_at`, `status`, `channel_type`, `avatar`, `address`, `description`, `email`, `vertical`, `website_1`, `website_2`, `channel_name`, `whatsapp_phone_number`, `whatsapp_business_account_name`, `whatsapp_verified_name`, `webhook_key`, `verify_token`, `access_token`, `account_id`, `phone_number_id`, `verified`, `quality_rating`, `channel_id`, `workspace_id`, `tenant_id`) VALUES
-(8, '2022-12-21 13:56:55.861', '2022-12-21 13:56:55.861', NULL, 1, 'whatsapp', NULL, NULL, NULL, NULL, 'UNDEFINED', NULL, NULL, 'WhatsApp Cloud API', '15550153413', NULL, NULL, '1671631015858.868', 'sojeb_webhook_token', 'EAAMBZBUByhEEBAD0YRaV4AB0qH5jbtNYOxjDCtn1546GH3etWVVG5UN055rETeJZB0LQBmkHSsUYIcJYKnZCyKi2TwZCT19ZAuwsyv9LXZAjJB9W43MNxnUL40hH1hslQ3ArxN9ePZC6trxXbNnvd9JaHB0G6ySZC7ZAUyJF1AJXljw1ChPaR3sil', '105708749047752', '111404165137829', 1, 'GREEN', NULL, 1, 1);
+(9, '2023-02-11 13:43:10.573', '2023-02-11 13:43:10.573', NULL, 1, 'whatsapp', NULL, NULL, NULL, NULL, 'UNDEFINED', NULL, NULL, 'WhatsApp Cloud API', '15550153413', NULL, NULL, '1676122990563.4006', 'sojeb_webhook_token', 'EAAMBZBUByhEEBAD0YRaV4AB0qH5jbtNYOxjDCtn1546GH3etWVVG5UN055rETeJZB0LQBmkHSsUYIcJYKnZCyKi2TwZCT19ZAuwsyv9LXZAjJB9W43MNxnUL40hH1hslQ3ArxN9ePZC6trxXbNnvd9JaHB0G6ySZC7ZAUyJF1AJXljw1ChPaR3sil', '105708749047752', '111404165137829', 1, 'GREEN', NULL, 1, 1);
 
 --
 -- Dumping data for table `workspaces`
