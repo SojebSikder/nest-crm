@@ -1,5 +1,5 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { PrismaService } from '../../prisma/prisma.service';
+import { PrismaService } from '../../providers/prisma/prisma.service';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {

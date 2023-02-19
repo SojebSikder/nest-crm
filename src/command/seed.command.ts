@@ -3,7 +3,7 @@ import { Command, CommandRunner } from 'nest-commander';
 import { StringHelper } from '../common/helper/string.helper';
 // internal imports
 import { UserRepository } from '../common/repository/user/user.repository';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../providers/prisma/prisma.service';
 
 @Command({ name: 'seed', description: 'prisma db seed' })
 export class SeedCommand extends CommandRunner {

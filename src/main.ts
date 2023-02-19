@@ -4,7 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 // internal imports
 import { AppModule } from './app.module';
-import { PrismaService } from './prisma/prisma.service';
+import { PrismaService } from './providers/prisma/prisma.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
