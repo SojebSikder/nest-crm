@@ -40,6 +40,7 @@ model Organization {
   conversations              Conversation[]
   Subscription               Subscription[]
   Template                   Template[]
+  PaymentTransaction         PaymentTransaction[]
 
   @@map("organizations")
 }
@@ -72,12 +73,13 @@ model User {
 
   ucodes                 Ucode[]
   role_users             RoleUser[]
-  sender_notifications   Notification[]      @relation("sender")
-  receiver_notifications Notification[]      @relation("receiver")
+  sender_notifications   Notification[]       @relation("sender")
+  receiver_notifications Notification[]       @relation("receiver")
   workspace_users        WorkspaceUser[]
   workspace_team_users   WorkspaceTeamUser[]
   contacts               Contact[]
   subscriptions          Subscription[]
+  PaymentTransaction     PaymentTransaction[]
 
   @@map("users")
 }
@@ -617,8 +619,12 @@ model Plan {
 
   name            String
   // stripe product price id
-  plan_price_id   String?
+  gateway_id      String?
   price_per_month Decimal
+
+  // Number of user or employee,
+  // that can added on platform
+  user_limit Int?
 
   subscriptions Subscription[]
 
@@ -646,4 +652,29 @@ model Subscription {
   User           User?   @relation(fields: [user_id], references: [id])
 
   @@map("subscriptions")
+}
+
+// This table used to store organization
+// subscription transactions
+model PaymentTransaction {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  // available values:
+  // plan
+  transaction_type     String?
+  transaction_id       String?  @db.Text
+  // e.g. stripe
+  transaction_provider String?
+  amount               Decimal?
+  currency             String?
+
+  user_id Int?
+  User    User? @relation(fields: [user_id], references: [id])
+
+  tenant_id Int
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+
+  @@map("payment_transactions")
 }
