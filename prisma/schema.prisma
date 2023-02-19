@@ -39,6 +39,7 @@ model Organization {
   contact_workspace_channels ContactWorkspaceChannel[]
   conversations              Conversation[]
   Subscription               Subscription[]
+  Template                   Template[]
 
   @@map("organizations")
 }
@@ -92,8 +93,8 @@ model Ucode {
   user_id Int?
   user    User? @relation(fields: [user_id], references: [id])
 
-  token      String?   @db.Text
-  email      String?
+  token      String    @db.Text
+  email      String
   expired_at DateTime?
 
   @@map("ucodes")
@@ -244,7 +245,7 @@ model Workspace {
   status     Int?      @default(1)
 
   // workspace name
-  name     String?
+  name     String
   timezone String?
 
   tenant_id Int?
@@ -260,6 +261,7 @@ model Workspace {
   workspace_channels         WorkspaceChannel[]
   contact_workspace_channels ContactWorkspaceChannel[]
   roles                      Role[]
+  Template                   Template[]
 
   @@map("workspaces")
 }
@@ -277,7 +279,7 @@ model WorkspaceUser {
   user_id Int
   user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  tenant_id Int?
+  tenant_id Int
   tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   @@id([workspace_id, user_id])
@@ -293,13 +295,13 @@ model WorkspaceTeam {
   deleted_at DateTime?
   status     Int?      @default(1)
 
-  name        String?
+  name        String
   description String? @db.Text
 
   workspace_id Int
   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
-  tenant_id Int?
+  tenant_id Int
   tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   workspace_team_users WorkspaceTeamUser[]
@@ -320,7 +322,7 @@ model WorkspaceTeamUser {
   user_id Int
   user    User? @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  tenant_id Int?
+  tenant_id Int
   tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   @@id([workspace_team_id, user_id])
@@ -381,6 +383,7 @@ model WorkspaceChannel {
   contact_workspace_channels ContactWorkspaceChannel[]
   messages                   Message[]
   conversations              Conversation[]
+  Template                   Template[]
 
   @@map("whatsapp_channels")
 }
@@ -399,10 +402,34 @@ model Snippet {
   workspace_id Int
   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
-  tenant_id Int?
+  tenant_id Int
   tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   @@map("snippets")
+}
+
+// message template
+model Template {
+  id         Int       @id @default(autoincrement())
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  deleted_at DateTime?
+  status     Int?      @default(1)
+
+  name     String
+  category String?
+  language String?
+
+  workspace_channel_id Int
+  workspace_channel    WorkspaceChannel? @relation(fields: [workspace_channel_id], references: [id], onDelete: Cascade)
+
+  workspace_id Int
+  workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+
+  tenant_id Int
+  tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+
+  @@map("templates")
 }
 
 // message file
@@ -451,7 +478,7 @@ model Contact {
   workspace_id Int
   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
-  tenant_id Int?
+  tenant_id Int
   tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   contact_workspace_channels ContactWorkspaceChannel[]
@@ -476,7 +503,7 @@ model ContactWorkspaceChannel {
   workspace_id Int
   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
-  tenant_id Int?
+  tenant_id Int
   tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   @@id([workspace_channel_id, contact_id])
@@ -501,7 +528,7 @@ model Conversation {
   workspace_id Int
   workspace    Workspace? @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
 
-  tenant_id Int?
+  tenant_id Int
   tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
 
   messages Message[]
@@ -538,7 +565,7 @@ model Message {
   workspace_channel_id Int?
   workspace_channel    WorkspaceChannel? @relation(fields: [workspace_channel_id], references: [id], onDelete: Cascade)
 
-  conversation_id Int?
+  conversation_id Int
   conversation    Conversation? @relation(fields: [conversation_id], references: [id], onDelete: Cascade)
 
   @@map("messages")
@@ -615,8 +642,8 @@ model Subscription {
   end_at   DateTime
 
   payment_method String?
-  User           User?   @relation(fields: [userId], references: [id])
-  userId         Int?
+  user_id        Int?
+  User           User?   @relation(fields: [user_id], references: [id])
 
   @@map("subscriptions")
 }
