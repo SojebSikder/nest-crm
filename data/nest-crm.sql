@@ -555,7 +555,7 @@ INSERT INTO `permission_roles` (`created_at`, `updated_at`, `permission_id`, `ro
 -- Dumping data for table `plans`
 --
 
-INSERT INTO `plans` (`id`, `created_at`, `updated_at`, `status`, `name`, `plan_price_id`, `price_per_month`) VALUES
+INSERT INTO `plans` (`id`, `created_at`, `updated_at`, `status`, `name`, `gateway_id`, `price_per_month`) VALUES
 (1, '2022-12-19 13:28:46.635', '2022-12-19 13:28:46.635', 1, 'Team', 'price_1MEvhxJ1sD6uaGBLDQ2DqVEK', '99.000000000000000000000000000000'),
 (2, '2022-12-19 13:28:46.635', '2022-12-19 13:28:46.635', 1, 'Business', 'price_1MEviEJ1sD6uaGBLIbqAWP2Z', '299.000000000000000000000000000000');
 
