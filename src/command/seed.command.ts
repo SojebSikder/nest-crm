@@ -43,12 +43,12 @@ export class SeedCommand extends CommandRunner {
       data: [
         {
           name: 'Team',
-          plan_price_id: 'price_1MEvhxJ1sD6uaGBLDQ2DqVEK',
+          gateway_id: 'price_1MEvhxJ1sD6uaGBLDQ2DqVEK',
           price_per_month: 99,
         },
         {
           name: 'Business',
-          plan_price_id: 'price_1MEviEJ1sD6uaGBLIbqAWP2Z',
+          gateway_id: 'price_1MEviEJ1sD6uaGBLIbqAWP2Z',
           price_per_month: 299,
         },
       ],
