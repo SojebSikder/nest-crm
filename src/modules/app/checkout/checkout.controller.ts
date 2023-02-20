@@ -7,16 +7,27 @@ import {
   Param,
   Delete,
   Req,
+  UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
+import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
+import { CheckAbilities } from 'src/providers/ability/abilities.decorator';
+import { AbilitiesGuard } from 'src/providers/ability/abilities.guard';
+import { Action } from 'src/providers/ability/ability.factory';
 import { CheckoutService } from './checkout.service';
 import { CreateCheckoutDto } from './dto/create-checkout.dto';
 import { UpdateCheckoutDto } from './dto/update-checkout.dto';
 
+@ApiBearerAuth()
+@ApiTags('Checkout')
+@UseGuards(JwtAuthGuard, AbilitiesGuard)
 @Controller('checkout')
 export class CheckoutController {
   constructor(private readonly checkoutService: CheckoutService) {}
 
+  @ApiOperation({ summary: 'Checkout' })
+  @CheckAbilities({ action: Action.Create, subject: 'OrganizationBilling' })
   @Post()
   async create(
     @Req() req: Request,
