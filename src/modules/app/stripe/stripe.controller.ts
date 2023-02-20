@@ -21,54 +21,59 @@ export class StripeController {
 
   @Post('webhook')
   async create(@Req() req: Request, @Res() res: Response) {
-    const sig = req.headers['stripe-signature'];
-    let event: Stripe.Event;
     try {
-      event = StripeMethod.createWebhook(req.body, sig);
-    } catch (error) {
-      res.status(400).send(`Webhook Error: ${error.message}`);
-      return;
-    }
-
-    const data: any = event.data.object;
-    // handle the event
-    switch (event.type) {
-      case 'customer.created':
-        console.log(JSON.stringify(data));
-        break;
-      case 'invoice.paid':
-        break;
-      case 'customer.subscription.created': {
-        // create subscription
-        await this.stripeService.create({
-          customer: data.customer,
-          plan_price_id: data.plan.id,
-        });
-
-        break;
+      const sig = req.headers['stripe-signature'];
+      let event: Stripe.Event;
+      try {
+        // event = StripeMethod.createWebhook(req.body, sig);
+        event = StripeMethod.createWebhook(req.rawBody, sig);
+      } catch (error) {
+        res.status(400).send(`Webhook Error: ${error.message}`);
+        return;
       }
 
-      case 'customer.subscription.updated': {
-        const user = await UserRepository.getUserByBillingID(data.customer);
-
-        if (data.canceled_at) {
-          // cancelled
-          await this.stripeService.subscription.deleteMany({
-            where: {
-              tenant_id: user.tenant_id,
-            },
-          });
-        } else {
-          // update plan
-          await this.stripeService.update(user.tenant_id, {
+      const data: any = event.data.object;
+      // handle the event
+      switch (event.type) {
+        case 'customer.created':
+          console.log(JSON.stringify(data));
+          break;
+        case 'invoice.paid':
+          break;
+        case 'customer.subscription.created': {
+          // create subscription
+          await this.stripeService.create({
+            customer: data.customer,
             plan_price_id: data.plan.id,
           });
+
+          break;
         }
-        break;
+
+        case 'customer.subscription.updated': {
+          const user = await UserRepository.getUserByBillingID(data.customer);
+
+          if (data.canceled_at) {
+            // cancelled
+            await this.stripeService.subscription.deleteMany({
+              where: {
+                tenant_id: user.tenant_id,
+              },
+            });
+          } else {
+            // update plan
+            await this.stripeService.update(user.tenant_id, {
+              plan_price_id: data.plan.id,
+            });
+          }
+          break;
+        }
+        default:
       }
-      default:
+      return res.sendStatus(200);
+    } catch (error) {
+      throw error;
     }
-    return res.sendStatus(200);
   }
 
   @Get()

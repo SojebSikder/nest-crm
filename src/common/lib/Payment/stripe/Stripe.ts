@@ -6,7 +6,8 @@ const Stripe = new stripe(STRIPE_SECRET_KEY, {
   apiVersion: '2022-11-15',
 });
 
-const STRIPE_WEBHOOK_SECRET = 'wh_xx';
+const STRIPE_WEBHOOK_SECRET = appConfig().payment.stripe.webhook_secret;
+
 /**
  * Stripe payment method helper
  */
