@@ -616,6 +616,7 @@ model Plan {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
   status     Int?     @default(1)
+  sort_order Int?     @default(0)
 
   name            String
   // stripe product price id

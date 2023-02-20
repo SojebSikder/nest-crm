@@ -37,6 +37,7 @@ import { SnippetModule } from './modules/app/space/snippet/snippet.module';
 import { DynamicVariableModule } from './modules/app/dynamic-variable/dynamic-variable.module';
 import { ShopifyModule } from './modules/app/shopify/shopify.module';
 import { TemplateModule } from './modules/app/space/template/template.module';
+import { PlanModule } from './modules/app/plan/plan.module';
 
 @Module({
   imports: [
@@ -88,6 +89,7 @@ import { TemplateModule } from './modules/app/space/template/template.module';
     DynamicVariableModule,
     ShopifyModule,
     TemplateModule,
+    PlanModule,
   ],
   controllers: [AppController],
   providers: [
