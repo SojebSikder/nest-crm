@@ -39,6 +39,7 @@ import { ShopifyModule } from './modules/app/shopify/shopify.module';
 import { TemplateModule } from './modules/app/space/template/template.module';
 import { PlanModule } from './modules/app/plan/plan.module';
 import { CheckoutModule } from './modules/app/checkout/checkout.module';
+import { RawBodyMiddleware } from './common/middleware/rawBody.middleware';
 
 @Module({
   imports: [
@@ -109,5 +110,7 @@ import { CheckoutModule } from './modules/app/checkout/checkout.module';
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('*');
+    // for the raw body
+    consumer.apply(RawBodyMiddleware).forRoutes('*');
   }
 }
