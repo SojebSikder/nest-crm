@@ -11,7 +11,16 @@ const STRIPE_WEBHOOK_SECRET = 'wh_xx';
  * Stripe payment method helper
  */
 export class StripeMethod {
-  static async createCheckoutSession(customer: string, price: string) {
+  /**
+   * Subscription Checkout session
+   * @param customer customer_id
+   * @param price price_id
+   * @returns
+   */
+  static async createSubscriptionCheckoutSession(
+    customer_id: string,
+    price: string,
+  ) {
     const success_url = `${
       appConfig().app.url
     }/success?session_id={CHECKOUT_SESSION_ID}`;
@@ -20,21 +29,22 @@ export class StripeMethod {
     const session = await Stripe.checkout.sessions.create({
       mode: 'subscription',
       payment_method_types: ['card'],
-      customer: customer,
+      customer: customer_id,
       line_items: [
         {
           price: price,
           quantity: 1,
         },
       ],
-      subscription_data: {
-        trial_period_days: 14,
-      },
+      // subscription_data: {
+      //   trial_period_days: 14,
+      // },
       success_url: success_url,
       cancel_url: cancel_url,
     });
     return session;
   }
+
   /**
    * Add customer to stripe
    * @param email

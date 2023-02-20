@@ -18,6 +18,7 @@ import { AbilitiesGuard } from '../../../../providers/ability/abilities.guard';
 import { CheckAbilities } from '../../../../providers/ability/abilities.decorator';
 import { Action } from '../../../../providers/ability/ability.factory';
 import { HasPlanGuard } from '../../../../common/guard/has-plan/has-plan.guard';
+import { Request } from 'express';
 
 // allow big integer type for return response
 BigInt.prototype['toJSON'] = function () {
@@ -33,7 +34,10 @@ export class MessageController {
   @ApiOperation({ summary: 'Send message' })
   @CheckAbilities({ action: Action.Create, subject: 'WorkspaceConversation' })
   @Post()
-  async create(@Req() req, @Body() createMessageDto: CreateMessageDto) {
+  async create(
+    @Req() req: Request,
+    @Body() createMessageDto: CreateMessageDto,
+  ) {
     const workspace_id = req.params.workspace_id;
     const conversation_id = req.params.conversation_id;
     const user = req.user;

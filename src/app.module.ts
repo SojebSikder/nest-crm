@@ -38,6 +38,7 @@ import { DynamicVariableModule } from './modules/app/dynamic-variable/dynamic-va
 import { ShopifyModule } from './modules/app/shopify/shopify.module';
 import { TemplateModule } from './modules/app/space/template/template.module';
 import { PlanModule } from './modules/app/plan/plan.module';
+import { CheckoutModule } from './modules/app/checkout/checkout.module';
 
 @Module({
   imports: [
@@ -90,6 +91,7 @@ import { PlanModule } from './modules/app/plan/plan.module';
     ShopifyModule,
     TemplateModule,
     PlanModule,
+    CheckoutModule,
   ],
   controllers: [AppController],
   providers: [
