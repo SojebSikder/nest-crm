@@ -618,10 +618,10 @@ model Plan {
   status     Int?     @default(1)
   sort_order Int?     @default(0)
 
-  name            String
+  name             String
   // stripe product price id
-  gateway_id      String?
-  price_per_month Decimal
+  gateway_price_id String?
+  price_per_month  Decimal
 
   // Number of user or employee,
   // that can added on platform
@@ -638,6 +638,9 @@ model Subscription {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
   status     Int?     @default(1)
+
+  // stripe subscription id
+  gateway_subscription_id String?
 
   tenant_id Int
   tenant    Organization? @relation(fields: [tenant_id], references: [id], onDelete: Cascade)

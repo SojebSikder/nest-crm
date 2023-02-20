@@ -21,7 +21,7 @@ export class StripeService extends PrismaClient {
       where: {
         AND: [
           {
-            gateway_id: plan_price_id,
+            gateway_price_id: plan_price_id,
           },
           {
             status: 1,
@@ -58,7 +58,7 @@ export class StripeService extends PrismaClient {
       where: {
         AND: [
           {
-            gateway_id: plan_price_id,
+            gateway_price_id: plan_price_id,
           },
           {
             status: 1,

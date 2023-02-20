@@ -46,7 +46,7 @@ export class CheckoutService extends PrismaClient {
             const checkout =
               await StripeMethod.createSubscriptionCheckoutSession(
                 billing_id,
-                plan.gateway_id,
+                plan.gateway_price_id,
               );
 
             return { data: checkout.url };
@@ -55,7 +55,7 @@ export class CheckoutService extends PrismaClient {
       } else {
         const checkout = await StripeMethod.createSubscriptionCheckoutSession(
           billing_id,
-          plan.gateway_id,
+          plan.gateway_price_id,
         );
 
         return { data: checkout.url };

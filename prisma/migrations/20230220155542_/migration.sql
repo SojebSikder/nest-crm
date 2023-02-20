@@ -363,8 +363,9 @@ CREATE TABLE `plans` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `status` INTEGER NULL DEFAULT 1,
+    `sort_order` INTEGER NULL DEFAULT 0,
     `name` VARCHAR(191) NOT NULL,
-    `gateway_id` VARCHAR(191) NULL,
+    `gateway_price_id` VARCHAR(191) NULL,
     `price_per_month` DECIMAL(65, 30) NOT NULL,
     `user_limit` INTEGER NULL,
 
@@ -377,6 +378,7 @@ CREATE TABLE `subscriptions` (
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `status` INTEGER NULL DEFAULT 1,
+    `gateway_subscription_id` VARCHAR(191) NULL,
     `tenant_id` INTEGER NOT NULL,
     `plan_id` INTEGER NOT NULL,
     `start_at` DATETIME(3) NOT NULL,

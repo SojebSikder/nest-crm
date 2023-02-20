@@ -23,7 +23,7 @@ export class PlanService extends PrismaClient {
         id: true,
         name: true,
         price_per_month: true,
-        gateway_id: true,
+        gateway_price_id: true,
       },
     });
 
