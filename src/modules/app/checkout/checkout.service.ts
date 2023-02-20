@@ -21,7 +21,7 @@ export class CheckoutService extends PrismaClient {
     if (plan) {
       const checkout = StripeMethod.createSubscriptionCheckoutSession(
         'customer_id',
-        'price_id',
+        plan.gateway_id,
       );
 
       return (await checkout).url;
