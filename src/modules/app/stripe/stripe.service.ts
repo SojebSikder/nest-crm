@@ -9,7 +9,7 @@ export class StripeService extends PrismaClient {
   constructor(private prisma: PrismaService) {
     super();
   }
-  async create({
+  async createSubscription({
     customer,
     plan_price_id,
   }: {
@@ -33,8 +33,9 @@ export class StripeService extends PrismaClient {
     if (plan) {
       // add subscription
       const start_date = DateHelper.now();
-      const end_date = DateHelper.add(30, 'days').toISOString();
-      await this.prisma.subscription.create({
+      const end_date = DateHelper.add(30, 'days').toISOString(); // plan expires in 30 days
+
+      const subscription = await this.prisma.subscription.create({
         data: {
           tenant_id: user.tenant_id,
           plan_id: plan.id,
@@ -43,19 +44,13 @@ export class StripeService extends PrismaClient {
           payment_method: 'stripe',
         },
       });
+
+      return subscription;
     }
-    return 'This action adds a new stripe';
+    return false;
   }
 
-  findAll() {
-    return `This action returns all stripe`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} stripe`;
-  }
-
-  async update(
+  async updateSubscription(
     tenant_id: number,
     { plan_price_id }: { plan_price_id: string },
   ) {
@@ -75,7 +70,8 @@ export class StripeService extends PrismaClient {
     if (plan) {
       // add subscription
       const start_date = DateHelper.now();
-      const end_date = DateHelper.add(30, 'days').toISOString();
+      const end_date = DateHelper.add(30, 'days').toISOString(); // plan expires in 30 days
+
       await this.prisma.subscription.updateMany({
         where: {
           tenant_id: tenant_id,
@@ -89,7 +85,13 @@ export class StripeService extends PrismaClient {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} stripe`;
+  async cancelSubscription(tenant_id: number) {
+    const subscription = await this.subscription.deleteMany({
+      where: {
+        tenant_id: tenant_id,
+      },
+    });
+
+    return subscription;
   }
 }

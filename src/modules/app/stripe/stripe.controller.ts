@@ -36,13 +36,13 @@ export class StripeController {
       // handle the event
       switch (event.type) {
         case 'customer.created':
-          console.log(JSON.stringify(data));
+          // console.log(JSON.stringify(data));
           break;
         case 'invoice.paid':
           break;
         case 'customer.subscription.created': {
           // create subscription
-          await this.stripeService.create({
+          await this.stripeService.createSubscription({
             customer: data.customer,
             plan_price_id: data.plan.id,
           });
@@ -55,14 +55,10 @@ export class StripeController {
 
           if (data.canceled_at) {
             // cancelled
-            await this.stripeService.subscription.deleteMany({
-              where: {
-                tenant_id: user.tenant_id,
-              },
-            });
+            await this.stripeService.cancelSubscription(user.tenant_id);
           } else {
             // update plan
-            await this.stripeService.update(user.tenant_id, {
+            await this.stripeService.updateSubscription(user.tenant_id, {
               plan_price_id: data.plan.id,
             });
           }
@@ -74,25 +70,5 @@ export class StripeController {
     } catch (error) {
       throw error;
     }
-  }
-
-  @Get()
-  findAll() {
-    return this.stripeService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.stripeService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateStripeDto) {
-    return this.stripeService.update(+id, updateStripeDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.stripeService.remove(+id);
   }
 }
