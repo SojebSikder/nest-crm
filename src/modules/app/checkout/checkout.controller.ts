@@ -24,10 +24,17 @@ export class CheckoutController {
   ) {
     const user = req.user;
 
-    const checkout = await this.checkoutService.create(createCheckoutDto);
+    const checkout = await this.checkoutService.create(
+      user.userId,
+      createCheckoutDto,
+    );
+
+    if (checkout.error) {
+      return checkout;
+    }
 
     return {
-      url: checkout,
+      url: checkout.data,
     };
   }
 
