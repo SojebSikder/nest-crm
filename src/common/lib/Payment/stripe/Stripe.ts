@@ -25,6 +25,7 @@ export class StripeMethod {
     const success_url = `${
       appConfig().app.client_app_url
     }/payment/success?session_id={CHECKOUT_SESSION_ID}`;
+
     const cancel_url = `${appConfig().app.client_app_url}/payment/failed`;
 
     const session = await Stripe.checkout.sessions.create({
@@ -43,7 +44,14 @@ export class StripeMethod {
       success_url: success_url,
       cancel_url: cancel_url,
     });
+
     return session;
+  }
+
+  static async cancelSubscription(subscription_id: string) {
+    const subscription = await Stripe.subscriptions.del(subscription_id);
+
+    return subscription;
   }
 
   /**
@@ -90,7 +98,7 @@ export class StripeMethod {
   static async createBillingSession(customer) {
     const session = await Stripe.billingPortal.sessions.create({
       customer: customer,
-      return_url: appConfig().app.url,
+      return_url: appConfig().app.client_app_url,
     });
     return session;
   }
